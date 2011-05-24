@@ -11,7 +11,7 @@ function __autoload($name) {
 
 $application = new Application(
   array('/', 'MainHandler'),
-  array('about', 'MainHandler'),
+  array('about', 'MainHandler')
 );
 
 $application->serve();
