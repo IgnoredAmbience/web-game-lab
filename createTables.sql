@@ -15,8 +15,9 @@ CREATE TABLE Players (
   Health integer,
   Wealth integer,
   Stealth integer, -- like threat?
-  PlayerId integer SERIAL PRIMARY KEY,
-  Shelf varchar(30) REFERENCES items ,
+  PlayerId integer SERIAL,
+  Shelf varchar(30) REFERENCES items,
+  PRIMARY KEY (PlayerId)
 );
 
 CREATE TABLE Items (
@@ -24,7 +25,8 @@ CREATE TABLE Items (
   Value integer     ,
   Class ItemClass   ,
   Stat  integer     ,
-  ItemId integer    SERIAL PRIMARY KEY,
+  ItemId integer    SERIAL,
+  PRIMARY KEY (ItemId)
 );
 
 CREATE TABLE Playerloot (
@@ -37,6 +39,7 @@ CREATE TABLE Playerloot (
 CREATE TABLE Tiles (
   X integer,
   Y integer,
+  PRIMARY KEY (x,y)
 );
 
 CREATE TABLE Shop (
