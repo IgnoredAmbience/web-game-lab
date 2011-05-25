@@ -1,3 +1,4 @@
 RewriteEngine on
+RewriteBase /~tw1509/web
 RewriteCond $1 !^(index\.php)
-RewriteRule ^(.*)$ index.php/$1 [L]
+RewriteRule ^(.*)$ index.php [L]

@@ -8,5 +8,3 @@ class MainHandler extends Handler {
     echo "About page";
   }
 }
-?>
-

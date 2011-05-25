@@ -1,19 +1,22 @@
 <?php
-// This file is a slimmed-down version of the Toro framework
+// This file is a slimmed-down and modified version of the Toro framework
 // http://toroweb.org/
 
 class Application {
     private $_handler_route_pairs = array();
+    private $_path_prefix;
 
-    public function __construct($handler_route_pairs) {
+    public function __construct($handler_route_pairs, $pp = '') {
         foreach ($handler_route_pairs as $pair) {
             $this->_handler_route_pairs[] = $pair;
         }
+        $this->_path_prefix = $pp;
     }
 
     public function serve() {
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
-        $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
+        $path_info = preg_replace("|^{$this->_path_prefix}/|", '',  $_SERVER['REQUEST_URI']);
+        $path_info = $path_info ? $path_info : '/';
         $discovered_handler = NULL;
         $regex_matches = array();
         $method_arguments = NULL;
@@ -63,7 +66,8 @@ class Application {
         }
         else {
             header('HTTP/1.0 404 Not Found');
-            echo '404 Not Found';
+            echo '<h1>404 Not Found</h1>';
+            echo "Parsed path info: $path_info";
             exit;
         }
     }
@@ -89,7 +93,10 @@ class Handler {
 
     public function __call($name, $arguments) {
         header('HTTP/1.0 404 Not Found');
-        echo '404 Not Found';
+        echo '<h1>404 Not Found</h1>';
+        echo "Function $name not found in " . get_class($this) . '<br/> Passed parameters: <pre>';
+        print_r($arguments);
+        echo '</pre>';
         exit;
     }
 }
