@@ -1,11 +1,22 @@
-DROP TABLE Players;
-DROP TABLE Items;
-DROP TABLE PlayerLoot;
-DROP TABLE Tile;
-DROP TABLE Shop;
-DROP TABLE ShopStock;
+DROP TABLE IF EXISTS Items	CASCADE;
+DROP TABLE IF EXISTS Players	CASCADE;
+DROP TABLE IF EXISTS PlayerLoot CASCADE;
+DROP TABLE IF EXISTS Tiles	CASCADE;
+DROP TABLE IF EXISTS Shop	CASCADE;
+DROP TABLE IF EXISTS ShopStock  CASCADE;
+
+DROP TYPE  IF EXISTS ItemClass  CASCADE;
 
 CREATE TYPE ItemClass AS ENUM ('Weapon');
+
+CREATE TABLE Items (
+  Name  varchar(30) ,
+  Value integer     ,
+  Class ItemClass   ,
+  Stat  integer     ,
+  ItemId serial,
+  PRIMARY KEY (ItemId)
+);
 
 CREATE TABLE Players (
   X integer,
@@ -15,21 +26,12 @@ CREATE TABLE Players (
   Health integer,
   Wealth integer,
   Stealth integer, -- like threat?
-  PlayerId integer SERIAL,
-  Shelf varchar(30) REFERENCES items,
+  PlayerId serial,
+  Shelf integer REFERENCES Items(ItemId),
   PRIMARY KEY (PlayerId)
 );
 
-CREATE TABLE Items (
-  Name  varchar(30) ,
-  Value integer     ,
-  Class ItemClass   ,
-  Stat  integer     ,
-  ItemId integer    SERIAL,
-  PRIMARY KEY (ItemId)
-);
-
-CREATE TABLE Playerloot (
+CREATE TABLE PlayerLoot (
   PlayerID integer REFERENCES Players,
   ItemID   integer REFERENCES Items,
   Count integer,
@@ -39,17 +41,18 @@ CREATE TABLE Playerloot (
 CREATE TABLE Tiles (
   X integer,
   Y integer,
-  PRIMARY KEY (x,y)
+  PRIMARY KEY (X,Y)
 );
 
 CREATE TABLE Shop (
   Name varchar(20),
+  PRIMARY KEY (X,Y) -- primary key contraint not inherited from tiles
 ) INHERITS (Tiles);
 
 CREATE TABLE ShopStock (
-  X integer REFERENCES shop,
-  Y integer REFERENCES shop,
-  ItemId integer REFERENCES items,
+  X integer ,
+  Y integer ,
+  ItemId integer REFERENCES Items,
   Count integer,
-  PRIMARY KEY (X, Y, ItemID)
+  FOREIGN KEY(X,Y) REFERENCES Shop(X,Y)
 );
