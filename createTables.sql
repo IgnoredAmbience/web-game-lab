@@ -10,49 +10,49 @@ DROP TYPE  IF EXISTS ItemClass  CASCADE;
 CREATE TYPE ItemClass AS ENUM ('Weapon');
 
 CREATE TABLE Items (
-  Name  varchar(30) ,
-  Value integer     ,
-  Class ItemClass   ,
-  Stat  integer     ,
-  ItemId serial,
-  PRIMARY KEY (ItemId)
+  name  varchar(30) ,
+  value integer     ,
+  class ItemClass   ,
+  stat  integer     ,
+  itemId serial,
+  PRIMARY KEY (itemId)
 );
 
 CREATE TABLE Players (
-  X integer,
-  Y integer,
-  Name varchar(20),
-  Playing boolean,
-  Health integer,
-  Wealth integer,
-  Stealth integer, -- like threat?
-  PlayerId serial,
-  Shelf integer REFERENCES Items(ItemId),
-  PRIMARY KEY (PlayerId)
+  x integer,
+  y integer,
+  name varchar(20),
+  playing boolean,
+  health integer,
+  wealth integer,
+  stealth integer, -- like threat?
+  playerId serial,
+  shelf integer REFERENCES Items(itemId),
+  PRIMARY KEY (playerId)
 );
 
 CREATE TABLE PlayerLoot (
-  PlayerID integer REFERENCES Players,
-  ItemID   integer REFERENCES Items,
-  Count integer,
-  PRIMARY KEY (PlayerID, ItemID)
+  playerId integer REFERENCES Players,
+  itemId   integer REFERENCES Items,
+  count integer,
+  PRIMARY KEY (playerId, itemId)
 );
 
 CREATE TABLE Tiles (
-  X integer,
-  Y integer,
-  PRIMARY KEY (X,Y)
+  x integer,
+  y integer,
+  PRIMARY KEY (x,y)
 );
 
 CREATE TABLE Shop (
-  Name varchar(20),
-  PRIMARY KEY (X,Y) -- primary key contraint not inherited from tiles
+  name varchar(20),
+  PRIMARY KEY (x,y) -- primary key contraint not inherited from tiles
 ) INHERITS (Tiles);
 
 CREATE TABLE ShopStock (
-  X integer ,
-  Y integer ,
-  ItemId integer REFERENCES Items,
-  Count integer,
-  FOREIGN KEY(X,Y) REFERENCES Shop(X,Y)
+  x integer ,
+  y integer ,
+  itemId integer REFERENCES Items,
+  count integer,
+  FOREIGN KEY(x,y) REFERENCES Shop(x,y)
 );
