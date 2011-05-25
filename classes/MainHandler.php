@@ -1,10 +1,6 @@
 <?php
 class MainHandler extends Handler {
-  function index() {
+  function get() {
     echo "Hello world!";
-  }
-
-  function about() {
-    echo "About page";
   }
 }

@@ -11,7 +11,7 @@ function __autoload($name) {
 
 $application = new Application(array(
   array('/', 'MainHandler'),
-  array('about', 'MainHandler')
+  array('player/(\d+)', 'PlayerHandler')
 ), '/~tw1509/web');
 
 $application->serve();
