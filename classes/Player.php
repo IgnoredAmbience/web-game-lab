@@ -8,5 +8,4 @@ class Player extends DatabaseRecord {
   public $stealth	= 0;
   public $shelf		= 0;
   public $playerId	= -1;
-  public $shelf		= 0;
 }

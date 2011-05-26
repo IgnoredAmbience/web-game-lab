@@ -6,9 +6,9 @@ class LoginHandler extends Handler {
     if(!$name) $this->error();
 
     $stmt = $database->prepare('SELECT * FROM Player where name = ?');
-    $stmt->execute($name);
+    $stmt->execute(array($name));
 
-    if(!$stmt->rowCount) {
+    if(!$stmt->rowCount()) {
       $player = new Player();
       $player->name = $name;
       $player->save();
