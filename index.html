@@ -1,13 +1,20 @@
 <html>
 <head>
-  <script src="scene.js"></script>
-  <script src="actor.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/actor.js"></script>
   <script type="application/javascript">
 var Player;
 
 function init() {
   Scene.init();
   Player = new Actor (1,1,"black");
+
+  var shops = new Array();
+  shops.push(new Shop(3,8,"red"));
+  shops.push(new Shop(4,8,"red"));
+
+  Scene.loadMap(shops);
+
   Scene.draw();
 }
 
