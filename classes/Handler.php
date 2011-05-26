@@ -16,5 +16,9 @@ class Handler {
       echo '<h1>500</h1>';
       exit;
     }
-}
 
+    public function getUser() {
+      return $database->query('SELECT * FROM Player where name = \'joe\'')->
+	fetchObject("Player");
+    }
+}
