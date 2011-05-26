@@ -2,7 +2,7 @@ var Scene = {
 
   init: function () {
     this.canvas = document.getElementById("canvas");
-    this.context = canvas.getContext("2d");
+    this.context = this.canvas.getContext("2d");
     this.context.font = "bold 12px sans-serif";
   },
 
