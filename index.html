@@ -18,6 +18,20 @@ function init() {
   document.addEventListener("keypress", keyPressed, true);
 
   Scene.draw();
+
+  updateStats(1,2,3,4);
+}
+
+function updateStats (w,h,st,sh) {
+  var wealth = document.getElementById("wealthDisplay");
+  var health = document.getElementById("healthDisplay");
+  var stealth = document.getElementById("stealthDisplay");
+  var shelf = document.getElementById("shelfDisplay");
+  
+  wealth.innerHTML = "Wealth: " + w;
+  health.innerHTML = "Health: " + h;
+  stealth.innerHTML = "Stealth: " + st;
+  shelf.innerHTML = "Shelf: " + sh;
 }
 
   </script>
@@ -26,6 +40,10 @@ function init() {
 <body onload="init()">
 <canvas id="canvas" style="border: 1px dotted" width="300" height="300"></canvas>
 <button onclick="drawMenu()">Menu</button>
+<div id="wealthDisplay"></div>
+<div id="healthDisplay"></div>
+<div id="stealthDisplay"></div>
+<div id="shelfDisplay"></div>
 </body>
 
 </html>
