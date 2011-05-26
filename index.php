@@ -11,6 +11,7 @@ function __autoload($name) {
 
 $application = new Application(array(
   array('/', 'MainHandler'),
+  array('login', 'LoginHandler'),
   array('player/(\d+)', 'PlayerHandler')
 ), '/~tw1509/web');
 
