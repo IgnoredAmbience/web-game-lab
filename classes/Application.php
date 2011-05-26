@@ -25,14 +25,14 @@ class Application {
             list($pattern, $handler_name) = $handler;
 
             if ($path_info == $pattern) {
-                $discovered_handler = $handler_name;            
+                $discovered_handler = $handler_name;
                 $regex_matches = array($path_info, preg_replace('/^\//', '', $path_info));
                 $method_arguments = $this->get_argument_overrides($handler);
                 break;
             }
             else {
-                $pattern = str_replace('/', '\/', $pattern);                
-                
+                $pattern = str_replace('/', '\/', $pattern);
+
                 if (preg_match('/^\/' . $pattern . '\/?$/', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
                     $regex_matches = $matches;
