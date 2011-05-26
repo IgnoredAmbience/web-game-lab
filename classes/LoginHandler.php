@@ -19,4 +19,13 @@ class LoginHandler extends Handler {
     // Do stuff
     echo $player->name;
   }
+
+  function get() {
+    ?>
+    <form name="loginForm" action="login" method="post">
+      User name: <input type="text" name="name" /> <br/>
+      <input type="submit" name="submit">
+    </form>
+    <?php
+  }
 }
