@@ -99,4 +99,11 @@ class Handler {
         echo '</pre>';
         exit;
     }
+
+    public function error() {
+      header('HTTP/1.0 500 Internal Server Error');
+      echo '<h1>500</h1>';
+      exit;
+    }
 }
+
