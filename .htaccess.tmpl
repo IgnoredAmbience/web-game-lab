@@ -1,4 +1,5 @@
 RewriteEngine on
 RewriteBase /project/2010/271/g1027127/web
-RewriteCond $1 !^(index\.php)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [L]
