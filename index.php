@@ -12,7 +12,7 @@ function __autoload($name) {
 $application = new Application(array(
   array('/', 'MainHandler'),
   array('player/(\d+)', 'PlayerHandler')
-), '/~tw1509/web');
+), '/project/2010/271/g1027127(/web)?');
 
 $database = new PDO('pgsql:host=db;port=5432;dbname=tw1509',
                     'tw1509',
