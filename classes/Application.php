@@ -25,14 +25,14 @@ class Application {
             list($pattern, $handler_name) = $handler;
 
             if ($path_info == $pattern) {
-                $discovered_handler = $handler_name;            
+                $discovered_handler = $handler_name;
                 $regex_matches = array($path_info, preg_replace('/^\//', '', $path_info));
                 $method_arguments = $this->get_argument_overrides($handler);
                 break;
             }
             else {
-                $pattern = str_replace('/', '\/', $pattern);                
-                
+                $pattern = str_replace('/', '\/', $pattern);
+
                 if (preg_match('/^\/' . $pattern . '\/?$/', $path_info, $matches)) {
                     $discovered_handler = $handler_name;
                     $regex_matches = $matches;
@@ -99,4 +99,11 @@ class Handler {
         echo '</pre>';
         exit;
     }
+
+    public function error() {
+      header('HTTP/1.0 500 Internal Server Error');
+      echo '<h1>500</h1>';
+      exit;
+    }
 }
+
