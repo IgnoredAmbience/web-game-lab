@@ -1,56 +1,16 @@
 <html>
 <head>
+  <script src="js/functions.js"></script>
   <script src="js/scene.js"></script>
   <script src="js/actor.js"></script>
-  <script type="application/javascript">
-var Player;
-
-var graphicsLevel = 1;
-
-var GRAPHICS_MAX = 2;
-var TILE_SIZE = 16;
-
-function init() {
-  Scene.init();
-  Player = new Actor (1,1,"black","player.bmp");
-
-  var shops = new Array();
-  shops.push(new Shop(3,8,"red"));
-  shops.push(new Shop(4,8,"red"));
-
-  Scene.loadMap(shops);
-
-  document.addEventListener("keypress", keyPressed, true);
-
-  Scene.draw();
-
-  updateStats(1,2,3,4);
-}
-
-function updateStats (w,h,st,sh) {
-  var wealth = document.getElementById("wealthDisplay");
-  var health = document.getElementById("healthDisplay");
-  var stealth = document.getElementById("stealthDisplay");
-  var shelf = document.getElementById("shelfDisplay");
-  
-  wealth.innerHTML = "Wealth: " + w;
-  health.innerHTML = "Health: " + h;
-  stealth.innerHTML = "Stealth: " + st;
-  shelf.innerHTML = "Shelf: " + sh;
-}
-
-function changeGraphics () {
-  graphicsLevel = (graphicsLevel + 1)%GRAPHICS_MAX;
-  Scene.draw();
-}
-
-  </script>
 </head>
 
 <body onload="init()">
 <canvas id="canvas" style="border: 1px dotted" width="512" height="512"></canvas>
+
 <button onclick="drawMenu()">Menu</button>
 <button onclick="changeGraphics()">Graphics</button>
+
 <div id="wealthDisplay"></div>
 <div id="healthDisplay"></div>
 <div id="stealthDisplay"></div>
