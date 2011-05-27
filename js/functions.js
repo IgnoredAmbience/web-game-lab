@@ -4,7 +4,7 @@ var TILE_SIZE = 16;
 
 // GLOBAL VARIABLES
 var graphicsLevel = 1;
-var frameInterval = 100;
+var frameInterval = 10;
 
 var canvas;
 var context;

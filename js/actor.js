@@ -5,6 +5,8 @@ function Actor (x, y, color, texture) {
   this.texture = new Image();
   this.texture.src = texture;
 
+  this.action = "stand"; // Also "walk" and "fight", maybe "shop"
+
   this.walkingMax = this.texture.width / TILE_SIZE;
   this.walkingStage = 0;
 }
@@ -15,14 +17,42 @@ Actor.prototype.draw = function () {
     context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
   }
   else {
+    // Row 0 of the texture image is walking animation
+    var source_x;
+    var source_y;
+    var dest_x;
+    var dest_y;
+    switch (this.action) {
+      case "stand" :
+        source_x = 0;
+        source_y = 0;
+        dest_x = this.x;
+        dest_y = this.y;
+        break;
+      case "walk" :
+        this.walkingStage = (this.walkingStage + 1) % this.walkingMax;
+
+        source_x = this.walkingStage*TILE_SIZE;
+        source_y = 0;
+
+        var walkStep = this.walkingMax / this.walkingStage;
+        dest_x = this.x + (this.walkingX - this.x)/walkStep;
+        dest_y = this.y + (this.walkingY - this.y)/walkStep;
+
+        if (this.walkingStage == 0) this.action = "stand";
+        break;
+    }
     context.drawImage(this.texture,
-                      this.walkingStage*TILE_SIZE,0, TILE_SIZE,TILE_SIZE,
-                      this.x*TILE_SIZE,this.y*TILE_SIZE, TILE_SIZE,TILE_SIZE);
+                      source_x,source_y, TILE_SIZE,TILE_SIZE,
+                      dest_x*TILE_SIZE,dest_y*TILE_SIZE, TILE_SIZE,TILE_SIZE);
   }
 }
 
 
 Actor.prototype.move = function (direction) {
+
+  this.walkingX = this.x;
+  this.walkingY = this.y;
 
   switch (direction) {
     case "left" :
@@ -40,7 +70,7 @@ Actor.prototype.move = function (direction) {
   if (this.y < 0) this.y = 0;
   if (this.y > mapHeight-1) this.y = mapHeight-1;
 
-  this.walkingStage = (this.walkingStage + 1) % this.walkingMax;
+  this.action = "walk";
 }
 
 
