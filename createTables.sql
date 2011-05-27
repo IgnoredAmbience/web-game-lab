@@ -10,15 +10,16 @@ DROP TYPE  IF EXISTS ItemClass  CASCADE;
 CREATE TYPE ItemClass AS ENUM ('Weapon');
 
 CREATE TABLE Item (
+  id serial         ,
   name  varchar(30) ,
   value integer     ,
   class ItemClass   ,
   stat  integer     ,
-  itemId serial,
-  PRIMARY KEY (itemId)
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE Player (
+  id serial,
   x integer,
   y integer,
   name varchar(20),
@@ -26,16 +27,18 @@ CREATE TABLE Player (
   health integer,
   wealth integer,
   stealth integer, -- like threat?
-  playerId serial,
-  shelf integer REFERENCES Item(itemId),
-  PRIMARY KEY (playerId)
+  shelf integer REFERENCES Item(id),
+  PRIMARY KEY (id),
+  UNIQUE (name)
 );
 
 CREATE TABLE PlayerLoot (
-  playerId integer REFERENCES Player,
-  itemId   integer REFERENCES Item,
+  id serial,
+  playerId integer REFERENCES Player(id),
+  itemId   integer REFERENCES Item(id),
   count integer,
-  PRIMARY KEY (playerId, itemId)
+  PRIMARY KEY (id),
+  UNIQUE (playerId, itemId)
 );
 
 CREATE TABLE Tile (
@@ -45,14 +48,17 @@ CREATE TABLE Tile (
 );
 
 CREATE TABLE Shop (
+  id serial,
   name varchar(20),
-  PRIMARY KEY (x,y) -- primary key contraint not inherited from tile
+  PRIMARY KEY (id),
+  UNIQUE (x,y) -- key contraint not inherited from tile
 ) INHERITS (Tile);
 
 CREATE TABLE ShopStock (
-  x integer ,
-  y integer ,
-  itemId integer REFERENCES Item,
+  id serial,
+  shopId integer REFERENCES Shop(id),
+  itemId integer REFERENCES Item(id),
   count integer,
-  FOREIGN KEY(x,y) REFERENCES Shop(x,y)
+  PRIMARY KEY (id),
+  UNIQUE (shopId, itemId)
 );

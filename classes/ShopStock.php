@@ -1,8 +1,8 @@
 <?php
 class ShopStock extends Shop {
-  public $x = 0;
-  public $y = 0;
+  public $id     = -1;
+  public $shopId = -1;
   public $itemId = -1;
-  public $count = 0;
+  public $count  = 0;
 }
 
