@@ -21,9 +21,18 @@ Actor.prototype.draw = function () {
 }
 
 
-Actor.prototype.move = function (x, y) {
-  this.x += x;
-  this.y += y;
+Actor.prototype.move = function (direction) {
+
+  switch (direction) {
+    case "left" :
+      this.x--; break;
+    case "right" :
+      this.x++; break;
+    case "up" :
+      this.y--; break;
+    case "down" :
+      this.y++; break;
+  }
 
   if (this.x < 0) this.x = 0;
   if (this.x > mapWidth-1) this.x = mapWidth-1;
@@ -46,24 +55,19 @@ Shop.prototype.draw = function () {
   context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
 }
 
-Shop.prototype.move = function (x, y) {
-  this.x = x;
-  this.y = y;
-}
-
 
 
 // Player movement event handler
 function keyPressed (event) {
   switch (event.keyCode) {
     case 37 : // Left
-      Player.move(-1,0); break;
+      Player.move("left"); break;
     case 38 : // Up
-      Player.move(0,-1); break;
+      Player.move("up"); break;
     case 39 : // Right
-      Player.move(1,0); break;
+      Player.move("right"); break;
     case 40 : // Down
-      Player.move(0,1); break;
+      Player.move("down"); break;
     default :
   }
 }
