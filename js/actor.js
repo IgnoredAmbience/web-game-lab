@@ -1,12 +1,17 @@
-function Actor (x, y, color) {
+function Actor (x, y, color, texture) {
   this.x = x;
   this.y = y;
   this.color = color;
+  this.texture = new Image();
+  this.texture.src = texture;
 }
 
 Actor.prototype.draw = function () {
-  Scene.context.fillStyle = this.color;
-  Scene.context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
+  //Scene.context.fillStyle = this.color;
+  //Scene.context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
+  Scene.context.drawImage(this.texture,
+                          0,0,TILE_SIZE,TILE_SIZE,
+                          this.x,this.y,TILE_SIZE,TILE_SIZE);
 }
 
 Actor.prototype.move = function (x, y) {
