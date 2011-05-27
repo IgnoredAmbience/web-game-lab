@@ -10,11 +10,11 @@ function Actor (x, y, color, texture) {
 
 Actor.prototype.draw = function () {
   if (graphicsLevel == 0) {
-    Scene.context.fillStyle = this.color;
-    Scene.context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
+    context.fillStyle = this.color;
+    context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
   }
   else {
-  Scene.context.drawImage(this.texture,
+  context.drawImage(this.texture,
                           this.walkingStage*TILE_SIZE,0,TILE_SIZE,TILE_SIZE,
                           this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
   }
@@ -26,9 +26,9 @@ Actor.prototype.move = function (x, y) {
   this.y += y;
 
   if (this.x < 0) this.x = 0;
-  if (this.x > Scene.width) this.x = Scene.width;
+  if (this.x > mapWidth) this.x = mapWidth;
   if (this.y < 0) this.y = 0;
-  if (this.y > Scene.height) this.y = Scene.height;
+  if (this.y > mapHeight) this.y = mapHeight;
 
   this.walkingStage = (this.walkingStage + 1) % 2;
 }
@@ -42,8 +42,8 @@ function Shop (x, y, color) {
 }
 
 Shop.prototype.draw = function () {
-  Scene.context.fillStyle = this.color;
-  Scene.context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
+  context.fillStyle = this.color;
+  context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
 }
 
 Shop.prototype.move = function (x, y) {
@@ -66,5 +66,4 @@ function keyPressed (event) {
       Player.move(0,1); break;
     default :
   }
-  Scene.draw();
 }
