@@ -11,7 +11,7 @@ function init () {
   setInterval(draw,frameInterval);
 
 
-
+  // "magic number" type crap that will be removed/implemented later
   var shops = new Array();
   shops.push(new Shop(3,8,"red"));
   shops.push(new Shop(4,8,"red"));

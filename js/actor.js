@@ -26,9 +26,9 @@ Actor.prototype.move = function (x, y) {
   this.y += y;
 
   if (this.x < 0) this.x = 0;
-  if (this.x > mapWidth) this.x = mapWidth;
+  if (this.x > mapWidth-1) this.x = mapWidth-1;
   if (this.y < 0) this.y = 0;
-  if (this.y > mapHeight) this.y = mapHeight;
+  if (this.y > mapHeight-1) this.y = mapHeight-1;
 
   this.walkingStage = (this.walkingStage + 1) % 2;
 }
