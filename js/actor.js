@@ -6,7 +6,7 @@ function Actor (x, y, color) {
 
 Actor.prototype.draw = function () {
   Scene.context.fillStyle = this.color;
-  Scene.context.fillRect(this.x*10,this.y*10,10,10);
+  Scene.context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
 }
 
 Actor.prototype.move = function (x, y) {
@@ -23,7 +23,7 @@ function Shop (x, y, color) {
 
 Shop.prototype.draw = function () {
   Scene.context.fillStyle = this.color;
-  Scene.context.fillRect(this.x*10,this.y*10,10,10);
+  Scene.context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
 }
 
 Shop.prototype.move = function (x, y) {
