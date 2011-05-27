@@ -5,6 +5,7 @@ function Actor (x, y, color, texture) {
   this.texture = new Image();
   this.texture.src = texture;
 
+  this.walkingMax = this.texture.width / TILE_SIZE;
   this.walkingStage = 0;
 }
 
@@ -14,9 +15,9 @@ Actor.prototype.draw = function () {
     context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
   }
   else {
-  context.drawImage(this.texture,
-                          this.walkingStage*TILE_SIZE,0,TILE_SIZE,TILE_SIZE,
-                          this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
+    context.drawImage(this.texture,
+                      this.walkingStage*TILE_SIZE,0, TILE_SIZE,TILE_SIZE,
+                      this.x*TILE_SIZE,this.y*TILE_SIZE, TILE_SIZE,TILE_SIZE);
   }
 }
 
@@ -39,7 +40,7 @@ Actor.prototype.move = function (direction) {
   if (this.y < 0) this.y = 0;
   if (this.y > mapHeight-1) this.y = mapHeight-1;
 
-  this.walkingStage = (this.walkingStage + 1) % 2;
+  this.walkingStage = (this.walkingStage + 1) % this.walkingMax;
 }
 
 
