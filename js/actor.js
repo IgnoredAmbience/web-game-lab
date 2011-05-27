@@ -4,6 +4,8 @@ function Actor (x, y, color, texture) {
   this.color = color;
   this.texture = new Image();
   this.texture.src = texture;
+
+  this.walkingStage = 0;
 }
 
 Actor.prototype.draw = function () {
@@ -13,15 +15,24 @@ Actor.prototype.draw = function () {
   }
   else {
   Scene.context.drawImage(this.texture,
-                          0,0,TILE_SIZE,TILE_SIZE,
+                          this.walkingStage*TILE_SIZE,0,TILE_SIZE,TILE_SIZE,
                           this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
   }
 }
 
+
 Actor.prototype.move = function (x, y) {
-  this.x = x;
-  this.y = y;
+  this.x += x;
+  this.y += y;
+
+  if (this.x < 0) this.x = 0;
+  if (this.x > Scene.width) this.x = Scene.width;
+  if (this.y < 0) this.y = 0;
+  if (this.y > Scene.height) this.y = Scene.height;
+
+  this.walkingStage = (this.walkingStage + 1) % 2;
 }
+
 
 
 function Shop (x, y, color) {
@@ -41,19 +52,19 @@ Shop.prototype.move = function (x, y) {
 }
 
 
+
+// Player movement event handler
 function keyPressed (event) {
   switch (event.keyCode) {
     case 37 : // Left
-      Player.x--; break;
+      Player.move(-1,0); break;
     case 38 : // Up
-      Player.y--; break;
+      Player.move(0,-1); break;
     case 39 : // Right
-      Player.x++; break;
+      Player.move(1,0); break;
     case 40 : // Down
-      Player.y++; break;
+      Player.move(0,1); break;
     default :
   }
-  if (Player.x < 0) Player.x = 0;
-  if (Player.y < 0) Player.y = 0;
   Scene.draw();
 }

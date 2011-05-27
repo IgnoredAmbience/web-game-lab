@@ -9,6 +9,8 @@ var Scene = {
   // For now, all the scenery contains is a list of shops. Eventually, other arguments may be passed in, which will need to be added to this.scenery by looping over :/
   loadMap: function (shops) {
     this.scenery = shops;
+    this.width = 32;
+    this.height = 32;
   },
 
   // TODO: Weigh up the merits of having separate item lists for scenery, actors and the player, rendered in that order. Also, scenery can probably have some nice staticy stuff done to it, maybe turned into a temporary bitmap for rendering, that's just moved around the canvas?

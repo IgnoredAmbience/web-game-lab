@@ -9,7 +9,7 @@ var graphicsLevel = 1;
 
 function init() {
   Scene.init();
-  Player = new Actor (1,1,"black","player.bmp");
+  Player = new Actor (1,1,"black","player.png");
 
   var shops = new Array();
   shops.push(new Shop(3,8,"red"));
