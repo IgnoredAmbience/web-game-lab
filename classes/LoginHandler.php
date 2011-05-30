@@ -16,8 +16,7 @@ class LoginHandler extends Handler {
       $player = $stmt->fetchObject('Player');
     }
 
-    // Do stuff
-    echo $player->name;
+    $player->login();
   }
 
   function get() {

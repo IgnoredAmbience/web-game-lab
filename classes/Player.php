@@ -9,7 +9,7 @@ class Player extends DatabaseRecord {
   public $stealth       = 0;
   public $shelf         = 0;
 
-  public function move($moveType) { //N S W E or teleport
+  public function move($moveType) { //N S E W or teleport
     //TODO add validation for tile edges; wrap or clip?
     if($moveType == "north"):
       $this->y += 1;
@@ -23,4 +23,21 @@ class Player extends DatabaseRecord {
       throw new Exception("unknown move type");
     endif;
   }
+
+  public function login() {
+    throw new Exception("Not yet implemented");
+  }
+
+  public function logout() {
+    throw new Exception("Not yet implemented");
+  }
+
+  public function buyItem() {
+    throw new Exception("Not yet implemented");
+  }
+
+  public function sellItem() {
+    throw new Exception("Not yet implemented");
+  }
+
 }
