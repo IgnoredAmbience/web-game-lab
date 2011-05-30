@@ -54,8 +54,10 @@ Actor.prototype.move = function (direction) {
   this.walkingX = this.x;
   this.walkingY = this.y;
 
+  var wib = "left";
+
   switch (direction) {
-    case "left" :
+    case wib :
       this.x--; break;
     case "right" :
       this.x++; break;
@@ -90,14 +92,18 @@ Shop.prototype.draw = function () {
 
 // Player movement event handler
 function keyPressed (event) {
-  switch (event.keyCode) {
+  switch (event.keyCode || event.charCode) {
     case 37 : // Left
+    case leftKey :
       Player.move("left"); break;
     case 38 : // Up
+    case upKey :
       Player.move("up"); break;
     case 39 : // Right
+    case rightKey :
       Player.move("right"); break;
     case 40 : // Down
+    case downKey :
       Player.move("down"); break;
     default :
   }

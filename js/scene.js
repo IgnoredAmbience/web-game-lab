@@ -57,3 +57,7 @@ function inView (item) {
 function changeGraphics () {
   graphicsLevel = (graphicsLevel + 1) % GRAPHICS_MAX;
 }
+
+
+function setKeys () {
+}

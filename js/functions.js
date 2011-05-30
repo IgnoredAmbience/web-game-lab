@@ -14,10 +14,45 @@ var scenery;
 var mapHeight;
 var mapWidth;
 
+var upKey;
+var downKey;
+var leftKey;
+var rightKey;
+
+function init () {
+  // Set up the drawing environment
+  canvas = document.getElementById("canvas");
+  context = this.canvas.getContext("2d");
+  context.font = "bold 12px sans-serif";
+
+  Player = new Actor (1,1,"black","player.png");
+  document.addEventListener("keypress", keyPressed, true);
+
+  // Set up the loop
+  setInterval(draw,frameInterval);
+
+  setKeys();
+
+  // "magic number" type crap that will be removed/implemented later
+  var shops = new Array();
+  shops.push(new Shop(3,8,"red"));
+  shops.push(new Shop(4,8,"red"));
+
+  loadMap(shops);
+
+  updateStats(1,2,3,4);
+}
 
 function updateStats (w,h,st,sh) {
   var wealth = document.getElementById("wealthDisplay").innerHTML = "Wealth: " + w;
   var health = document.getElementById("healthDisplay").innerHTML = "Health: " + h;
   var stealth = document.getElementById("stealthDisplay").innerHTML = "Stealth: " + st;
   var shelf = document.getElementById("shelfDisplay").innerHTML = "Shelf: " + sh;
+}
+
+function setKeys () {
+  upKey = document.getElementById("upKeyInput").charCodeAt(0);
+  downKey = document.getElementById("downKeyInput").charCodeAt(0);
+  leftKey = document.getElementById("leftKeyInput").charCodeAt(0);
+  rightKey = document.getElementById("rightKeyInput").charCodeAt(0);
 }
