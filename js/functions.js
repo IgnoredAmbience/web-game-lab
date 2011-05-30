@@ -16,13 +16,8 @@ var mapWidth;
 
 
 function updateStats (w,h,st,sh) {
-  var wealth = document.getElementById("wealthDisplay");
-  var health = document.getElementById("healthDisplay");
-  var stealth = document.getElementById("stealthDisplay");
-  var shelf = document.getElementById("shelfDisplay");
-  
-  wealth.innerHTML = "Wealth: " + w;
-  health.innerHTML = "Health: " + h;
-  stealth.innerHTML = "Stealth: " + st;
-  shelf.innerHTML = "Shelf: " + sh;
+  var wealth = document.getElementById("wealthDisplay").innerHTML = "Wealth: " + w;
+  var health = document.getElementById("healthDisplay").innerHTML = "Health: " + h;
+  var stealth = document.getElementById("stealthDisplay").innerHTML = "Stealth: " + st;
+  var shelf = document.getElementById("shelfDisplay").innerHTML = "Shelf: " + sh;
 }
