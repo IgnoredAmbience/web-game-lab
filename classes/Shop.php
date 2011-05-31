@@ -1,7 +1,7 @@
 <?php
 class Shop extends Tile {
   public $id   = -1;
-  public $name = '';
+  public $name;
 
   public function sellItem() {
     throw new Exception("Not yet implemented");
