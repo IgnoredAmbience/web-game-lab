@@ -44,16 +44,15 @@ function init () {
 
   setKeys();
 
-  // Set up the loop
-  setInterval(draw,frameInterval);
-
-
   // "magic number" type crap that will be removed/implemented later
   var shops = new Array();
-  shops.push(new Shop(3,8,"red"));
-  shops.push(new Shop(4,8,"red"));
+  shops.push(new Actor(3,8,"red","shop.png"));
+  shops.push(new Actor(4,8,"red","shop.png"));
 
   loadMap(shops);
+
+  // Draw the screen
+  draw();
 
   updateStats(1,2,3,4);
 }

@@ -77,19 +77,6 @@ Actor.prototype.move = function (direction) {
 
 
 
-function Shop (x, y, color) {
-  this.x = x;
-  this.y = y;
-  this.color = color;
-}
-
-Shop.prototype.draw = function () {
-  context.fillStyle = this.color;
-  context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
-}
-
-
-
 // Player movement event handler
 function keyPressed (event) {
   var blah = (event.keyCode || event.charCode);
