@@ -8,6 +8,7 @@ function loadMap (shops) {
 
 // There are separate lists for scenery, other players and the user player, rendered in that order
 function draw () {
+  // Color it grey
   toDraw = new Array();
   // for all items, if they're in view, add to toDraw
   for (var i in scenery) {
@@ -17,6 +18,18 @@ function draw () {
   }
   // clear the canvas
   canvas.width = canvas.width;
+  // If any of the view is out of map bounds
+  context.fillStyle = "grey";
+  if (viewX < 0) context.fillRect(0,0,-viewX*TILE_SIZE,canvas.height);
+  if (maxX > mapWidth) {
+    var mapDiffX = maxX - mapWidth;
+    context.fillRect(canvas.width-(mapDiffX*TILE_SIZE),0,mapDiffX*TILE_SIZE,canvas.height);
+  }
+  if (viewY < 0) context.fillRect(0,0,canvas.width,-viewY*TILE_SIZE);
+  if (maxY > mapHeight) {
+    var mapDiffY = maxY - mapHeight;
+    context.fillRect(0,canvas.height-(mapDiffY*TILE_SIZE),canvas.width,mapDiffY*TILE_SIZE);
+  }
   // draw them
   for (var i in toDraw) {
     toDraw[i].draw();
@@ -27,9 +40,9 @@ function draw () {
 
 function inView (item) {
   return ( item.x > viewX
-        && item.x < (Player.x + halfWidth)
+        && item.x < maxX
         && item.y > viewY
-        && item.y < (Player.y + halfHeight)
+        && item.y < maxY
          );
 }
 

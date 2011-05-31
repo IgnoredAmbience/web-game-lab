@@ -1,10 +1,10 @@
 // CONSTANTS
 var GRAPHICS_MAX = 2;
 var TILE_SIZE = 16;
+var frameInterval = 200;
 
 // GLOBAL VARIABLES
 var graphicsLevel = 1;
-var frameInterval = 200;
 
 // For rendering
 var canvas;
@@ -18,6 +18,8 @@ var viewX; // The (x,y) of the top left corner of the view
 var viewY;
 var halfWidth; // Hacky, not entirely necessary
 var halfHeight;
+var maxX;
+var maxY;
 
 // For alternate keymappings
 var upKey;
@@ -47,7 +49,9 @@ function init () {
   halfWidth = (canvas.width/TILE_SIZE)/2;
   halfHeight = (canvas.height/TILE_SIZE)/2;
 
-  Player = new Actor (20,15,"black","sprites/player.png",1,2);
+  Player = new Actor (40,40,"black","sprites/player.png",1,2);
+  maxX = Player.x + halfWidth;
+  maxY = Player.y + halfHeight;
   viewX = Player.x - halfWidth;
   viewY = Player.y - halfHeight;
 
