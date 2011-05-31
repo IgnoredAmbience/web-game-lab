@@ -92,7 +92,8 @@ Shop.prototype.draw = function () {
 
 // Player movement event handler
 function keyPressed (event) {
-  switch (event.keyCode || event.charCode) {
+  var blah = (event.keyCode || event.charCode);
+  switch (blah) {
     case 37 : // Left
     case leftKey :
       Player.move("left"); break;
