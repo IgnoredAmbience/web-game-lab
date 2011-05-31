@@ -18,6 +18,7 @@ class Handler {
     }
 
     public function getUser() {
+      global $database;
       return $database->query('SELECT * FROM Player where name = \'joe\'')->
 	fetchObject("Player");
     }

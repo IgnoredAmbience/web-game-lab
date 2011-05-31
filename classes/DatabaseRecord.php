@@ -33,8 +33,8 @@ abstract class DatabaseRecord {
 
     if(function_exists('get_called_class')) {
       $table = get_called_class();
-    } elseif(!is_subclass_of($table, 'DatabaseRecord')) {
-      throw new Exception('Table name required');
+    } elseif(!@is_subclass_of($table, 'DatabaseRecord')) {
+      throw new Exception('Table name required: '.$table);
     }
 
     foreach(array_keys($array) as $field) {

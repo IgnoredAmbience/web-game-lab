@@ -1,4 +1,4 @@
-<?php
+x2<?php
 class LoginHandler extends Handler {
   function post() {
     global $database;

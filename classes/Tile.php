@@ -1,7 +1,7 @@
 <?php
 class Tile extends DatabaseRecord {
-  const pk = array('x','y');
-
-  public $x = 0;
-  public $y = 0;
+  public $x;
+  public $y;
+  public $id = -1;
+  public $mapId = -1;
 }

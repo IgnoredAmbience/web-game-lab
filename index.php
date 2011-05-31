@@ -10,10 +10,11 @@ function __autoload($name) {
 }
 
 $application = new Application(array(
-  array('/', 'MainHandler'),
-  array('login', 'LoginHandler'),
+  array('/',            'MainHandler'),
+  array('login',        'LoginHandler'),
   array('player/(\d+)', 'PlayerHandler'),
-  array('player/move',  'MoveHandler')
+  array('player/move',  'MoveHandler'),
+  array('transact',     'ShopHandler')
 ), $config['base_path']);
 
 $database = new PDO($config['db'], $config['db_u'], $config['db_p'],  array(PDO::ATTR_PERSISTENT => true));
