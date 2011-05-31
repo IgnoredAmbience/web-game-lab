@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS PlayerLoot CASCADE;
 DROP TABLE IF EXISTS Tile	CASCADE;
 DROP TABLE IF EXISTS Shop	CASCADE;
 DROP TABLE IF EXISTS ShopStock  CASCADE;
+DROP TABLE IF EXISTS Map        CASCADE;
 
 DROP TYPE  IF EXISTS ItemClass  CASCADE;
 
@@ -22,6 +23,7 @@ CREATE TABLE Player (
   id serial,
   x integer,
   y integer,
+  mapId integer references map(id),
   name varchar(20),
   playing boolean,
   health integer,
@@ -44,7 +46,8 @@ CREATE TABLE PlayerLoot (
 CREATE TABLE Tile (
   x integer,
   y integer,
-  PRIMARY KEY (x,y)
+  mapId integer references map(id),
+  PRIMARY KEY (x,y, mapid)
 );
 
 CREATE TABLE Shop (
@@ -61,4 +64,13 @@ CREATE TABLE ShopStock (
   count integer,
   PRIMARY KEY (id),
   UNIQUE (shopId, itemId)
+);
+
+CREATE TABLE Map (
+  id serial,
+  width integer,
+  height integer,
+  name varchar(50),
+  PRIMARY KEY (id),
+  UNIQUE (name)
 );
