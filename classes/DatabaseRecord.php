@@ -2,11 +2,15 @@
 abstract class DatabaseRecord {
   const pk = 'id';
 
-  public static function getById($id) {
+  public static function getById($id, $table = '') {
     global $database;
 
-    $table = get_called_class();
-    $pk = static::pk;
+    if(function_exists('get_called_class')) {
+      $table = get_called_class();
+    } elseif(!is_subclass_of($table, 'DatabaseRecord')) {
+      throw new Exception('Table name required');
+    }
+    $pk = constant($table . '::pk');
 
     $stmt = $database->prepare("SELECT * FROM $table WHERE $pk = ? LIMIT 1");
     $stmt->execute(array($id));
@@ -20,10 +24,18 @@ abstract class DatabaseRecord {
     endif;
   }
 
-  public static function getByField($field, $value) {
+  public static function getByField($field, $value, $table = '') {
     global $database;
 
-    $table = get_called_class();
+    if(function_exists('get_called_class')) {
+      $table = get_called_class();
+    } elseif(!is_subclass_of($table, 'DatabaseRecord')) {
+      throw new Exception('Table name required');
+    }
+
+    if(!property_exists($table, $field)) {
+      throw new Exception('Invalid field name');
+    }
 
     $stmt = $database->prepare("SELECT * FROM $table WHERE $field = ?");
     $stmt->execute(array($value));
@@ -34,10 +46,10 @@ abstract class DatabaseRecord {
   public function save() {
     // Returns number of rows inserted/updated
     global $database;
-    $table = get_called_class();
+    $table = $this->tableName();
     $fields = get_object_vars($this);
 
-    $pk = static::pk;
+    $pk = $this->pk();
     $pkv = $fields[$pk];
     unset($fields[$pk]);
 
@@ -69,7 +81,7 @@ abstract class DatabaseRecord {
     if(!$this->inDatabase()) return;
 
     $table = $this->tableName();
-    $field = static::pk;
+    $field = $this->pk();
 
     $result = $database->query("DELETE FROM $table WHERE $field = {$this->$field}");
     return $result->rowCount();
@@ -77,7 +89,17 @@ abstract class DatabaseRecord {
 
   private function inDatabase() {
     // Only checks for content of PK
-    $field = static::pk;
+    $field = $this->pk();
     return ($this->$field >= 0);
+  }
+
+  private function tableName() {
+    return get_class($this);
+  }
+
+  private function pk() {
+    // Assumes that PK is unique identifier
+    // that contains no information about the record
+    return constant(get_class($this) . '::pk');
   }
 }
