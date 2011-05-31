@@ -6,14 +6,16 @@ var TILE_SIZE = 16;
 var graphicsLevel = 1;
 var frameInterval = 100;
 
+// For rendering
 var canvas;
 var context;
 
 var Player;
-var scenery;
+var scenery; // Array of elements in the background scenery
 var mapHeight;
 var mapWidth;
 
+// For alternate keymappings
 var upKey;
 var downKey;
 var leftKey;
@@ -39,15 +41,15 @@ function init () {
   context = this.canvas.getContext("2d");
   context.font = "bold 12px sans-serif";
 
-  Player = new Actor (1,1,"black","player.png");
+  Player = new Actor (1,1,"black","sprites/player.png");
   document.addEventListener("keypress", keyPressed, true);
 
   setKeys();
 
   // "magic number" type crap that will be removed/implemented later
   var shops = new Array();
-  shops.push(new Actor(3,8,"red","shop.png"));
-  shops.push(new Actor(4,8,"red","shop.png"));
+  shops.push(new Actor(3,8,"red","sprites/shop.png"));
+  shops.push(new Actor(4,8,"red","sprites/shop.png"));
 
   loadMap(shops);
 
