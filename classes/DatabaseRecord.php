@@ -25,6 +25,10 @@ abstract class DatabaseRecord {
   }
 
   public static function getByField($field, $value, $table = '') {
+    return self::getByFields(array($field => $value), $table);
+  }
+
+  public static function getByFields($array, $table = '') {
     global $database;
 
     if(function_exists('get_called_class')) {
@@ -33,12 +37,17 @@ abstract class DatabaseRecord {
       throw new Exception('Table name required');
     }
 
-    if(!property_exists($table, $field)) {
-      throw new Exception('Invalid field name');
+    foreach(array_keys($array) as $field) {
+      if(!property_exists($table, $field)) {
+        throw new Exception('Invalid field name: '.$field);
+      }
+      $params[] = "$field = ?";
     }
+    $params = implode(' AND ', $params);
 
-    $stmt = $database->prepare("SELECT * FROM $table WHERE $field = ?");
-    $stmt->execute(array($value));
+
+    $stmt = $database->prepare("SELECT * FROM $table WHERE $params");
+    $stmt->execute(array_values($array));
 
     return $stmt->fetchAll(PDO::FETCH_CLASS, $table);
   }
