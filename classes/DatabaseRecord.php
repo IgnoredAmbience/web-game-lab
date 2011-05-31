@@ -2,13 +2,42 @@
 abstract class DatabaseRecord {
   const pk = 'id';
 
+  public static function getById($id) {
+    global $database;
+
+    $table = get_called_class();
+    $pk = static::pk;
+
+    $stmt = $database->prepare("SELECT * FROM $table WHERE $pk = ? LIMIT 1");
+    $stmt->execute(array($id));
+
+    $result = $stmt->fetchObject($table);
+
+    if(!$result):
+      throw new Exception('Not found');
+    else:
+      return $result;
+    endif;
+  }
+
+  public static function getByField($field, $value) {
+    global $database;
+
+    $table = get_called_class();
+
+    $stmt = $database->prepare("SELECT * FROM $table WHERE $field = ?");
+    $stmt->execute(array($value));
+
+    return $stmt->fetchAll(PDO::FETCH_CLASS, $table);
+  }
+
   public function save() {
     // Returns number of rows inserted/updated
     global $database;
-    $table = $this->tableName();
+    $table = get_called_class();
     $fields = get_object_vars($this);
 
-    $pk = $this->pk();
+    $pk = static::pk;
     $pkv = $fields[$pk];
     unset($fields[$pk]);
 
@@ -40,7 +69,7 @@ abstract class DatabaseRecord {
     if(!$this->inDatabase()) return;
 
     $table = $this->tableName();
-    $field = $this->pk();
+    $field = static::pk;
 
     $result = $database->query("DELETE FROM $table WHERE $field = {$this->$field}");
     return $result->rowCount();
@@ -48,17 +77,7 @@ abstract class DatabaseRecord {
 
   private function inDatabase() {
     // Only checks for content of PK
-    $field = $this->pk();
+    $field = static::pk;
     return ($this->$field >= 0);
-  }
-
-  private function tableName() {
-    return get_class($this);
-  }
-
-  private function pk() {
-    // Assumes that PK is unique identifier
-    // that contains no information about the record
-    return constant(get_class($this) . '::pk');
   }
 }
