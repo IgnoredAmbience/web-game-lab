@@ -19,8 +19,6 @@ class Player extends DatabaseRecord {
       $this->x += 1;
     elseif($moveType == "west"):
       $this->x -= 1;
-    else:
-      throw new Exception("unknown move type");
     endif;
   }
 
