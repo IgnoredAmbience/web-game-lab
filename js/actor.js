@@ -60,10 +60,8 @@ Actor.prototype.move = function (direction) {
   this.walkingX = this.x;
   this.walkingY = this.y;
 
-  var wib = "left";
-
   switch (direction) {
-    case wib :
+    case "left" :
       this.x--; break;
     case "right" :
       this.x++; break;

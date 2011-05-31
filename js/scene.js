@@ -6,7 +6,7 @@ function loadMap (shops) {
   mapWidth = 32;
 }
 
-// TODO: Weigh up the merits of having separate item lists for scenery, actors and the player, rendered in that order. Also, scenery can probably have some nice staticy stuff done to it, maybe turned into a temporary bitmap for rendering, that's just moved around the canvas?
+// There are separate lists for scenery, other players and the user player, rendered in that order
 function draw () {
   toDraw = new Array();
   // for all items, if they're in view, add to toDraw
