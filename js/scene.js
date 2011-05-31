@@ -4,6 +4,8 @@ function loadMap (shops) {
   // TODO: The following are magic numbers, change later
   mapHeight = 32;
   mapWidth = 32;
+  viewX = 0;
+  viewY = 0;
 }
 
 // There are separate lists for scenery, other players and the user player, rendered in that order
@@ -27,7 +29,12 @@ function draw () {
 
 // TODO: Make this actually return whether something is in view or not
 function inView (item) {
-  return true;
+  return ( item.x > viewX
+        && item.x < (viewX + canvas.width)
+        && item.y > viewY
+        && item.y < (viewY + canvas.height)
+         );
+  //return true;
 }
 
 // Changes the detail level

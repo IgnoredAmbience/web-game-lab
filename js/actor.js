@@ -101,6 +101,6 @@ function keyPressed (event) {
         Player.move("down"); break;
       default :
     }
-    setTimeout(function() {canMove = 1;}, 1000);
+    setTimeout(function() {canMove = 1;}, 500);
   }
 }
