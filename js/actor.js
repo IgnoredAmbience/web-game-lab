@@ -36,8 +36,8 @@ Actor.prototype.draw = function () {
         source_y = 0;
 
         var walkStep = this.walkingMax / this.walkingStage;
-        dest_x = Math.round(this.x + (this.walkingX - this.x)/walkStep);
-        dest_y = Math.round(this.y + (this.walkingY - this.y)/walkStep);
+        dest_x = this.x + (this.walkingX - this.x)/walkStep;
+        dest_y = this.y + (this.walkingY - this.y)/walkStep;
 
         if (this.walkingStage == 0) this.action = "stand";
         break;
