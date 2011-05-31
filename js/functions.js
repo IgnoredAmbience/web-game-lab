@@ -4,7 +4,7 @@ var TILE_SIZE = 16;
 
 // GLOBAL VARIABLES
 var graphicsLevel = 1;
-var frameInterval = 100;
+var frameInterval = 200;
 
 // For rendering
 var canvas;
@@ -41,20 +41,20 @@ function init () {
   context = this.canvas.getContext("2d");
   context.font = "bold 12px sans-serif";
 
-  Player = new Actor (1,1,"black","sprites/player.png");
+  Player = new Actor (1,1,"black","sprites/player.png",1,2);
   document.addEventListener("keypress", keyPressed, true);
 
   setKeys();
 
   // "magic number" type crap that will be removed/implemented later
   var shops = new Array();
-  shops.push(new Actor(3,8,"red","sprites/shop.png"));
-  shops.push(new Actor(4,8,"red","sprites/shop.png"));
+  shops.push(new Actor(3,8,"red","sprites/shop.png",2,0));
+  shops.push(new Actor(4,8,"red","sprites/shop.png",2,0));
 
   loadMap(shops);
 
   // Draw the screen
-  draw();
+  setInterval(draw,frameInterval);
 
   updateStats(1,2,3,4);
 }

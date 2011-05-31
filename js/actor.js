@@ -1,4 +1,5 @@
-function Actor (x, y, color, texture) {
+// stands = #sprites for standing, likewise for walks
+function Actor (x, y, color, texture, stands, walks) {
   this.x = x;
   this.y = y;
   this.color = color;
@@ -7,7 +8,10 @@ function Actor (x, y, color, texture) {
 
   this.action = "stand"; // Also "walk" and "fight", maybe "shop"
 
-  this.walkingMax = this.texture.width / TILE_SIZE;
+  this.standingMax = stands;
+  this.standingStage = 0;
+
+  this.walkingMax = walks;
   this.walkingStage = 0;
 }
 
@@ -17,17 +21,19 @@ Actor.prototype.draw = function () {
     context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
   }
   else {
-    // Row 0 of the texture image is walking animation
+    // Row 0 of the texture image is standing
+    // Row 1 of the texture image is walking animation
     var source_x;
     var source_y;
     var dest_x;
     var dest_y;
     switch (this.action) {
       case "stand" :
-        source_x = 0;
+        source_x = this.standingStage*TILE_SIZE;
         source_y = 0;
         dest_x = this.x;
         dest_y = this.y;
+        this.standingStage = (this.standingStage + 1) % this.standingMax;
         break;
       case "walk" :
         this.walkingStage = (this.walkingStage + 1) % this.walkingMax;
