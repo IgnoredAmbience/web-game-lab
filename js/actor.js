@@ -18,7 +18,7 @@ function Actor (x, y, color, texture, stands, walks) {
 Actor.prototype.draw = function () {
   if (graphicsLevel == 0) {
     context.fillStyle = this.color;
-    context.fillRect(this.x*TILE_SIZE,this.y*TILE_SIZE,TILE_SIZE,TILE_SIZE);
+    context.fillRect((this.x-viewX)*TILE_SIZE,(this.y-viewY)*TILE_SIZE,TILE_SIZE,TILE_SIZE);
   }
   else {
     // Row 0 of the texture image is standing
@@ -50,7 +50,7 @@ Actor.prototype.draw = function () {
     }
     context.drawImage(this.texture,
                       source_x,source_y, TILE_SIZE,TILE_SIZE,
-                      dest_x*TILE_SIZE,dest_y*TILE_SIZE, TILE_SIZE,TILE_SIZE);
+                      (dest_x-viewX)*TILE_SIZE,(dest_y-viewY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
   }
 }
 
@@ -102,5 +102,7 @@ function keyPressed (event) {
       default :
     }
     setTimeout(function() {canMove = 1;}, 500);
+    viewX = Player.x - canvas.width/(2*TILE_SIZE);
+    viewY = Player.y - canvas.height/(2*TILE_SIZE);
   }
 }

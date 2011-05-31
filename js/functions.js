@@ -43,7 +43,10 @@ function init () {
   context = this.canvas.getContext("2d");
   context.font = "bold 12px sans-serif";
 
-  Player = new Actor (1,1,"black","sprites/player.png",1,2);
+  Player = new Actor (20,15,"black","sprites/player.png",1,2);
+  viewX = Player.x - canvas.width/(2*TILE_SIZE);
+  viewY = Player.y - canvas.height/(2*TILE_SIZE);
+
   document.addEventListener("keypress", keyPressed, true);
 
   setKeys();
