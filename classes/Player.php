@@ -13,13 +13,13 @@ class Player extends DatabaseRecord {
   public function move($moveType) { //N S E W or teleport
     //TODO add validation for tile edges; wrap or clip?
     if($moveType == "north"):
-      $this->y += 1;
+      $this->y = min($this->y + 1, $this->$map->height);
     elseif($moveType == "south"):
-      $this->y -= 1;
+      $this->y = max($this->y - 1, 0);
     elseif($moveType == "east"):
-      $this->x += 1;
+      $this->x = min($this->x + 1, $this->$map->width);
     elseif($moveType == "west"):
-      $this->x -= 1;
+      $this->x = max($this->x - 1, 0);
     endif;
   }
 
