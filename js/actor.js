@@ -102,7 +102,7 @@ function keyPressed (event) {
       default :
     }
     setTimeout(function() {canMove = 1;}, 500);
-    viewX = Player.x - canvas.width/(2*TILE_SIZE);
-    viewY = Player.y - canvas.height/(2*TILE_SIZE);
+    viewX = Player.x - halfWidth;
+    viewY = Player.y - halfHeight;
   }
 }

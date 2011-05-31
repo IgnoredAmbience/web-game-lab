@@ -16,6 +16,8 @@ var mapHeight;
 var mapWidth;
 var viewX; // The (x,y) of the top left corner of the view
 var viewY;
+var halfWidth; // Hacky, not entirely necessary
+var halfHeight;
 
 // For alternate keymappings
 var upKey;
@@ -42,10 +44,12 @@ function init () {
   canvas = document.getElementById("canvas");
   context = this.canvas.getContext("2d");
   context.font = "bold 12px sans-serif";
+  halfWidth = (canvas.width/TILE_SIZE)/2;
+  halfHeight = (canvas.height/TILE_SIZE)/2;
 
   Player = new Actor (20,15,"black","sprites/player.png",1,2);
-  viewX = Player.x - canvas.width/(2*TILE_SIZE);
-  viewY = Player.y - canvas.height/(2*TILE_SIZE);
+  viewX = Player.x - halfWidth;
+  viewY = Player.y - halfHeight;
 
   document.addEventListener("keypress", keyPressed, true);
 

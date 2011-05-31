@@ -26,10 +26,10 @@ function draw () {
 }
 
 function inView (item) {
-  return ( item.x > (Player.x - 16)//canvas.width/2)
-        && item.x < (Player.x + 16)//canvas.width/2)
-        && item.y > (Player.y - 16)//canvas.height/2)
-        && item.y < (Player.y + 16)//canvas.height/2)
+  return ( item.x > viewX
+        && item.x < (Player.x + halfWidth)
+        && item.y > viewY
+        && item.y < (Player.y + halfHeight)
          );
 }
 
