@@ -8,6 +8,7 @@ class Player extends DatabaseRecord {
   public $wealth;
   public $stealth = -1;
   public $shelf;
+  public $map;
 
   public function move($moveType) { //N S E W or teleport
     //TODO add validation for tile edges; wrap or clip?
