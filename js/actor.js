@@ -82,23 +82,27 @@ Actor.prototype.move = function (direction) {
 }
 
 
-
+var canMove = 1;
 // Player movement event handler
 function keyPressed (event) {
-  var blah = (event.keyCode || event.charCode);
-  switch (blah) {
-    case 37 : // Left
-    case leftKey :
-      Player.move("left"); break;
-    case 38 : // Up
-    case upKey :
-      Player.move("up"); break;
-    case 39 : // Right
-    case rightKey :
-      Player.move("right"); break;
-    case 40 : // Down
-    case downKey :
-      Player.move("down"); break;
-    default :
+  if (canMove) {
+    canMove = 0;
+    var blah = (event.keyCode || event.charCode);
+    switch (blah) {
+      case 37 : // Left
+      case leftKey :
+        Player.move("left"); break;
+      case 38 : // Up
+      case upKey :
+        Player.move("up"); break;
+      case 39 : // Right
+      case rightKey :
+        Player.move("right"); break;
+      case 40 : // Down
+      case downKey :
+        Player.move("down"); break;
+      default :
+    }
+    setTimeout(function() {canMove = 1;}, 1000);
   }
 }
