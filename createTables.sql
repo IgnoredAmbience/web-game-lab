@@ -47,14 +47,14 @@ CREATE TABLE Tile (
   x integer,
   y integer,
   mapId integer references map(id),
-  PRIMARY KEY (x,y, mapid)
+  PRIMARY KEY (x,y, mapId)
 );
 
 CREATE TABLE Shop (
   id serial,
   name varchar(20),
   PRIMARY KEY (id),
-  UNIQUE (x,y) -- key contraint not inherited from tile
+  UNIQUE (x,y, mapId) -- key contraint not inherited from tile
 ) INHERITS (Tile);
 
 CREATE TABLE ShopStock (
