@@ -8,16 +8,18 @@ class Player extends DatabaseRecord {
   public $wealth;
   public $stealth = -1;
   public $shelf;
-  public $map;
+  public $mapId;
 
   public function move($moveType) { //N S E W or teleport
     //TODO add validation for tile edges; wrap or clip?
+    $currentMap = Map::getById(mapId);
+
     if($moveType == "north"):
-      $this->y = min($this->y + 1, $this->$map->height);
+      $this->y = min($this->y + 1, $currentMap->height);
     elseif($moveType == "south"):
       $this->y = max($this->y - 1, 0);
     elseif($moveType == "east"):
-      $this->x = min($this->x + 1, $this->$map->width);
+      $this->x = min($this->x + 1, $currentMap->width);
     elseif($moveType == "west"):
       $this->x = max($this->x - 1, 0);
     endif;
@@ -37,6 +39,10 @@ class Player extends DatabaseRecord {
 
   public function sellItem() {
     throw new Exception("Not yet implemented");
+  }
+
+  public function playerAsJSON() {
+    return json_encode(get_object_vars());
   }
 
 }

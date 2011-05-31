@@ -23,6 +23,7 @@ CREATE TABLE Player (
   id serial,
   x integer,
   y integer,
+  mapId integer references map(id),
   name varchar(20),
   playing boolean,
   health integer,
@@ -45,7 +46,8 @@ CREATE TABLE PlayerLoot (
 CREATE TABLE Tile (
   x integer,
   y integer,
-  PRIMARY KEY (x,y)
+  mapId integer references map(id),
+  PRIMARY KEY (x,y, mapid)
 );
 
 CREATE TABLE Shop (
