@@ -27,10 +27,10 @@ function updateStats (w,h,st,sh) {
 }
 
 function setKeys () {
-  upKey = document.getElementById("upKeyInput").charCodeAt(0);
-  downKey = document.getElementById("downKeyInput").charCodeAt(0);
-  leftKey = document.getElementById("leftKeyInput").charCodeAt(0);
-  rightKey = document.getElementById("rightKeyInput").charCodeAt(0);
+  upKey = document.getElementById("upKeyInput").value.charCodeAt(0);
+  downKey = document.getElementById("downKeyInput").value.charCodeAt(0);
+  leftKey = document.getElementById("leftKeyInput").value.charCodeAt(0);
+  rightKey = document.getElementById("rightKeyInput").value.charCodeAt(0);
 }
 
 function init () {
