@@ -1,6 +1,7 @@
 #!/usr/bin/php
 <?php
 require('config.php');
+include('debug.php');
 
 function __autoload($name) {
   $file = "classes/$name.php";
