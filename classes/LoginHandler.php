@@ -1,22 +1,24 @@
-x2<?php
+<?php
 class LoginHandler extends Handler {
   function post() {
     global $database;
     $name = trim($_POST['name']);
     if(!$name) $this->error();
 
-    $stmt = $database->prepare('SELECT * FROM Player where name = ?');
-    $stmt->execute(array($name));
+    $p = Player::getByField('name', $name, 'Player');
 
-    if(!$stmt->rowCount()) {
-      $player = new Player();
-      $player->name = $name;
-      $player->save();
+    if(count($p)) {
+      $p = $p[0];
     } else {
-      $player = $stmt->fetchObject('Player');
+      $p = new Player();
+      $p->name = $name;
     }
 
-    $player->login();
+    $p->login();
+    echo '<pre>';
+    print_r($p);
+    print_r($_SESSION);
+    echo '</pre>';
   }
 
   function get() {
@@ -26,5 +28,8 @@ class LoginHandler extends Handler {
       <input type="submit" name="submit">
     </form>
     <?php
+    $p = $this->getUser();
+    echo $p ? $p->name.' is currently playing in this session.' : 'Fresh session';
+
   }
 }

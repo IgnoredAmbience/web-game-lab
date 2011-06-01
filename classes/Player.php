@@ -26,7 +26,9 @@ class Player extends DatabaseRecord {
   }
 
   public function login() {
-    throw new Exception("Not yet implemented");
+    $this->playing = true;
+    $this->save();
+    $_SESSION['userId'] = $this->id;
   }
 
   public function logout() {

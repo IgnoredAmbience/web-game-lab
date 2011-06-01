@@ -73,7 +73,7 @@ abstract class DatabaseRecord {
       }
       $stmt->execute();
     } else {
-      $stmt = $database->prepare("UPDATE $table SET $cols = $vals WHERE \"$pkv\" = ?");
+      $stmt = $database->prepare("UPDATE $table SET $cols = $vals WHERE \"$pk\" = ?");
       foreach($fields as $v) {
         $stmt->bindValue($i++, $v);
       }
