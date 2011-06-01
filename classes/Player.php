@@ -12,12 +12,12 @@ class Player extends DatabaseRecord {
 
   public function move($moveType) { //N S E W or teleport
     //TODO add validation for tile edges; wrap or clip?
-    $currentMap = Map::getById(mapId);
+    $currentMap = Map::getById($this->mapId, "Map");
 
     if($moveType == "north"):
-      $this->y = min($this->y + 1, $currentMap->height);
-    elseif($moveType == "south"):
       $this->y = max($this->y - 1, 0);
+    elseif($moveType == "south"):
+      $this->y = min($this->y + 1, $currentMap->height);
     elseif($moveType == "east"):
       $this->x = min($this->x + 1, $currentMap->width);
     elseif($moveType == "west"):
