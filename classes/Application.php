@@ -15,7 +15,7 @@ class Application {
 
     public function serve() {
         $request_method = strtolower($_SERVER['REQUEST_METHOD']);
-        $path_info = preg_replace("|^{$this->_path_prefix}|", '',  $_SERVER['REQUEST_URI']);
+        $path_info = preg_replace("|^{$this->_path_prefix}|", '',  $_SERVER['SCRIPT_URL']);
         $path_info = $path_info ? $path_info : '/';
         $discovered_handler = NULL;
         $regex_matches = array();
