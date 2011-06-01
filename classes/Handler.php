@@ -25,7 +25,7 @@ class Handler {
         } else {
           return $p;
         }
-      } catch (Exception e) {
+      } catch (Exception $e) {
         return NULL;
       }
     } else {
