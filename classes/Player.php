@@ -28,11 +28,11 @@ class Player extends DatabaseRecord {
   public function login() {
     $this->playing = true;
     $this->save();
-    $_SESSION['userId'] = $this->id;
   }
 
   public function logout() {
-    throw new Exception("Not yet implemented");
+    $this->playing = 0;
+    $this->save();
   }
 
   public function buyItem() {

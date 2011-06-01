@@ -76,7 +76,7 @@ abstract class DatabaseRecord {
 
       $stmt->fetch(PDO::FETCH_INTO);
     } else {
-      $stmt = $database->prepare("UPDATE $table SET $cols = $vals WHERE \"$pk\" = ?");
+      $stmt = $database->prepare("UPDATE $table SET ($cols) = $vals WHERE \"$pk\" = ?");
       foreach($fields as $v) {
         $stmt->bindValue($i++, $v);
       }

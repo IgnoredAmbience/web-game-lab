@@ -13,6 +13,7 @@ function __autoload($name) {
 $application = new Application(array(
   array('/',            'MainHandler'),
   array('login',        'LoginHandler'),
+  array('logout',       'LogoutHandler'),
   array('player/(\d+)', 'PlayerHandler'),
   array('player/move',  'MoveHandler'),
   array('transact',     'ShopHandler')

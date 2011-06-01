@@ -14,11 +14,15 @@ class LoginHandler extends Handler {
       $p->name = $name;
     }
 
+    $current_player = $this->getUser();
+    if($current_player && $p != $current_player) {
+      $current_player->logout();
+    }
+
     $p->login();
-    echo '<pre>';
-    print_r($p);
-    print_r($_SESSION);
-    echo '</pre>';
+    $_SESSION['userId'] = $p->id;
+
+    $this->get();
   }
 
   function get() {
@@ -29,7 +33,7 @@ class LoginHandler extends Handler {
     </form>
     <?php
     $p = $this->getUser();
-    echo $p ? $p->name.' is currently playing in this session.' : 'Fresh session';
+    echo $p ? $p->name.' is currently playing in this session. <a href="logout">Logout</a>' : 'Fresh session';
 
   }
 }
