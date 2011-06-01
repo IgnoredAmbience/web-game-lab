@@ -31,6 +31,6 @@ class MoveHandler extends Handler {
     }
 
     echo $_POST['moveButton'];
-    echo array($user->x,$user->y);
+    echo "(",$user->x,",",$user->y,")";
   }
 }
