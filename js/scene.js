@@ -36,11 +36,6 @@ function inView (item) {
          );
 }
 
-// Changes the detail level
-function changeGraphics () {
-  graphicsLevel = (graphicsLevel + 1) % GRAPHICS_MAX;
-}
-
 // Colors the "not map" bits of the view
 function colorBoundaries () {
   context.fillStyle = "grey";

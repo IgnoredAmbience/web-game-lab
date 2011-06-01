@@ -27,20 +27,6 @@ var downKey;
 var leftKey;
 var rightKey;
 
-function updateStats (w,h,st,sh) {
-  document.getElementById("wealthDisplay").innerHTML = "Wealth: " + w;
-  document.getElementById("healthDisplay").innerHTML = "Health: " + h;
-  document.getElementById("stealthDisplay").innerHTML = "Stealth: " + st;
-  document.getElementById("shelfDisplay").innerHTML = "Shelf: " + sh;
-}
-
-function setKeys () {
-  upKey = document.getElementById("upKeyInput").value.charCodeAt(0);
-  downKey = document.getElementById("downKeyInput").value.charCodeAt(0);
-  leftKey = document.getElementById("leftKeyInput").value.charCodeAt(0);
-  rightKey = document.getElementById("rightKeyInput").value.charCodeAt(0);
-}
-
 function init () {
   // Set up the drawing environment
   canvas = document.getElementById("canvas");
@@ -57,7 +43,7 @@ function init () {
 
   document.addEventListener("keypress", keyPressed, true);
 
-  setKeys();
+  //setKeys();
 
   // "magic number" type crap that will be removed/implemented later
   var shops = new Array();
@@ -70,4 +56,44 @@ function init () {
   setInterval(draw,frameInterval);
 
   updateStats(1,2,3,4);
+}
+
+function updateStats (w,h,st,sh) {
+  document.getElementById("wealthDisplay").innerHTML = "Wealth: " + w;
+  document.getElementById("healthDisplay").innerHTML = "Health: " + h;
+  document.getElementById("stealthDisplay").innerHTML = "Stealth: " + st;
+  document.getElementById("shelfDisplay").innerHTML = "Shelf: " + sh;
+}
+
+// Toggles whether the settings panel is shown or not
+var settingsShown = 0;
+function toggleSettings() {
+  var panel = document.getElementById("settingsPanel");
+  if (settingsShown) {
+    panel.innerHTML = "";
+  }
+  else {
+    panel.innerHTML = '\
+      <button onclick="changeGraphics()">Graphics</button>\
+      <input type="text" id="upKeyInput" value="w">Up</input>\
+      <input type="text" id="downKeyInput" value="a">Down</input>\
+      <input type="text" id="leftKeyInput" value="s">Left</input>\
+      <input type="text" id="rightKeyInput" value="d">Right</input>\
+      <button onclick="setKeys()">Update Keybindings</button>\
+    ';
+  }
+  settingsShown = !settingsShown;
+}
+
+// Rebinds the movement keys
+function setKeys () {
+  upKey = document.getElementById("upKeyInput").value.charCodeAt(0);
+  downKey = document.getElementById("downKeyInput").value.charCodeAt(0);
+  leftKey = document.getElementById("leftKeyInput").value.charCodeAt(0);
+  rightKey = document.getElementById("rightKeyInput").value.charCodeAt(0);
+}
+
+// Changes the detail level
+function changeGraphics () {
+  graphicsLevel = (graphicsLevel + 1) % GRAPHICS_MAX;
 }
