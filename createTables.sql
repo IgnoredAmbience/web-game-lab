@@ -30,15 +30,15 @@ CREATE TABLE Map (
 
 CREATE TABLE Player (
   id serial,
-  x integer,
-  y integer,
+  x integer DEFAULT 0,
+  y integer DEFAULT 0,
   "mapId" integer REFERENCES Map(id),
   name varchar(20),
   playing boolean,
-  health integer,
-  wealth integer,
-  stealth integer, -- like threat?
-  shelf integer REFERENCES Item(id),
+  health integer  DEFAULT 10,
+  wealth integer  DEFAULT 0,
+  stealth integer DEFAULT 0, -- like threat?
+  shelf integer   DEFAULT 1 REFERENCES Item(id),
   PRIMARY KEY (id),
   UNIQUE (name)
 );
@@ -47,7 +47,7 @@ CREATE TABLE PlayerLoot (
   id serial,
   "playerId" integer REFERENCES Player(id),
   "itemId"   integer REFERENCES Item(id),
-  count integer,
+  count integer DEFAULT 1,
   PRIMARY KEY (id),
   UNIQUE ("playerId", "itemId")
 );
@@ -72,7 +72,7 @@ CREATE TABLE ShopStock (
   id serial,
   "shopId" integer REFERENCES Shop(id),
   "itemId" integer REFERENCES Item(id),
-  count integer,
+  count integer DEFAULT 1,
   PRIMARY KEY (id),
   UNIQUE ("shopId", "itemId")
 );
