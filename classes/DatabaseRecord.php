@@ -12,7 +12,7 @@ abstract class DatabaseRecord {
     }
     $pk = constant($table . '::pk');
 
-    $stmt = $database->prepare("SELECT * FROM $table WHERE $pk = ? LIMIT 1");
+    $stmt = $database->prepare("SELECT * FROM $table WHERE \"$pk\" = ? LIMIT 1");
     $stmt->execute(array($id));
 
     $result = $stmt->fetchObject($table);
@@ -41,7 +41,7 @@ abstract class DatabaseRecord {
       if(!property_exists($table, $field)) {
         throw new Exception('Invalid field name: '.$field);
       }
-      $params[] = "$field = ?";
+      $params[] = "\"$field\" = ?";
     }
     $params = implode(' AND ', $params);
 
@@ -62,18 +62,21 @@ abstract class DatabaseRecord {
     $pkv = $fields[$pk];
     unset($fields[$pk]);
 
-    $cols = '(' . implode(array_keys($fields), ',') . ')';
+    $cols = '"' . implode(array_keys($fields), '","') . '"';
     $vals = '(' . implode(array_fill(0, count($fields), ' ? '), ',') . ')';
 
     $i = 1;
     if(!$this->inDatabase()) {
-      $stmt = $database->prepare("INSERT INTO $table $cols VALUES $vals");
+      $stmt = $database->prepare("INSERT INTO $table ($cols) VALUES $vals RETURNING \"$pk\",$cols");
       foreach($fields as $v) {
         $stmt->bindValue($i++, $v);
       }
+      $stmt->setFetchMode(PDO::FETCH_INTO, $this);
       $stmt->execute();
+
+      $stmt->fetch(PDO::FETCH_INTO);
     } else {
-      $stmt = $database->prepare("UPDATE $table SET $cols = $vals WHERE $pkv = ?");
+      $stmt = $database->prepare("UPDATE $table SET ($cols) = $vals WHERE \"$pk\" = ?");
       foreach($fields as $v) {
         $stmt->bindValue($i++, $v);
       }
@@ -92,7 +95,7 @@ abstract class DatabaseRecord {
     $table = $this->tableName();
     $field = $this->pk();
 
-    $result = $database->query("DELETE FROM $table WHERE $field = {$this->$field}");
+    $result = $database->query("DELETE FROM $table WHERE \"$field\" = {$this->$field}");
     return $result->rowCount();
   }
 

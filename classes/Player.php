@@ -1,23 +1,23 @@
 <?php
 class Player extends DatabaseRecord {
   public $id = -1;
-  public $x;
-  public $y;
+  public $x = 0;
+  public $y = 0;
   public $name;
-  public $health;
-  public $wealth;
-  public $stealth = -1;
-  public $shelf;
-  public $mapId;
+  public $health = 10;
+  public $wealth = 0;
+  public $stealth = 0;
+  public $shelf = 1;
+  public $mapId = 1;
 
   public function move($moveType) { //N S E W or teleport
     //TODO add validation for tile edges; wrap or clip?
-    $currentMap = Map::getById(mapId);
+    $currentMap = Map::getById($this->mapId, "Map");
 
     if($moveType == "north"):
-      $this->y = min($this->y + 1, $currentMap->height);
-    elseif($moveType == "south"):
       $this->y = max($this->y - 1, 0);
+    elseif($moveType == "south"):
+      $this->y = min($this->y + 1, $currentMap->height);
     elseif($moveType == "east"):
       $this->x = min($this->x + 1, $currentMap->width);
     elseif($moveType == "west"):
@@ -26,11 +26,13 @@ class Player extends DatabaseRecord {
   }
 
   public function login() {
-    throw new Exception("Not yet implemented");
+    $this->playing = true;
+    $this->save();
   }
 
   public function logout() {
-    throw new Exception("Not yet implemented");
+    $this->playing = 0;
+    $this->save();
   }
 
   public function buyItem() {

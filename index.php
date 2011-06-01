@@ -1,6 +1,7 @@
 #!/usr/bin/php
 <?php
 require('config.php');
+include('debug.php');
 
 function __autoload($name) {
   $file = "classes/$name.php";
@@ -10,14 +11,16 @@ function __autoload($name) {
 }
 
 $application = new Application(array(
-  array('/', 'MainHandler'),
-  array('login', 'LoginHandler'),
+  array('/',            'MainHandler'),
+  array('login',        'LoginHandler'),
+  array('logout',       'LogoutHandler'),
   array('player/(\d+)', 'PlayerHandler'),
-  array('poll', 'PushHandler')
-  array('player/move',  'MoveHandler')
+  array('player/move',  'MoveHandler'),
+  array('transact',     'ShopHandler')
 ), $config['base_path']);
 
 $database = new PDO($config['db'], $config['db_u'], $config['db_p'],  array(PDO::ATTR_PERSISTENT => true));
 $database->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 
+session_start();
 $application->serve();
