@@ -41,6 +41,7 @@ Actor.prototype.draw = function () {
         source_x = this.walkingStage*TILE_SIZE;
         source_y = 0;
 
+        // Calculate how far between the start and destination we should draw
         var walkStep = this.walkingMax / this.walkingStage;
         dest_x = this.x + (this.walkingX - this.x)/walkStep;
         dest_y = this.y + (this.walkingY - this.y)/walkStep;
@@ -70,7 +71,7 @@ Actor.prototype.move = function (direction) {
     case "down" :
       this.y++; break;
   }
-
+  // Check for map boundaries
   if (this.x < 0) this.x = 0;
   if (this.x > mapWidth-1) this.x = mapWidth-1;
   if (this.y < 0) this.y = 0;
@@ -101,7 +102,9 @@ function keyPressed (event) {
         Player.move("down"); break;
       default :
     }
+    // To prevent movement flooding
     setTimeout(function() {canMove = 1;}, 500);
+    // Update the view boundaries
     maxX = Player.x + halfWidth;
     maxY = Player.y + halfHeight;
     viewX = Player.x - halfWidth;

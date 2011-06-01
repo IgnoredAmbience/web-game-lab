@@ -35,6 +35,7 @@ function init () {
   halfWidth = (canvas.width/TILE_SIZE)/2;
   halfHeight = (canvas.height/TILE_SIZE)/2;
 
+  // Set up the Player Actor and view boundaries based on the Player
   Player = new Actor (10,10,"black","sprites/player.png",1,2);
   maxX = Player.x + halfWidth;
   maxY = Player.y + halfHeight;
