@@ -1,5 +1,5 @@
 <?php
-class ShopStock extends Shop {
+class ShopStock extends FiniteResourceRecord {
   public $id     = -1;
   public $shopId = -1;
   public $itemId = -1;
