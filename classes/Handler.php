@@ -19,7 +19,8 @@ class Handler {
 
     public function getUser() {
       global $database;
-      return $database->query('SELECT * FROM Player where name = \'joe\'')->
+      trigger_error("Username currently hardcoded",E_USER_WARNING);
+      return $database->query('SELECT * FROM Player where "name" = \'Alpha\'')->
 	fetchObject("Player");
     }
 }
