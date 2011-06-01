@@ -1,6 +1,10 @@
-// For now, all the scenery contains is a list of shops. Eventually, other arguments may be passed in, which will need to be added to this.scenery by looping over :/
-function loadMap (shops) {
-  scenery = shops;
+// Will pull from server and load
+function loadMap () {
+  // "magic number" type crap that will be removed/implemented later
+  scenery = new Array();
+  scenery.push(new Actor(3,8,"red","sprites/shop.png",2,0));
+  scenery.push(new Actor(4,8,"red","sprites/shop.png",2,0));
+
   // TODO: The following are magic numbers, change later
   mapHeight = 16;
   mapWidth = 16;
@@ -49,4 +53,12 @@ function colorBoundaries () {
     var mapDiffY = maxY - mapHeight;
     context.fillRect(0,canvas.height-(mapDiffY*TILE_SIZE),canvas.width,mapDiffY*TILE_SIZE);
   }
+}
+
+// Sets the view limits based on the player
+function setView () {
+  maxX = Player.x + halfWidth;
+  maxY = Player.y + halfHeight;
+  viewX = Player.x - halfWidth;
+  viewY = Player.y - halfHeight;
 }

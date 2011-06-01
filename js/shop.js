@@ -6,6 +6,7 @@ function displayShop() {
 function listItems (jsonItems) {
   var itemList = JSON.parse(jsonItems);
   var display = document.getElementById("shopDisplay");
+  display.innerHTML = "";
   for (var i in itemList) {
     // create list of descriptions and buy buttons
     var item = itemList[i];

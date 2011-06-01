@@ -105,9 +105,6 @@ function keyPressed (event) {
     // To prevent movement flooding
     setTimeout(function() {canMove = 1;}, 500);
     // Update the view boundaries
-    maxX = Player.x + halfWidth;
-    maxY = Player.y + halfHeight;
-    viewX = Player.x - halfWidth;
-    viewY = Player.y - halfHeight;
+    setView();
   }
 }

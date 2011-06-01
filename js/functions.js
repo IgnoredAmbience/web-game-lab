@@ -35,23 +35,15 @@ function init () {
   halfWidth = (canvas.width/TILE_SIZE)/2;
   halfHeight = (canvas.height/TILE_SIZE)/2;
 
+  loadMap();
+
   // Set up the Player Actor and view boundaries based on the Player
   Player = new Actor (10,10,"black","sprites/player.png",1,2);
-  maxX = Player.x + halfWidth;
-  maxY = Player.y + halfHeight;
-  viewX = Player.x - halfWidth;
-  viewY = Player.y - halfHeight;
+  setView();
 
   document.addEventListener("keypress", keyPressed, true);
 
   setKeys();
-
-  // "magic number" type crap that will be removed/implemented later
-  var shops = new Array();
-  shops.push(new Actor(3,8,"red","sprites/shop.png",2,0));
-  shops.push(new Actor(4,8,"red","sprites/shop.png",2,0));
-
-  loadMap(shops);
 
   // Draw the screen
   setInterval(draw,frameInterval);
