@@ -15,13 +15,13 @@ class ShopHandler extends Handler {
 
     // TODO, ON SUBMIT, 404s on "TRANSACT?"
 
-    $user = getUser();
+    $user = $this->getUser();
     $itemId = json_decode($_POST['item']);
     $action = $_POST['action'];
 
     //Look up the item being bought
     if(!$shop = Shop::getByFields(array("x"=>$user->x, "y"=>$user->y,
-					    "mapId" => $user->mapId))) {
+					"mapId" => $user->mapId),"ShopStock")) {
       return;
     }
 
@@ -30,7 +30,7 @@ class ShopHandler extends Handler {
     }
 
     $shopStock = ShopStock::getByFields(array("shopId"=>$shop->id,
-					      "itemId"=>$item->id));
+					      "itemId"=>$item->id),"ShopStock");
 
     if ($action == "buy") {
 
@@ -48,7 +48,7 @@ class ShopHandler extends Handler {
       $shopStock[0]->save();
 
       if(!$loot = PlayerLoot::getByFields(array("playerId"=>$user->id,
-						"itemId"=>$item->id))) {
+						"itemId"=>$item->id), "PlayerLoot")) {
 	$loot[0] = new PlayerLoot();
 	$loot[0]->count    = 1;
 	$loot[0]->playerId = $user->id;
@@ -59,7 +59,7 @@ class ShopHandler extends Handler {
     }
     elseif($action == "sell") {
       if(!$loot[0] = PlayerLoot::getByFields(array("playerId"=>$user->id,
-						"itemId"=>$item->id))) {
+						   "itemId"=>$item->id), "PlayerLoot")) {
 	return; //player doesn't have what they're trying to sell
       }
 
@@ -88,7 +88,7 @@ class ShopHandler extends Handler {
     $user = $this->getUser();
     
 ?>
-    <form action="" method="foo">
+    <form action="" method="post">
        <input type="submit" /> 
     </form>
 <?php
