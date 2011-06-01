@@ -18,11 +18,15 @@ class Handler {
   public function getUser() {
     global $database;
     if(isset($_SESSION['userId'])) {
-      $p = Player::getById($_SESSION['userId'], 'Player');
-      if($p->id <= 0) {
+      try {
+        $p = Player::getById($_SESSION['userId'], 'Player');
+        if($p->id <= 0) {
+          return NULL;
+        } else {
+          return $p;
+        }
+      } catch (Exception e) {
         return NULL;
-      } else {
-        return $p;
       }
     } else {
       return NULL;
