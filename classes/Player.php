@@ -1,14 +1,14 @@
 <?php
 class Player extends DatabaseRecord {
   public $id = -1;
-  public $x;
-  public $y;
+  public $x = 0;
+  public $y = 0;
   public $name;
-  public $health;
-  public $wealth;
-  public $stealth = -1;
-  public $shelf;
-  public $mapId;
+  public $health = 10;
+  public $wealth = 0;
+  public $stealth = 0;
+  public $shelf = 1;
+  public $mapId = 1;
 
   public function move($moveType) { //N S E W or teleport
     //TODO add validation for tile edges; wrap or clip?

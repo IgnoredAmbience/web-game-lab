@@ -62,16 +62,19 @@ abstract class DatabaseRecord {
     $pkv = $fields[$pk];
     unset($fields[$pk]);
 
-    $cols = '("' . implode(array_keys($fields), '","') . '")';
+    $cols = '"' . implode(array_keys($fields), '","') . '"';
     $vals = '(' . implode(array_fill(0, count($fields), ' ? '), ',') . ')';
 
     $i = 1;
     if(!$this->inDatabase()) {
-      $stmt = $database->prepare("INSERT INTO $table $cols VALUES $vals");
+      $stmt = $database->prepare("INSERT INTO $table ($cols) VALUES $vals RETURNING \"$pk\",$cols");
       foreach($fields as $v) {
         $stmt->bindValue($i++, $v);
       }
+      $stmt->setFetchMode(PDO::FETCH_INTO, $this);
       $stmt->execute();
+
+      $stmt->fetch(PDO::FETCH_INTO);
     } else {
       $stmt = $database->prepare("UPDATE $table SET $cols = $vals WHERE \"$pk\" = ?");
       foreach($fields as $v) {
