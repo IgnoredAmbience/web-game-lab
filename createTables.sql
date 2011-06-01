@@ -1,8 +1,9 @@
-DROP TABLE IF EXISTS Item	CASCADE;
-DROP TABLE IF EXISTS Player	CASCADE;
+DROP TABLE IF EXISTS Item       CASCADE;
+DROP TABLE IF EXISTS Map        CASCADE;
+DROP TABLE IF EXISTS Player     CASCADE;
 DROP TABLE IF EXISTS PlayerLoot CASCADE;
-DROP TABLE IF EXISTS Tile	CASCADE;
-DROP TABLE IF EXISTS Shop	CASCADE;
+DROP TABLE IF EXISTS Tile       CASCADE;
+DROP TABLE IF EXISTS Shop       CASCADE;
 DROP TABLE IF EXISTS ShopStock  CASCADE;
 
 DROP TYPE  IF EXISTS ItemClass  CASCADE;
@@ -10,49 +11,69 @@ DROP TYPE  IF EXISTS ItemClass  CASCADE;
 CREATE TYPE ItemClass AS ENUM ('Weapon');
 
 CREATE TABLE Item (
+  id serial         ,
   name  varchar(30) ,
   value integer     ,
   class ItemClass   ,
   stat  integer     ,
-  itemId serial,
-  PRIMARY KEY (itemId)
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE Map (
+  id serial,
+  width integer,
+  height integer,
+  name varchar(50),
+  PRIMARY KEY (id),
+  UNIQUE (name)
 );
 
 CREATE TABLE Player (
+  id serial,
   x integer,
   y integer,
+  mapId integer REFERENCES Map(id),
   name varchar(20),
   playing boolean,
   health integer,
   wealth integer,
   stealth integer, -- like threat?
-  playerId serial,
-  shelf integer REFERENCES Item(itemId),
-  PRIMARY KEY (playerId)
+  shelf integer REFERENCES Item(id),
+  PRIMARY KEY (id),
+  UNIQUE (name)
 );
 
 CREATE TABLE PlayerLoot (
-  playerId integer REFERENCES Player,
-  itemId   integer REFERENCES Item,
+  id serial,
+  playerId integer REFERENCES Player(id),
+  itemId   integer REFERENCES Item(id),
   count integer,
-  PRIMARY KEY (playerId, itemId)
+  PRIMARY KEY (id),
+  UNIQUE (playerId, itemId)
 );
 
 CREATE TABLE Tile (
+  id serial,
   x integer,
   y integer,
-  PRIMARY KEY (x,y)
+  mapId integer REFERENCES Map(id),
+  PRIMARY KEY (id),
+  UNIQUE (x,y, mapId)
 );
 
 CREATE TABLE Shop (
+  id serial,
   name varchar(20),
-  PRIMARY KEY (x,y) -- primary key contraint not inherited from tile
+  PRIMARY KEY (id),
+  UNIQUE (x,y, mapId) -- key contraint not inherited from tile
 ) INHERITS (Tile);
 
 CREATE TABLE ShopStock (
-  x integer ,
-  y integer ,
-  itemId integer REFERENCES Item,
+  id serial,
+  shopId integer REFERENCES Shop(id),
+  itemId integer REFERENCES Item(id),
   count integer,
-  FOREIGN KEY(x,y) REFERENCES Shop(x,y)
+  PRIMARY KEY (id),
+  UNIQUE (shopId, itemId)
 );
+

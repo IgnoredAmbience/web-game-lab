@@ -1,5 +1,7 @@
 <?php
 class Tile extends DatabaseRecord {
-  public $X = 0;
-  public $Y = 0;
+  public $x;
+  public $y;
+  public $id = -1;
+  public $mapId = -1;
 }

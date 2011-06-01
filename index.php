@@ -14,8 +14,10 @@ $application = new Application(array(
   array('login', 'LoginHandler'),
   array('player/(\d+)', 'PlayerHandler'),
   array('poll', 'PushHandler')
+  array('player/move',  'MoveHandler')
 ), $config['base_path']);
 
 $database = new PDO($config['db'], $config['db_u'], $config['db_p'],  array(PDO::ATTR_PERSISTENT => true));
+$database->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 
 $application->serve();

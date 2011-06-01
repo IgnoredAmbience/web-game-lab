@@ -6,9 +6,9 @@ class LoginHandler extends Handler {
     if(!$name) $this->error();
 
     $stmt = $database->prepare('SELECT * FROM Player where name = ?');
-    $stmt->execute($name);
+    $stmt->execute(array($name));
 
-    if(!$stmt->rowCount) {
+    if(!$stmt->rowCount()) {
       $player = new Player();
       $player->name = $name;
       $player->save();
@@ -16,7 +16,15 @@ class LoginHandler extends Handler {
       $player = $stmt->fetchObject('Player');
     }
 
-    // Do stuff
-    echo $player->name;
+    $player->login();
+  }
+
+  function get() {
+    ?>
+    <form name="loginForm" action="login" method="post">
+      User name: <input type="text" name="name" /> <br/>
+      <input type="submit" name="submit">
+    </form>
+    <?php
   }
 }
