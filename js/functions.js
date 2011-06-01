@@ -44,7 +44,7 @@ function init () {
 
   document.addEventListener("keypress", keyPressed, true);
 
-  //setKeys();
+  setKeys();
 
   // "magic number" type crap that will be removed/implemented later
   var shops = new Array();
@@ -67,23 +67,9 @@ function updateStats (w,h,st,sh) {
 }
 
 // Toggles whether the settings panel is shown or not
-var settingsShown = 0;
 function toggleSettings() {
-  var panel = document.getElementById("settingsPanel");
-  if (settingsShown) {
-    panel.innerHTML = "";
-  }
-  else {
-    panel.innerHTML = '\
-      <button onclick="changeGraphics()">Graphics</button>\
-      <input type="text" id="upKeyInput" value="w">Up</input>\
-      <input type="text" id="downKeyInput" value="a">Down</input>\
-      <input type="text" id="leftKeyInput" value="s">Left</input>\
-      <input type="text" id="rightKeyInput" value="d">Right</input>\
-      <button onclick="setKeys()">Update Keybindings</button>\
-    ';
-  }
-  settingsShown = !settingsShown;
+  var panel = document.getElementById("settings").style;
+  panel.visibility = (panel.visibility == "visible") ? "hidden" : "visible";
 }
 
 // Rebinds the movement keys

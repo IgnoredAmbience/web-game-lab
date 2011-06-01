@@ -4,10 +4,11 @@
   <script src="js/scene.js"></script>
   <script src="js/actor.js"></script>
   <script src="js/shop.js"></script>
+  <link rel="stylesheet" href="style.css" type="text/css"></link> 
 </head>
 
 <body onload="init()">
-  <canvas id="canvas" style="border: 1px dotted" width="512" height="512"></canvas>
+  <canvas id="canvas" width="512" height="512"></canvas>
 
   <button onclick="drawMenu()">Menu</button>
 
@@ -20,7 +21,16 @@
   <button onclick="displayShop()">SHOP</button>
 
   <button onclick="toggleSettings()">Settings</button>
-  <div id="settingsPanel"></div>
+
+  <div id="settings">
+    <button class="setting" onclick="changeGraphics()">Graphics</button>
+    <input class="setting" type="text" id="upKeyInput" value="w">Up</input>
+    <input class="setting" type="text" id="downKeyInput" value="a">Down</input>
+    <input class="setting" type="text" id="leftKeyInput" value="s">Left</input>
+    <input class="setting" type="text" id="rightKeyInput" value="d">Right</input>
+    <button class="setting" onclick="setKeys()">Update Keybindings</button>
+  </div>
+
 </body>
 
 </html>
