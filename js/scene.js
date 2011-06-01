@@ -2,8 +2,8 @@
 function loadMap (shops) {
   scenery = shops;
   // TODO: The following are magic numbers, change later
-  mapHeight = 50;
-  mapWidth = 50;
+  mapHeight = 16;
+  mapWidth = 16;
 }
 
 // There are separate lists for scenery, other players and the user player, rendered in that order
@@ -27,6 +27,7 @@ function draw () {
   Player.draw();
 }
 
+// Returns whether the item is within the view
 function inView (item) {
   return ( item.x > viewX
         && item.x < maxX

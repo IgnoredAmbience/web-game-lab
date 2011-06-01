@@ -28,10 +28,10 @@ var leftKey;
 var rightKey;
 
 function updateStats (w,h,st,sh) {
-  var wealth = document.getElementById("wealthDisplay").innerHTML = "Wealth: " + w;
-  var health = document.getElementById("healthDisplay").innerHTML = "Health: " + h;
-  var stealth = document.getElementById("stealthDisplay").innerHTML = "Stealth: " + st;
-  var shelf = document.getElementById("shelfDisplay").innerHTML = "Shelf: " + sh;
+  document.getElementById("wealthDisplay").innerHTML = "Wealth: " + w;
+  document.getElementById("healthDisplay").innerHTML = "Health: " + h;
+  document.getElementById("stealthDisplay").innerHTML = "Stealth: " + st;
+  document.getElementById("shelfDisplay").innerHTML = "Shelf: " + sh;
 }
 
 function setKeys () {
@@ -49,7 +49,7 @@ function init () {
   halfWidth = (canvas.width/TILE_SIZE)/2;
   halfHeight = (canvas.height/TILE_SIZE)/2;
 
-  Player = new Actor (40,40,"black","sprites/player.png",1,2);
+  Player = new Actor (10,10,"black","sprites/player.png",1,2);
   maxX = Player.x + halfWidth;
   maxY = Player.y + halfHeight;
   viewX = Player.x - halfWidth;
