@@ -13,6 +13,8 @@ class ShopHandler extends Handler {
 
     // Either way, a shop action must immediately reflect stuff to client(s)
 
+    // TODO, ON SUBMIT, 404s on "TRANSACT?"
+
     $user = getUser();
     $itemId = json_decode($_POST['item']);
     $action = $_POST['action'];
@@ -28,43 +30,57 @@ class ShopHandler extends Handler {
     }
 
     $shopStock = ShopStock::getByFields(array("shopId"=>$shop->id,
-					      "itemId"=>$item->id)));
+					      "itemId"=>$item->id));
 
     if ($action == "buy") {
 
-      if(!$shopStock) {
+      if(!$shopStock) { //item not stocked by shop
 	return;
       }
 
-      if($player->wealth >= $item->value) {
-	$player->wealth -= $item->value;
-	$shopStock[0]->count--;
-	$player->save();
-	$shopStock[0]->save();
+      if($player->wealth < $item->value) { //player can't afford it
+	return;
       }
-    }
-    elseif($action == "sell") {
+
+      $player->wealth -= $item->value;
+      $shopStock[0]->count--;
+      $player->save();
+      $shopStock[0]->save();
+
       if(!$loot = PlayerLoot::getByFields(array("playerId"=>$user->id,
 						"itemId"=>$item->id))) {
-	return;
+	$loot[0] = new PlayerLoot();
+	$loot[0]->count    = 1;
+	$loot[0]->playerId = $user->id;
+	$loot[0]->itemId   = $item->id;
+      }
+      $loot[0]->count--;
+      $loot[0]->save();
+    }
+    elseif($action == "sell") {
+      if(!$loot[0] = PlayerLoot::getByFields(array("playerId"=>$user->id,
+						"itemId"=>$item->id))) {
+	return; //player doesn't have what they're trying to sell
       }
 
-      if(!$loot->count) {
-	return;
+      if(!$loot[0]->count) {
+	return; //player doesn't have any of what they're trying to sell
       }
 
       if(!$shopStock) {
 	$shopStock[0] = new ShopStock();
 	$shopStock[0]->shopId = $shop->id;
 	$shopStock[0]->itemId = $item->id;
-	$shopStock[0]->count = 0;
+	$shopStock[0]->count  = 0;
       }
 	$player->wealth += $item->value;
 	$shopStock[0]->count++;
 	$player->save();
 	$shopStock[0]->save();
 
-	//TODO, remove item from loot when selling stuff
+	//Loot save should handle the case where count is 0
+	$loot[0]->count--;
+	$loot[0]->save();
     }
   }
 
