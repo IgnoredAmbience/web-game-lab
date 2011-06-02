@@ -12,10 +12,15 @@ function __autoload($name) {
 
 $application = new Application(array(
   array('/',            'MainHandler'),
+
+  array('map',          'MapHandler'),
+
   array('login',        'LoginHandler'),
   array('logout',       'LogoutHandler'),
+
   array('player/(\d+)', 'PlayerHandler'),
   array('player/move',  'MoveHandler'),
+
   array('transact',     'ShopHandler')
 ), $config['base_path']);
 
