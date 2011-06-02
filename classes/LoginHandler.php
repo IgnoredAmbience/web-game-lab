@@ -1,6 +1,6 @@
 <?php
 class LoginHandler extends Handler {
-  function post() {
+  private function do_login() {
     global $database;
     $name = trim($_POST['name']);
     if(!$name) $this->error();
@@ -22,7 +22,16 @@ class LoginHandler extends Handler {
     $p->login();
     $_SESSION['userId'] = $p->id;
 
+    return $p;
+  }
+
+  public function post() {
+    $this->do_login();
     $this->get();
+  }
+
+  public function post_xhr() {
+    echo json_encode($this->do_login());
   }
 
   function get() {
