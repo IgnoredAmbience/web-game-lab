@@ -4,12 +4,16 @@ function loadMap () {
   r.send(null);
   if(r.status != 200) return; // FAIL!
 
-  scenery = new Array();
-  var a;
-
   var map = JSON.parse(r.responseText);
   mapHeight = map.height;
   mapWidth = map.width;
+
+  scenery = new Array();
+  for (var i = 0; i < mapWidth; i++) {
+    scenery[i] = new Array();
+  }
+  var a;
+
 
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
@@ -17,7 +21,7 @@ function loadMap () {
         a = new Tile(tile,new Actor(tile.x, tile.y, "red", "sprites/shop.png", 2, 0));
         break;
     }
-    scenery.push(a);
+    scenery[tile.x][tile.y] = a;
   });
 }
 
@@ -25,9 +29,14 @@ function loadMap () {
 function draw () {
   toDraw = new Array();
   // For all items, if they're in view, add to toDraw
-  for (var i in scenery) {
-    if (inView(scenery[i].actor)) {
-      toDraw.push(scenery[i].actor);
+  var xmin = (viewX < 0) ? 0 : viewX;
+  var xmax = (maxX > mapWidth) ? mapWidth : maxX;
+  var ymin = (viewY < 0) ? 0 : viewY;
+  var ymax = (maxY > mapHeight) ? mapHeight : maxY;
+  for (var i = xmin; i < xmax; i++) {
+    for (var j = ymin; j < ymax; j++) {
+      if (scenery[i][j])
+        toDraw.push(scenery[i][j].actor);
     }
   }
   // Clear the canvas
@@ -40,15 +49,6 @@ function draw () {
   }
   // Render the player on top
   Player.draw();
-}
-
-// Returns whether the item is within the view
-function inView (item) {
-  return ( item.x > viewX
-        && item.x < maxX
-        && item.y > viewY
-        && item.y < maxY
-         );
 }
 
 // Colors the "not map" bits of the view
