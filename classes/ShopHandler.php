@@ -15,6 +15,8 @@ class ShopHandler extends Handler {
 
     // TODO, ON SUBMIT, 404s on "TRANSACT?"
 
+    $this->requireLogin();
+
     $user = $this->getUser();
     $itemId = json_decode($_POST['item']);
     $action = $_POST['action'];

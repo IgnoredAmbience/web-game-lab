@@ -32,4 +32,16 @@ class Handler {
       return NULL;
     }
   }
+
+  public function requireLogin() {
+    if(!isset($_SESSION['userId'])) {
+      $this->redirect("login");
+      exit;
+    }
+  }
+
+  public function redirect($redirectURL) {
+    global $config;
+    header("Location: ".$config['base_path']."/".$redirectURL);    
+  }
 }
