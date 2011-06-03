@@ -3,11 +3,16 @@ p
   color:red;
 }
 
-#shopDisplay
+#canvas-wrap
+{
+  position:relative;
+}
+
+#shopDisplay  /* slightly crude, forces shop items to be right of canvas */
 {
   position:absolute;
-  top:10px;
-  right:10px;
+  top:0px;
+  left:600px;
 }
 
 #settings
