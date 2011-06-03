@@ -76,3 +76,11 @@ function setKeys () {
 function changeGraphics () {
   graphicsLevel = (graphicsLevel + 1) % GRAPHICS_MAX;
 }
+
+function requestString (data) {
+  var parts = [];
+  for (field in data) {
+    parts.push(encodeURI(field) + '=' + encodeURI(data[field]));
+  }
+  return parts.join('&');
+}
