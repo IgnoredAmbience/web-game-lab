@@ -111,8 +111,7 @@ function keyPressed (event) {
         return;
     }
 
-    var httpRequest = new XMLHttpRequest ();
-    httpRequest.open('POST', "player/move", false);
+    var httpRequest = Ajax('POST', "player/move", false);
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.send(requestString({moveType: move}));
     if(httpRequest.status != 200) move = '';

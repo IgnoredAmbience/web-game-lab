@@ -4,21 +4,19 @@ class MoveHandler extends Handler {
   function get() {
   ?>
     <form name="moveForm" action="move" method="post">
-      <Input name="moveButton" type="submit" value="north" />
-      <Input name="moveButton" type="submit" value="east" />
-      <Input name="moveButton" type="submit" value="west" />
-      <Input name="moveButton" type="submit" value="south" />
+      <Input name="moveType" type="submit" value="north" />
+      <Input name="moveType" type="submit" value="east" />
+      <Input name="moveType" type="submit" value="west" />
+      <Input name="moveType" type="submit" value="south" />
     </form>
   <?php
   }
 
-  function post() {
-    $user = $this->getUser();
-    $moveType = $_POST['moveButton'];
+  public function post() {
+    $this->requireLogin();
 
-    if(!$user) {
-      throw new Exception("No User found");
-    }
+    $user = $this->getUser();
+    $moveType = $_POST['moveType'];
 
     if(($moveType == "north") ||
        ($moveType == "south") ||
@@ -30,7 +28,6 @@ class MoveHandler extends Handler {
       throw new Exception("unknown move type: ".$moveType);
     }
 
-    echo $_POST['moveButton'];
-    echo "(",$user->x,",",$user->y,")";
+    echo json_encode(array('moveType'=>$moveType, 'x'=>$user->x, 'y'=>$user->y));
   }
 }

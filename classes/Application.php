@@ -44,27 +44,14 @@ class Application {
 
         if ($discovered_handler && class_exists($discovered_handler)) {
             unset($regex_matches[0]);
-            $handler_instance = new $discovered_handler();
 
             if (!$method_arguments) {
                 $method_arguments = $regex_matches;
             }
 
-            // XHR (must come first), iPad, mobile catch all
-            if ($this->xhr_request() && method_exists($discovered_handler, $request_method . '_xhr')) {
-                header('Content-type: application/json');
-                header('Pragma: no-cache');
-                header('Cache-Control: no-cache, must-revalidate');
-                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-                $request_method .= '_xhr';
-            }
-            else if ($this->mobile_request() && method_exists($discovered_handler, $request_method . '_mobile')) {
-                $request_method .= '_mobile';
-            }
-
+            $handler_instance = new $discovered_handler($this->xhr_request(), $this->mobile_request);
             call_user_func_array(array($handler_instance, $request_method), $method_arguments);
-        }
-        else {
+        } else {
             header('HTTP/1.0 404 Not Found');
             echo '<h1>404 Not Found</h1>';
             echo "Parsed path info: $path_info";
