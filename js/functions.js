@@ -80,7 +80,7 @@ function changeGraphics () {
 function requestString (data) {
   var parts = [];
   for (field in data) {
-    parts.push(encodeURI(field) + '=' + encodeURI(data[field]));
+    parts.push(encodeURIComponent(field) + '=' + encodeURIComponent(data[field]));
   }
   return parts.join('&');
 }
