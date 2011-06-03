@@ -64,9 +64,9 @@ Actor.prototype.move = function (direction) {
   switch (direction) {
     case "west" :
       this.x--; break;
-    case "north" :
-      this.x++; break;
     case "east" :
+      this.x++; break;
+    case "north" :
       this.y--; break;
     case "south" :
       this.y++; break;
