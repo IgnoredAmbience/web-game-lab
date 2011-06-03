@@ -62,14 +62,16 @@ Actor.prototype.move = function (direction) {
   this.walkingY = this.y;
 
   switch (direction) {
-    case "left" :
+    case "west" :
       this.x--; break;
-    case "right" :
+    case "north" :
       this.x++; break;
-    case "up" :
+    case "east" :
       this.y--; break;
-    case "down" :
+    case "south" :
       this.y++; break;
+    default :
+      return;
   }
   // Check for map boundaries
   if (this.x < 0) this.x = 0;
@@ -87,21 +89,36 @@ function keyPressed (event) {
   if (canMove) {
     canMove = 0;
     var blah = (event.keyCode || event.charCode);
+    var move;
     switch (blah) {
       case 37 : // Left
       case leftKey :
-        Player.move("left"); break;
+        move = "west"; break;
       case 38 : // Up
       case upKey :
-        Player.move("up"); break;
+        move = "north"; break;
       case 39 : // Right
       case rightKey :
-        Player.move("right"); break;
+        move = "east"; break;
       case 40 : // Down
       case downKey :
-        Player.move("down"); break;
+        move = "south"; break;
       default :
     }
+
+    var httpRequest = new XMLHttpRequest ();
+    httpRequest.onreadystatechange = function (event) {
+      if (event.target.readyState === 4) {
+        if (event.target.status === 403) {
+          move = "";
+        }
+      }
+    };
+    httpRequest.open('POST', "player/move");
+    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    httpRequest.send(requestString({moveType: move}));
+    Player.move(move);
+
     // To prevent movement flooding
     setTimeout(function() {canMove = 1;}, 500);
     // Update the view boundaries
