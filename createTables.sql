@@ -62,7 +62,6 @@ CREATE TABLE Tile (
 );
 
 CREATE TABLE Shop (
-  id serial,
   name varchar(20),
   PRIMARY KEY (id),
   UNIQUE (x,y, "mapId") -- key contraint not inherited from tile

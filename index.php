@@ -14,6 +14,7 @@ $application = new Application(array(
   array('/',            'MainHandler'),
 
   array('map',          'MapHandler'),
+  array('map/(\d+)?',   'MapHandler'),
 
   array('login',        'LoginHandler'),
   array('logout',       'LogoutHandler'),

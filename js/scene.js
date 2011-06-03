@@ -1,13 +1,25 @@
 // Will pull from server and load
 function loadMap () {
-  // "magic number" type crap that will be removed/implemented later
-  scenery = new Array();
-  scenery.push(new Actor(3,8,"red","sprites/shop.png",2,0));
-  scenery.push(new Actor(4,8,"red","sprites/shop.png",2,0));
+  var r = new XMLHttpRequest();
+  r.open('GET', 'map', false);
+  r.send(null);
+  if(r.status != 200) return; // FAIL!
 
-  // TODO: The following are magic numbers, change later
-  mapHeight = 16;
-  mapWidth = 16;
+  scenery = new Array();
+  var a;
+
+  var map = JSON.parse(r.responseText);
+  mapHeight = map.height;
+  mapWidth = map.width;
+
+  map.tiles.forEach(function(tile) {
+    switch (tile.type) {
+      case "shop":
+        a = new Actor(tile.x, tile.y, "red", "sprites/shop.png", 2, 0);
+        break;
+    }
+    scenery.push(a);
+  });
 }
 
 // There are separate lists for scenery, other players and the user player, rendered in that order
