@@ -22,7 +22,7 @@ $application = new Application(array(
   array('player/(\d+)', 'PlayerHandler'),
   array('player/move',  'MoveHandler'),
 
-  array('transact',     'ShopHandler')
+  array('shop/(\d+)',     'ShopHandler')
 ), $config['base_path']);
 
 $database = new PDO($config['db'], $config['db_u'], $config['db_p'],  array(PDO::ATTR_PERSISTENT => true));
