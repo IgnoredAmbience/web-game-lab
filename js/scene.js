@@ -52,15 +52,6 @@ function draw () {
   Player.draw();
 }
 
-// Returns whether the item is within the view
-function inView (item) {
-  return ( item.x > viewX
-        && item.x < maxX
-        && item.y > viewY
-        && item.y < maxY
-         );
-}
-
 // Colors the "not map" bits of the view
 function colorBoundaries () {
   context.fillStyle = "grey";
