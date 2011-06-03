@@ -14,7 +14,6 @@ function loadMap () {
   }
   var a;
 
-
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":

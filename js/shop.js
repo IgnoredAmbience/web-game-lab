@@ -1,6 +1,10 @@
-function displayShop() {
-  var sample = '[{"name":"helloooo","value":"12","itemClass":"sword","statValue":"+30"},{"name":"wibble","value":"19","itemClass":"axe","statValue":"-12"}]';
-  outputItems(sample);
+function displayShop(id) {
+
+  var httpRequest = Ajax('GET', "shop/"+id, false);
+  httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  httpRequest.send(null);
+
+  outputItems(httpRequest.responseText);
 }
 
 function outputItems (jsonItems) {

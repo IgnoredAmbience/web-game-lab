@@ -120,10 +120,11 @@ function keyPressed (event) {
 
     if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].tile.type == "shop") {
       // Show the shop button
-      document.getElementById("shopButton").style.visibility = "visible"; 
+      displayShop(scenery[Player.x][Player.y].tile.id);
+      document.getElementById("shopDisplay").style.visibility = "visible"; 
     }
     else {
-      document.getElementById("shopButton").style.visibility = "hidden"; 
+      document.getElementById("shopDisplay").style.visibility = "hidden"; 
     }
 
     // To prevent movement flooding
