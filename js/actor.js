@@ -118,7 +118,7 @@ function keyPressed (event) {
     Player.move(move);
     setView();
 
-    if (scenery[Player.x][Player.y].tile.type == "shop") {
+    if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].tile.type == "shop") {
       // Show the shop button
       document.getElementById("shopButton").style.visibility = "visible"; 
     }
