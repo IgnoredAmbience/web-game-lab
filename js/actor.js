@@ -90,26 +90,29 @@ Actor.prototype.move = function (direction) {
 var canMove = 1;
 // Player movement event handler
 function keyPressed (event) {
+  var move;
+  switch (event.keyCode || event.charCode) {
+    case 37 : // Left
+    case leftKey :
+      move = "west"; break;
+    case 38 : // Up
+    case upKey :
+      move = "north"; break;
+    case 39 : // Right
+    case rightKey :
+      move = "east"; break;
+    case 40 : // Down
+    case downKey :
+      move = "south"; break;
+    default :
+      return;
+  }
+
+  event.stopPropagation();
+  event.preventDefault();
+
   if (canMove) {
     canMove = 0;
-    var blah = (event.keyCode || event.charCode);
-    var move;
-    switch (blah) {
-      case 37 : // Left
-      case leftKey :
-        move = "west"; break;
-      case 38 : // Up
-      case upKey :
-        move = "north"; break;
-      case 39 : // Right
-      case rightKey :
-        move = "east"; break;
-      case 40 : // Down
-      case downKey :
-        move = "south"; break;
-      default :
-        return;
-    }
 
     var httpRequest = Ajax('POST', "player/move", false);
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
