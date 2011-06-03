@@ -18,6 +18,7 @@ function process_error_backtrace($errno, $errstr, $errfile, $errline, $errcontex
   default             :
     $type = 'fatal error';
     $fatal = true;
+    header('HTTP/1.0 500 Internal Server Error');
     break;
   }
   $trace = array_reverse(debug_backtrace());
@@ -46,4 +47,11 @@ function process_error_backtrace($errno, $errstr, $errfile, $errline, $errcontex
     exit(1);
 }
 
+function process_exception_backtrace($e) {
+  header('HTTP/1.0 500 Internal Server Error');
+  echo "Uncaught exception: " , $e->getMessage(), "\n";
+  echo $e->getTraceAsString();
+}
+
 set_error_handler('process_error_backtrace');
+set_exception_handler('process_exception_backtrace');
