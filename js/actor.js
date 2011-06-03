@@ -104,6 +104,7 @@ function keyPressed (event) {
       case downKey :
         move = "south"; break;
       default :
+        return;
     }
 
     var httpRequest = new XMLHttpRequest ();
