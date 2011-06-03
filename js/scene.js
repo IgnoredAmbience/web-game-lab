@@ -1,7 +1,6 @@
 // Will pull from server and load
 function loadMap () {
-  var r = new XMLHttpRequest();
-  r.open('GET', 'map', false);
+  var r = Ajax('GET', 'map', false);
   r.send(null);
   if(r.status != 200) return; // FAIL!
 

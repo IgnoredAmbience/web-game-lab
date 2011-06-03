@@ -84,3 +84,10 @@ function requestString (data) {
   }
   return parts.join('&');
 }
+
+function Ajax(method, uri, async) {
+  var r = new XMLHttpRequest();
+  r.open(method, uri, async);
+  r.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  return r;
+}

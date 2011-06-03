@@ -1,5 +1,20 @@
 <?php
 class Handler {
+  private $xhr = false;
+  private $mobile = false;
+
+  public function __construct($xhr, $mobile) {
+    $this->xhr = $xhr;
+    $this->mobile = $mobile;
+
+    if($this->xhr) {
+      header('Content-type: application/json');
+      header('Pragma: no-cache');
+      header('Cache-Control: no-cache, must-revalidate');
+      header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+    }
+  }
+
   public function __call($name, $arguments) {
       header('HTTP/1.0 404 Not Found');
       echo '<h1>404 Not Found</h1>';
@@ -35,7 +50,11 @@ class Handler {
 
   public function requireLogin() {
     if(!isset($_SESSION['userId'])) {
-      $this->redirect("login");
+      if($this->xhr) {
+        header('HTTP/1.1 401 Unauthorized');
+      } else {
+        $this->redirect("login");
+      }
       exit;
     }
   }
