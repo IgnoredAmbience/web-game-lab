@@ -1,3 +1,7 @@
+function Tile (tile, actor) {
+  this.tile = tile;
+  this.actor = actor;
+}
 // stands = #sprites for standing, likewise for walks
 function Actor (x, y, color, texture, stands, walks) {
   this.x = x;

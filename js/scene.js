@@ -15,7 +15,7 @@ function loadMap () {
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":
-        a = new Actor(tile.x, tile.y, "red", "sprites/shop.png", 2, 0);
+        a = new Tile(tile,new Actor(tile.x, tile.y, "red", "sprites/shop.png", 2, 0));
         break;
     }
     scenery.push(a);
@@ -27,8 +27,8 @@ function draw () {
   toDraw = new Array();
   // For all items, if they're in view, add to toDraw
   for (var i in scenery) {
-    if (inView(scenery[i])) {
-      toDraw.push(scenery[i]);
+    if (inView(scenery[i].actor)) {
+      toDraw.push(scenery[i].actor);
     }
   }
   // Clear the canvas
