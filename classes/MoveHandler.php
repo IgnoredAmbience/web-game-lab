@@ -13,6 +13,8 @@ class MoveHandler extends Handler {
   }
 
   function post() {
+    $this->requireLogin();
+
     $user = $this->getUser();
     $moveType = $_POST['moveButton'];
 
