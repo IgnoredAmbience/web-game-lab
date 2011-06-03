@@ -112,16 +112,10 @@ function keyPressed (event) {
     }
 
     var httpRequest = new XMLHttpRequest ();
-    httpRequest.onreadystatechange = function (event) {
-      if (event.target.readyState === 4) {
-        if (event.target.status === 403) {
-          move = "";
-        }
-      }
-    };
-    httpRequest.open('POST', "player/move");
+    httpRequest.open('POST', "player/move", false);
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.send(requestString({moveType: move}));
+    if(httpRequest.status != 200) move = '';
     Player.move(move);
 
     // To prevent movement flooding
