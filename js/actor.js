@@ -117,10 +117,18 @@ function keyPressed (event) {
     httpRequest.send(requestString({moveType: move}));
     if(httpRequest.status != 200) move = '';
     Player.move(move);
+    setView();
+
+    if (scenery[Player.x][Player.y].tile.type == "shop") {
+      // Show the shop button
+      document.getElementById("shopButton").style.visibility = "visible"; 
+    }
+    else {
+      document.getElementById("shopButton").style.visibility = "hidden"; 
+    }
 
     // To prevent movement flooding
     setTimeout(function() {canMove = 1;}, 500);
     // Update the view boundaries
-    setView();
   }
 }
