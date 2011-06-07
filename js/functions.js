@@ -41,7 +41,7 @@ function init () {
   Player = new Actor (10,10,"black","sprites/player.png",1,2);
   setView();
 
-  document.addEventListener("keypress", keyPressed, true);
+  document.addEventListener("keypress", keyPressed, false);
 
   setKeys();
 

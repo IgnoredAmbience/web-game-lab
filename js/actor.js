@@ -91,6 +91,8 @@ var canMove = 1;
 // Player movement event handler
 function keyPressed (event) {
   var move;
+  if(event.target.tagName == 'INPUT') return;
+
   switch (event.keyCode || event.charCode) {
     case 37 : // Left
     case leftKey :
