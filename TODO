@@ -1,7 +1,3 @@
-* Login UI
-  * No-player support
-  * Player data loading
-  * Logout
 * Multiplayer
   * Polling
 * Finish buy/sell UI

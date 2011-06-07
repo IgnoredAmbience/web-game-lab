@@ -79,6 +79,7 @@ function login () {
 function loginPlayer (p) {
   Player = new Actor (p.x, p.y, "black", "sprites/player.png",1,2);
   setView(Player);
+  updateStats(p)
   document.getElementById("loginName").innerHTML = p.name;
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("logoutBox").style.display = "inline";
@@ -92,11 +93,11 @@ function logout () {
   document.getElementById("loginBox").style.display = "inline";
 }
 
-function updateStats (w,h,st,sh) {
-  document.getElementById("wealthDisplay").innerHTML = "Wealth: " + w;
-  document.getElementById("healthDisplay").innerHTML = "Health: " + h;
-  document.getElementById("stealthDisplay").innerHTML = "Stealth: " + st;
-  document.getElementById("shelfDisplay").innerHTML = "Shelf: " + sh;
+function updateStats (p) {
+  document.getElementById("wealthDisplay").innerHTML = "Wealth: " + p.wealth;
+  document.getElementById("healthDisplay").innerHTML = "Health: " + p.health;
+  document.getElementById("stealthDisplay").innerHTML = "Stealth: " + p.stealth;
+  document.getElementById("shelfDisplay").innerHTML = "Shelf: " + p.shelf;
 }
 
 // Toggles whether the settings panel is shown or not
