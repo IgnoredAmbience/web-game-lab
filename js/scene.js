@@ -47,6 +47,7 @@ function draw () {
     toDraw[i].draw();
   }
   // Render the player on top
+  if (Player)
   Player.draw();
 }
 

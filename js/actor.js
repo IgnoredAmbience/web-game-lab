@@ -110,6 +110,18 @@ function keyPressed (event) {
 
   event.stopPropagation();
   event.preventDefault();
+  if (!Player) {
+    switch (move) {
+      case "west" :
+        viewX--; maxX--; break;
+      case "east" :
+        viewX++; maxX++; break;
+      case "north" :
+        viewY--; maxY--; break;
+      case "south" :
+        viewY++; maxY++; break;
+    }
+  } else
 
   if (canMove) {
     canMove = 0;
