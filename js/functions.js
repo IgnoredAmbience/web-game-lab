@@ -43,7 +43,7 @@ function init () {
   viewX = (mapWidth/2) - halfWidth;
   viewY = (mapHeight/2) - halfHeight;
 
-  document.addEventListener("keypress", keyPressed, true);
+  document.addEventListener("keypress", keyPressed, false);
 
   setKeys();
 
