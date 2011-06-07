@@ -23,6 +23,8 @@ class Player extends DatabaseRecord {
     elseif($moveType == "west"):
       $this->x = max($this->x - 1, 0);
     endif;
+
+    $this->save();
   }
 
   public function login() {
