@@ -38,10 +38,7 @@ function init () {
   loadMap();
 
   // Set up the view boundaries
-  maxX = (mapWidth/2) + halfWidth;
-  maxY = (mapHeight/2) + halfHeight;
-  viewX = (mapWidth/2) - halfWidth;
-  viewY = (mapHeight/2) - halfHeight;
+  setView({x:(mapWidth/2),y:(mapHeight/2)});
 
   document.addEventListener("keypress", keyPressed, false);
   setKeys();
