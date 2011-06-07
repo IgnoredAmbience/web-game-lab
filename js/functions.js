@@ -67,6 +67,12 @@ function login () {
 
 }
 
+function logout () {
+  var httpRequest = Ajax('POST', "logout", false);
+  httpRequest.send(null);
+  Player = null;
+}
+
 function updateStats (w,h,st,sh) {
   document.getElementById("wealthDisplay").innerHTML = "Wealth: " + w;
   document.getElementById("healthDisplay").innerHTML = "Health: " + h;
