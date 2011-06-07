@@ -19,6 +19,7 @@ $application = new Application(array(
   array('login',        'LoginHandler'),
   array('logout',       'LogoutHandler'),
 
+  array('player',       'PlayerHandler'),
   array('player/(\d+)', 'PlayerHandler'),
   array('player/move',  'MoveHandler'),
 
