@@ -37,9 +37,7 @@ function init () {
 
   loadMap();
 
-  // Set up the Player Actor and view boundaries based on the Player
-  //Player = new Actor (10,10,"black","sprites/player.png",1,2);
-  //setView();
+  // Set up the view boundaries
   maxX = (mapWidth/2) + halfWidth;
   maxY = (mapHeight/2) + halfHeight;
   viewX = (mapWidth/2) - halfWidth;
@@ -53,6 +51,20 @@ function init () {
   setInterval(draw,frameInterval);
 
   updateStats(1,2,3,4);
+}
+
+function login () {
+  var username = document.getElementById("userBox").value;
+
+  var httpRequest = Ajax('POST', "login", false);
+  httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  httpRequest.send(requestString({name: username}));
+  if(httpRequest.status != 200) return;
+
+  var p = JSON.parse(httpRequest.responseText);
+  Player = new Actor (p.x, p.y, "black", "sprites/player.png",1,2);
+  setView();
+
 }
 
 function updateStats (w,h,st,sh) {

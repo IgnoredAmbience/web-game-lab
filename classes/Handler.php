@@ -1,7 +1,7 @@
 <?php
 class Handler {
-  private $xhr = false;
-  private $mobile = false;
+  protected $xhr = false;
+  protected $mobile = false;
 
   public function __construct($xhr, $mobile) {
     $this->xhr = $xhr;
