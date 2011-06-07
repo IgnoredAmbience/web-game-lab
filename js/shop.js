@@ -19,9 +19,9 @@ function buildItemTable(itemList) {
   for (var i in itemList) {
     item = itemList[i];
     tableOutput += "<tr>";
-    tableOutput += "<td>" + item.name + "</td>";
-    tableOutput += "<td>" + item.itemClass + "</td>";
-    tableOutput += "<td>" + item.statValue + "</td>";
+    tableOutput += "<td>" + item.name  + "</td>";
+    tableOutput += "<td>" + item.class + "</td>";
+    tableOutput += "<td>" + item.stat  + "</td>";
     tableOutput += "<td>" + "<input type=\"button\" name=\"" + item.value + "\" value=\""+item.value+"\"/> </td>";
     tableOutput += "<td>" + "<input type=\"button\" name=\"" + item.value + "\" value=\""+item.value+"\"/> </td>";
     tableOutput += "</tr>";
