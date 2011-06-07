@@ -19,3 +19,8 @@ p
 {
   visibility:hidden;
 }
+
+#logoutBox
+{
+  display:none;
+}

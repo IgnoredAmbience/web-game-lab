@@ -64,13 +64,16 @@ function login () {
   var p = JSON.parse(httpRequest.responseText);
   Player = new Actor (p.x, p.y, "black", "sprites/player.png",1,2);
   setView();
-
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("logoutBox").style.display = "inline";
 }
 
 function logout () {
   var httpRequest = Ajax('POST', "logout", false);
   httpRequest.send(null);
   Player = null;
+  document.getElementById("logoutBox").style.display = "none";
+  document.getElementById("loginBox").style.display = "inline";
 }
 
 function updateStats (w,h,st,sh) {
