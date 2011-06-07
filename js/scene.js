@@ -68,7 +68,6 @@ function colorBoundaries () {
 
 // Sets the view limits based on the player
 function setView (obj) {
-  if(!obj) obj = Player;
   maxX = obj.x + halfWidth;
   maxY = obj.y + halfHeight;
   viewX = obj.x - halfWidth;

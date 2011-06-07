@@ -133,7 +133,7 @@ function keyPressed (event) {
     httpRequest.send(requestString({moveType: move}));
     if(httpRequest.status != 200) move = '';
     Player.move(move);
-    setView();
+    setView(Player);
 
     if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].tile.type == "shop") {
       // Show the shop button

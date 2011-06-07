@@ -78,7 +78,7 @@ function login () {
 
 function loginPlayer (p) {
   Player = new Actor (p.x, p.y, "black", "sprites/player.png",1,2);
-  setView();
+  setView(Player);
   document.getElementById("loginName").innerHTML = p.name;
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("logoutBox").style.display = "inline";
