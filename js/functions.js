@@ -87,15 +87,21 @@ function logout () {
   var httpRequest = Ajax('POST', "logout", false);
   httpRequest.send(null);
   Player = null;
+  updateStats();
   document.getElementById("logoutBox").style.display = "none";
   document.getElementById("loginBox").style.display = "inline";
 }
 
 function updateStats (p) {
-  document.getElementById("wealthDisplay").innerHTML = "Wealth: " + p.wealth;
-  document.getElementById("healthDisplay").innerHTML = "Health: " + p.health;
-  document.getElementById("stealthDisplay").innerHTML = "Stealth: " + p.stealth;
-  document.getElementById("shelfDisplay").innerHTML = "Shelf: " + p.shelf;
+  if(!p) {
+    document.getElementById('playerStats').style.display = 'none';
+  } else {
+    document.getElementById('playerStats').style.display = 'inline';
+    document.getElementById("wealthDisplay").innerHTML = "Wealth: " + p.wealth;
+    document.getElementById("healthDisplay").innerHTML = "Health: " + p.health;
+    document.getElementById("stealthDisplay").innerHTML = "Stealth: " + p.stealth;
+    document.getElementById("shelfDisplay").innerHTML = "Shelf: " + p.shelf;
+  }
 }
 
 // Toggles whether the settings panel is shown or not
