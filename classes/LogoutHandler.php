@@ -7,4 +7,8 @@ class LogoutHandler extends Handler {
       unset($_SESSION['userId']);
     }
   }
+  public function get() {
+    $this->post();
+    LoginHandler::get();
+  }
 }

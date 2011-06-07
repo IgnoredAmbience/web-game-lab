@@ -44,8 +44,9 @@ function init () {
   viewY = (mapHeight/2) - halfHeight;
 
   document.addEventListener("keypress", keyPressed, false);
-
   setKeys();
+
+  checkLogin();
 
   // Draw the screen
   setInterval(draw,frameInterval);
@@ -53,17 +54,33 @@ function init () {
   updateStats(1,2,3,4);
 }
 
+function checkLogin () {
+  var httpRequest = Ajax('GET', 'player', false);
+  httpRequest.send(null);
+  if(httpRequest.status != 200) {
+    return;
+  } else {
+    var p = JSON.parse(httpRequest.responseText);
+    loginPlayer(p);
+  }
+}
+
 function login () {
   var username = document.getElementById("userBox").value;
 
-  var httpRequest = Ajax('POST', "login", false);
+  var httpRequest = Ajax('POST', 'login', false);
   httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   httpRequest.send(requestString({name: username}));
   if(httpRequest.status != 200) return;
 
   var p = JSON.parse(httpRequest.responseText);
+  loginPlayer(p);
+}
+
+function loginPlayer (p) {
   Player = new Actor (p.x, p.y, "black", "sprites/player.png",1,2);
   setView();
+  document.getElementById("loginName").innerHTML = p.name;
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("logoutBox").style.display = "inline";
 }
