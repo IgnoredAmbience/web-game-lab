@@ -51,6 +51,8 @@ function init () {
   setInterval(draw,frameInterval);
 
   updateStats(1,2,3,4);
+
+  document.getElementById("userBox").focus();
 }
 
 function login () {
