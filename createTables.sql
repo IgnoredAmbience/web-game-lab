@@ -85,11 +85,11 @@ INSERT INTO Map (width, height, name) VALUES(64, 64, 'New Swedenheim');
 
 -- 3 players (alpha beta & gamma), different locations, same stats
 INSERT INTO Player (x, y, "mapId", name, playing, health, wealth, stealth, shelf)
-       VALUES(5, 5, 1, 'Alpha', false, 10, 0, 0, 1);
+       VALUES(5, 5, 1, 'Alpha', false, 10, 9000, 0, 1);
 INSERT INTO Player (x, y, "mapId", name, playing, health, wealth, stealth, shelf)
-       VALUES(6, 6, 1, 'Beta',  false, 10, 0, 0, 2);
+       VALUES(6, 6, 1, 'Beta',  false, 10, 9000, 0, 2);
 INSERT INTO Player (x, y, "mapId", name, playing, health, wealth, stealth, shelf)
-       VALUES(7, 7, 1, 'Gamma', false, 10, 0, 0, 3);
+       VALUES(7, 7, 1, 'Gamma', false, 10, 9000, 0, 3);
 
 -- Alpha has a spoon, beta a fork, gamma a knife. One each
 INSERT INTO PlayerLoot ("playerId", "itemId", count) VALUES (1,1,1);
@@ -97,9 +97,9 @@ INSERT INTO PlayerLoot ("playerId", "itemId", count) VALUES (2,2,1);
 INSERT INTO PlayerLoot ("playerId", "itemId", count) VALUES (3,3,1);
 
 
-INSERT INTO SHOP (x, y, "mapId", name) VALUES (10, 5,  1, 'Fork Shop');
-INSERT INTO SHOP (x, y, "mapId", name) VALUES (5,  10, 1, 'Spoon Shop');
-INSERT INTO SHOP (x, y, "mapId", name) VALUES (10, 10, 1, 'Knife Shop');
+INSERT INTO Shop (x, y, "mapId", name) VALUES (4,   4, 1, 'Spoon Shop');
+INSERT INTO Shop (x, y, "mapId", name) VALUES (5,  10, 1, 'Fork Shop');
+INSERT INTO Shop (x, y, "mapId", name) VALUES (10, 10, 1, 'Knife Shop');
 
 -- X shops now sell X
 INSERT INTO ShopStock ("shopId", "itemId", count) VALUES (1,1,5);
