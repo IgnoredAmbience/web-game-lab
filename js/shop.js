@@ -47,11 +47,13 @@ function transact(itemId, transactType) {
   httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   httpRequest.send(requestString({itemId: itemId, action: transactType}));
 
-  if(httpRequest.status != 200) //200 is SUCCESS!
+  if(httpRequest.status != 200) { //200 is SUCCESS!
       if (transactType === "buy") {
           p.setShelf(itemId);
       }
       return;
-  else
+  }
+  else {
       alert("Stop fucking with the data sent to the server");
+  }
 }
