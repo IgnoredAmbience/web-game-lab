@@ -18,10 +18,10 @@ function Actor (x, y, color, texture, stands, walks) {
   this.walkingStage = 0;
 }
 
-Actor.prototype.draw = function () {
+function drawActor (actor) {
   if (graphicsLevel == 0) {
-    context.fillStyle = this.color;
-    context.fillRect((this.x-viewX)*TILE_SIZE,(this.y-viewY)*TILE_SIZE,TILE_SIZE,TILE_SIZE);
+    context.fillStyle = actor.color;
+    context.fillRect((actor.x-viewX)*TILE_SIZE,(actor.y-viewY)*TILE_SIZE,TILE_SIZE,TILE_SIZE);
   }
   else {
     // Row 0 of the texture image is standing
@@ -30,33 +30,33 @@ Actor.prototype.draw = function () {
     var source_y;
     var dest_x;
     var dest_y;
-    switch (this.action) {
+    switch (actor.action) {
       case "stand" :
-        source_x = this.standingStage*TILE_SIZE;
+        source_x = actor.standingStage*TILE_SIZE;
         source_y = 0;
-        dest_x = this.x;
-        dest_y = this.y;
-        this.standingStage = (this.standingStage + 1) % this.standingMax;
+        dest_x = actor.x;
+        dest_y = actor.y;
+        actor.standingStage = (actor.standingStage + 1) % actor.standingMax;
         break;
       case "walk" :
-        this.walkingStage = (this.walkingStage + 1) % this.walkingMax;
+        actor.walkingStage = (actor.walkingStage + 1) % actor.walkingMax;
 
-        source_x = this.walkingStage*TILE_SIZE;
+        source_x = actor.walkingStage*TILE_SIZE;
         source_y = 0;
 
         // Calculate how far between the start and destination we should draw
-        var walkStep = this.walkingMax / this.walkingStage;
-        dest_x = this.x + (this.walkingX - this.x)/walkStep;
-        dest_y = this.y + (this.walkingY - this.y)/walkStep;
+        var walkStep = actor.walkingMax / actor.walkingStage;
+        dest_x = actor.x + (actor.walkingX - actor.x)/walkStep;
+        dest_y = actor.y + (actor.walkingY - actor.y)/walkStep;
 
-        if (this == Player) {
+        if (actor == Player) {
           setView({x: dest_x, y: dest_y});
         } 
 
-        if (this.walkingStage == 0) this.action = "stand";
+        if (actor.walkingStage == 0) actor.action = "stand";
         break;
     }
-    context.drawImage(this.texture,
+    context.drawImage(actor.texture,
                       source_x,source_y, TILE_SIZE,TILE_SIZE,
                       (dest_x-viewX)*TILE_SIZE,(dest_y-viewY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
   }

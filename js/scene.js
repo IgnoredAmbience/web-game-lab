@@ -65,11 +65,11 @@ function draw () {
   }
   // draw the scenery
   for (var i in toDraw) {
-    toDraw[i].draw();
+    drawActor(toDraw[i]);
   }
   // Render the player on top
   if (Player)
-  Player.draw();
+    drawActor(Player);
 }
 
 // Colors the "not map" bits of the view
