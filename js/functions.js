@@ -82,7 +82,6 @@ function login () {
 function loginPlayer (p) {
   var texture = new Image ();
   texture.src = "sprites/player.png";
-  //Player = new Actor (p.x, p.y, "black", texture ,1,2);
   Player = p;
   actorify(p, "black",texture,1,2);
   setView(Player);

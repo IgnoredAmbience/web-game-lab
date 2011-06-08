@@ -130,9 +130,9 @@ function keyPressed (event) {
     if(httpRequest.status != 200) move = '';
     moveActor(Player,move);
 
-    if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].tile.type == "shop") {
+    if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].type == "shop") {
       // Show the shop button
-      displayShop(scenery[Player.x][Player.y].tile.id);
+      displayShop(scenery[Player.x][Player.y].id);
       document.getElementById("shopDisplay").style.visibility = "visible"; 
     }
     else {
