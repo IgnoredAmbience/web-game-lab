@@ -63,30 +63,29 @@ function drawActor (actor) {
 }
 
 
-Actor.prototype.move = function (direction) {
-
-  this.walkingX = this.x;
-  this.walkingY = this.y;
+function moveActor (actor,direction) {
+  actor.walkingX = actor.x;
+  actor.walkingY = actor.y;
 
   switch (direction) {
     case "west" :
-      this.x--; break;
+      actor.x--; break;
     case "east" :
-      this.x++; break;
+      actor.x++; break;
     case "north" :
-      this.y--; break;
+      actor.y--; break;
     case "south" :
-      this.y++; break;
+      actor.y++; break;
     default :
       return;
   }
   // Check for map boundaries
-  if (this.x < 0) this.x = 0;
-  if (this.x > mapWidth-1) this.x = mapWidth-1;
-  if (this.y < 0) this.y = 0;
-  if (this.y > mapHeight-1) this.y = mapHeight-1;
+  if (actor.x < 0) actor.x = 0;
+  if (actor.x > mapWidth-1) actor.x = mapWidth-1;
+  if (actor.y < 0) actor.y = 0;
+  if (actor.y > mapHeight-1) actor.y = mapHeight-1;
 
-  this.action = "walk";
+  actor.action = "walk";
 }
 
 
@@ -135,7 +134,7 @@ function keyPressed (event) {
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.send(requestString({moveType: move}));
     if(httpRequest.status != 200) move = '';
-    Player.move(move);
+    moveActor(Player,move);
 
     if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].tile.type == "shop") {
       // Show the shop button
