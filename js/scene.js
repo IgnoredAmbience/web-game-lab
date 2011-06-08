@@ -42,10 +42,10 @@ function loadBackground () {
 function draw () {
   toDraw = new Array();
   // For all items, if they're in view, add to toDraw
-  var xmin = (viewX < 0) ? 0 : viewX;
-  var xmax = (maxX > mapWidth) ? mapWidth : maxX;
-  var ymin = (viewY < 0) ? 0 : viewY;
-  var ymax = (maxY > mapHeight) ? mapHeight : maxY;
+  var xmin = Math.floor((viewX < 0) ? 0 : viewX);
+  var xmax = Math.ceil((maxX > mapWidth) ? mapWidth : maxX);
+  var ymin = Math.floor((viewY < 0) ? 0 : viewY);
+  var ymax = Math.ceil((maxY > mapHeight) ? mapHeight : maxY);
 
   for (var i = xmin; i < xmax; i++) {
     for (var j = ymin; j < ymax; j++) {
