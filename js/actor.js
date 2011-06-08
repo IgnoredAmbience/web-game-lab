@@ -1,7 +1,3 @@
-function Tile (tile, actor) {
-  this.tile = tile;
-  this.actor = actor;
-}
 // stands = #sprites for standing, likewise for walks
 function actorify (obj, color, texture, stands, walks) {
   obj.color = color;
