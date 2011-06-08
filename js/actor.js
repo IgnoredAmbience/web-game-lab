@@ -50,6 +50,10 @@ Actor.prototype.draw = function () {
         dest_x = this.x + (this.walkingX - this.x)/walkStep;
         dest_y = this.y + (this.walkingY - this.y)/walkStep;
 
+        if (this == Player) {
+          setView({x: dest_x, y: dest_y});
+        } 
+
         if (this.walkingStage == 0) this.action = "stand";
         break;
     }
@@ -133,7 +137,6 @@ function keyPressed (event) {
     httpRequest.send(requestString({moveType: move}));
     if(httpRequest.status != 200) move = '';
     Player.move(move);
-    setView(Player);
 
     if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].tile.type == "shop") {
       // Show the shop button
