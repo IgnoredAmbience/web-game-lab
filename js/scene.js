@@ -14,24 +14,39 @@ function loadMap () {
   }
   var a;
 
+  var texture = new Image ();
+  texture.src = "sprites/shop.png";
+
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":
-        a = new Tile(tile,new Actor(tile.x, tile.y, "red", "sprites/shop.png", 2, 0));
+        a = new Tile(tile,new Actor(tile.x, tile.y, "red", texture, 2, 0));
         break;
     }
     scenery[tile.x][tile.y] = a;
   });
 }
 
+// Loads the background grassy tiles
+function loadBackground () {
+  tiles = new Array ();
+  for (var i = 0; i < 8; i++) {
+    tiles[i] = new Array();
+    for (var j = 0; j < 8; j++) {
+      makeTile(i,j);
+    }
+  }
+}
+
 // There are separate lists for scenery, other players and the user player, rendered in that order
 function draw () {
   toDraw = new Array();
   // For all items, if they're in view, add to toDraw
-  var xmin = (viewX < 0) ? 0 : viewX;
-  var xmax = (maxX > mapWidth) ? mapWidth : maxX;
-  var ymin = (viewY < 0) ? 0 : viewY;
-  var ymax = (maxY > mapHeight) ? mapHeight : maxY;
+  var xmin = Math.floor((viewX < 0) ? 0 : viewX);
+  var xmax = Math.ceil((maxX > mapWidth) ? mapWidth : maxX);
+  var ymin = Math.floor((viewY < 0) ? 0 : viewY);
+  var ymax = Math.ceil((maxY > mapHeight) ? mapHeight : maxY);
+
   for (var i = xmin; i < xmax; i++) {
     for (var j = ymin; j < ymax; j++) {
       if (scenery[i][j])
@@ -42,6 +57,12 @@ function draw () {
   canvas.width = canvas.width;
   // Color the edge of the map
   colorBoundaries();
+  // Draw grass!
+  for (var i = xmin; i < xmax; i++) {
+    for (var j = ymin; j < ymax; j++) {
+      context.drawImage(tiles[i%8][j%8],(i-viewX)*TILE_SIZE,(j-viewY)*TILE_SIZE);
+    }
+  }
   // draw the scenery
   for (var i in toDraw) {
     toDraw[i].draw();
@@ -72,4 +93,23 @@ function setView (obj) {
   maxY = obj.y + halfHeight;
   viewX = obj.x - halfWidth;
   viewY = obj.y - halfHeight;
+}
+
+function makeTile (x,y) {
+  tiles[x][y] = document.createElement("canvas");
+  tiles[x][y].width = TILE_SIZE;
+  tiles[x][y].height = TILE_SIZE;
+  var c = tiles[x][y].getContext("2d");
+  for (var i = 0; i < 16; i++) {
+    for (var j = 0; j < 16; j++) {
+      var s = 50 + Math.floor(Math.random() * 50);
+      var l = 60 + Math.floor(Math.random() * 20);;
+      drawPixel(c,i,j,120,s,l);
+    }
+  }
+}
+
+function drawPixel(c,x,y,h,s,l) {
+  c.fillStyle = "hsl(" + h + "," + s + "%," + l + "%)";
+  c.fillRect(x,y,1,1);
 }

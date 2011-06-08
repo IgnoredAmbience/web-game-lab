@@ -27,6 +27,9 @@ var downKey;
 var leftKey;
 var rightKey;
 
+var tiles;
+
+
 function init () {
   // Set up the drawing environment
   canvas = document.getElementById("canvas");
@@ -36,6 +39,8 @@ function init () {
   halfHeight = (canvas.height/TILE_SIZE)/2;
 
   loadMap();
+
+  loadBackground();
 
   // Set up the view boundaries
   setView({x:(mapWidth/2),y:(mapHeight/2)});
@@ -75,7 +80,9 @@ function login () {
 }
 
 function loginPlayer (p) {
-  Player = new Actor (p.x, p.y, "black", "sprites/player.png",1,2);
+  var texture = new Image ();
+  texture.src = "sprites/player.png";
+  Player = new Actor (p.x, p.y, "black", texture ,1,2);
   setView(Player);
   updateStats(p)
   document.getElementById("loginName").innerHTML = p.name;
