@@ -8,13 +8,6 @@
 </head>
 
 <body onload="init()">
-
-  <script type="text/javascript">
-    document.getElementById('loginBox').addEventListener('focus', function() {
-    alert(2);
-    }, false);
-  </script>
-
   <div id="loginBox">
     <input type="text" id="userBox" autofocus="autofocus" >Username</input>
     <button id="loginButton" onclick="login()">Login</button>
@@ -31,10 +24,12 @@
 
   <button onclick="drawMenu()">Menu</button>
 
-  <div id="wealthDisplay"></div>
-  <div id="healthDisplay"></div>
-  <div id="stealthDisplay"></div>
-  <div id="shelfDisplay"></div>
+  <div id="playerStats">
+    <div id="wealthDisplay"></div>
+    <div id="healthDisplay"></div>
+    <div id="stealthDisplay"></div>
+    <div id="shelfDisplay"></div>
+  </div>
 
   <div id="shopDisplay"></div>
   <button id="shopButton" onclick="displayShop()">SHOP</button>
