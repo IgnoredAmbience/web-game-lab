@@ -27,6 +27,8 @@ var downKey;
 var leftKey;
 var rightKey;
 
+var tiles;
+
 function init () {
   // Set up the drawing environment
   canvas = document.getElementById("canvas");
@@ -36,6 +38,8 @@ function init () {
   halfHeight = (canvas.height/TILE_SIZE)/2;
 
   loadMap();
+
+  loadBackground();
 
   // Set up the view boundaries
   setView({x:(mapWidth/2),y:(mapHeight/2)});
