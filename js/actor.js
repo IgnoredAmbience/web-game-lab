@@ -3,19 +3,17 @@ function Tile (tile, actor) {
   this.actor = actor;
 }
 // stands = #sprites for standing, likewise for walks
-function Actor (x, y, color, texture, stands, walks) {
-  this.x = x;
-  this.y = y;
-  this.color = color;
-  this.texture = texture;
+function actorify (obj, color, texture, stands, walks) {
+  obj.color = color;
+  obj.texture = texture;
 
-  this.action = "stand"; // Also "walk" and "fight", maybe "shop"
+  obj.action = "stand"; // Also "walk" and "fight", maybe "shop"
 
-  this.standingMax = stands;
-  this.standingStage = 0;
+  obj.standingMax = stands;
+  obj.standingStage = 0;
 
-  this.walkingMax = walks;
-  this.walkingStage = 0;
+  obj.walkingMax = walks;
+  obj.walkingStage = 0;
 }
 
 function drawActor (actor) {

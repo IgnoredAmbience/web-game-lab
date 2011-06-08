@@ -20,10 +20,10 @@ function loadMap () {
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":
-        a = new Tile(tile,new Actor(tile.x, tile.y, "red", texture, 2, 0));
+        actorify(tile, "red",texture,2,0);
         break;
     }
-    scenery[tile.x][tile.y] = a;
+    scenery[tile.x][tile.y] = tile;
   });
 }
 
@@ -50,7 +50,7 @@ function draw () {
   for (var i = xmin; i < xmax; i++) {
     for (var j = ymin; j < ymax; j++) {
       if (scenery[i][j])
-        toDraw.push(scenery[i][j].actor);
+        toDraw.push(scenery[i][j]);
     }
   }
   // Clear the canvas
