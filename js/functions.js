@@ -4,7 +4,6 @@ var TILE_SIZE = 16;
 var frameInterval = 200;
 
 // GLOBAL VARIABLES
-var graphicsLevel = 1;
 
 // For rendering
 var canvas;
@@ -124,11 +123,6 @@ function setKeys () {
   downKey = document.getElementById("downKeyInput").value.charCodeAt(0);
   leftKey = document.getElementById("leftKeyInput").value.charCodeAt(0);
   rightKey = document.getElementById("rightKeyInput").value.charCodeAt(0);
-}
-
-// Changes the detail level
-function changeGraphics () {
-  graphicsLevel = (graphicsLevel + 1) % GRAPHICS_MAX;
 }
 
 function requestString (data) {

@@ -13,47 +13,41 @@ function actorify (obj, color, texture, stands, walks) {
 }
 
 function drawActor (actor) {
-  if (graphicsLevel == 0) {
-    context.fillStyle = actor.color;
-    context.fillRect((actor.x-viewX)*TILE_SIZE,(actor.y-viewY)*TILE_SIZE,TILE_SIZE,TILE_SIZE);
+  // Row 0 of the texture image is standing
+  // Row 1 of the texture image is walking animation
+  var source_x;
+  var source_y;
+  var dest_x;
+  var dest_y;
+  switch (actor.action) {
+    case "stand" :
+      source_x = actor.standingStage*TILE_SIZE;
+      source_y = 0;
+      dest_x = actor.x;
+      dest_y = actor.y;
+      actor.standingStage = (actor.standingStage + 1) % actor.standingMax;
+      break;
+    case "walk" :
+      actor.walkingStage = (actor.walkingStage + 1) % actor.walkingMax;
+
+      source_x = actor.walkingStage*TILE_SIZE;
+      source_y = 0;
+
+      // Calculate how far between the start and destination we should draw
+      var walkStep = actor.walkingMax / actor.walkingStage;
+      dest_x = actor.x + (actor.walkingX - actor.x)/walkStep;
+      dest_y = actor.y + (actor.walkingY - actor.y)/walkStep;
+
+      if (actor == Player) {
+        setView({x: dest_x, y: dest_y});
+      } 
+
+      if (actor.walkingStage == 0) actor.action = "stand";
+      break;
   }
-  else {
-    // Row 0 of the texture image is standing
-    // Row 1 of the texture image is walking animation
-    var source_x;
-    var source_y;
-    var dest_x;
-    var dest_y;
-    switch (actor.action) {
-      case "stand" :
-        source_x = actor.standingStage*TILE_SIZE;
-        source_y = 0;
-        dest_x = actor.x;
-        dest_y = actor.y;
-        actor.standingStage = (actor.standingStage + 1) % actor.standingMax;
-        break;
-      case "walk" :
-        actor.walkingStage = (actor.walkingStage + 1) % actor.walkingMax;
-
-        source_x = actor.walkingStage*TILE_SIZE;
-        source_y = 0;
-
-        // Calculate how far between the start and destination we should draw
-        var walkStep = actor.walkingMax / actor.walkingStage;
-        dest_x = actor.x + (actor.walkingX - actor.x)/walkStep;
-        dest_y = actor.y + (actor.walkingY - actor.y)/walkStep;
-
-        if (actor == Player) {
-          setView({x: dest_x, y: dest_y});
-        } 
-
-        if (actor.walkingStage == 0) actor.action = "stand";
-        break;
-    }
-    context.drawImage(actor.texture,
-                      source_x,source_y, TILE_SIZE,TILE_SIZE,
-                      (dest_x-viewX)*TILE_SIZE,(dest_y-viewY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
-  }
+  context.drawImage(actor.texture,
+                    source_x,source_y, TILE_SIZE,TILE_SIZE,
+                    (dest_x-viewX)*TILE_SIZE,(dest_y-viewY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
 }
 
 

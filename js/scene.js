@@ -63,13 +63,14 @@ function draw () {
       context.drawImage(tiles[i%8][j%8],(i-viewX)*TILE_SIZE,(j-viewY)*TILE_SIZE);
     }
   }
+
   // draw the scenery
-  for (var i in toDraw) {
-    drawActor(toDraw[i]);
-  }
+  toDraw.forEach(drawActor);
+
   // Render the player on top
-  if (Player)
+  if (Player) {
     drawActor(Player);
+  }
 }
 
 // Colors the "not map" bits of the view
