@@ -7,8 +7,7 @@ function Actor (x, y, color, texture, stands, walks) {
   this.x = x;
   this.y = y;
   this.color = color;
-  this.texture = new Image();
-  this.texture.src = texture;
+  this.texture = texture;
 
   this.action = "stand"; // Also "walk" and "fight", maybe "shop"
 

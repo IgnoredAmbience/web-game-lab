@@ -29,6 +29,7 @@ var rightKey;
 
 var tiles;
 
+
 function init () {
   // Set up the drawing environment
   canvas = document.getElementById("canvas");
@@ -79,7 +80,9 @@ function login () {
 }
 
 function loginPlayer (p) {
-  Player = new Actor (p.x, p.y, "black", "sprites/player.png",1,2);
+  var texture = new Image ();
+  texture.src = "sprites/player.png";
+  Player = new Actor (p.x, p.y, "black", texture ,1,2);
   setView(Player);
   updateStats(p)
   document.getElementById("loginName").innerHTML = p.name;

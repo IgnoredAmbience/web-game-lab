@@ -14,10 +14,13 @@ function loadMap () {
   }
   var a;
 
+  var texture = new Image ();
+  texture.src = "sprites/shop.png";
+
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":
-        a = new Tile(tile,new Actor(tile.x, tile.y, "red", "sprites/shop.png", 2, 0));
+        a = new Tile(tile,new Actor(tile.x, tile.y, "red", texture, 2, 0));
         break;
     }
     scenery[tile.x][tile.y] = a;
