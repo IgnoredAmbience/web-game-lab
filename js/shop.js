@@ -29,31 +29,28 @@ function makeCellRow(item) {
   newCell += makeTableCell(item.name);
   newCell += makeTableCell(item.class);
   newCell += makeTableCell(item.stat);
-  newCell += makeTableCell(makeShopButton(item.value, "buy"));
-  newCell += makeTableCell(makeShopButton(item.value, "sell"));
+  newCell += makeTableCell(makeShopButton(item.value, "buy", item.id));
+  newCell += makeTableCell(makeShopButton(item.value, "sell", item.id));
   newCell += "</tr>";
   return newCell;
 }
 
 function makeShopButton(itemValue, transactType, itemId) {
     var buttonHTML = '<input type="button" name="' + itemValue + '" value ="' +
-        itemValue + '" onClick="transact(' + itemId + "," + transactType + ')" />';
+        itemValue + '" onClick="transact(' + itemId + ",'" + transactType + "')\" />";
     return buttonHTML;
 }
 
 
 function transact(itemId, transactType) {
-  var httpRequest = Ajax('POST', 'login', false);
+  var httpRequest = Ajax('POST', 'shop/-1', false);
   httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   httpRequest.send(requestString({itemId: itemId, action: transactType}));
 
-  if(httpRequest.status != 200) { //200 is SUCCESS!
+  if(httpRequest.status == 200) { //200 is SUCCESS!
       if (transactType === "buy") {
-          p.setShelf(itemId);
+          Player.setShelf(itemId); //superficial demo of success, does nothing to server
       }
       return;
-  }
-  else {
-      alert("Stop fucking with the data sent to the server");
   }
 }

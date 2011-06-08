@@ -18,16 +18,18 @@ class ShopHandler extends Handler {
     $this->requireLogin();
 
     $user = $this->getUser();
-    $itemId = json_decode($_POST['item']);
+    $itemId = json_decode($_POST['itemId']);
     $action = $_POST['action'];
 
     //Look up the item being bought
     if(!$shop = Shop::getByFields(array("x"=>$user->x, "y"=>$user->y,
-                                        "mapId" => $user->mapId),"ShopStock")) {
+                                        'mapId' => $user->mapId),"Shop")) {
+      throw new Exception("Shop does not exist");
       return;
     }
 
-    if(!$item = Item::getById($itemId, 'Item')) {
+    if(!$item = Item::getById($itemId, "Item")) {
+      throw new Exception("Item not in database");
       return;
     }
 
@@ -37,10 +39,13 @@ class ShopHandler extends Handler {
     if ($action == "buy") {
 
       if(!$shopStock) { //item not stocked by shop
+	print_r($shopStock);
+	throw new Exception("Not in stock here");
         return;
       }
 
       if($player->wealth < $item->value) { //player can't afford it
+	throw new Exception("Player cannot afford item");
         return;
       }
 
