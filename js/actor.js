@@ -124,8 +124,8 @@ function keyPressed (event) {
     if(httpRequest.status != 200) move = '';
     moveActor(Player,move);
 
+    // If we're over a shop, show its contents
     if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].type == "shop") {
-      // Show the shop button
       displayShop(scenery[Player.x][Player.y].id);
       document.getElementById("shopDisplay").style.visibility = "visible"; 
     }
@@ -135,6 +135,5 @@ function keyPressed (event) {
 
     // To prevent movement flooding
     setTimeout(function() {canMove = 1;}, 500);
-    // Update the view boundaries
   }
 }
