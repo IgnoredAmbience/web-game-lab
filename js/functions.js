@@ -13,12 +13,12 @@ var Player;
 var scenery; // Array of elements in the background scenery
 var mapHeight;
 var mapWidth;
-var viewX; // The (x,y) of the top left corner of the view
-var viewY;
-var halfWidth; // Hacky, not entirely necessary
-var halfHeight;
+var minX; // The (x,y) of the top left corner of the view
+var minY;
 var maxX;
 var maxY;
+var halfWidth; // Hacky, not entirely necessary
+var halfHeight;
 
 // For alternate keymappings
 var upKey;

@@ -42,9 +42,9 @@ function loadBackground () {
 function draw () {
   toDraw = new Array();
   // For all items, if they're in view, add to toDraw
-  var xmin = Math.floor((viewX < 0) ? 0 : viewX);
+  var xmin = Math.floor((minX < 0) ? 0 : minX);
   var xmax = Math.ceil((maxX > mapWidth) ? mapWidth : maxX);
-  var ymin = Math.floor((viewY < 0) ? 0 : viewY);
+  var ymin = Math.floor((minY < 0) ? 0 : minY);
   var ymax = Math.ceil((maxY > mapHeight) ? mapHeight : maxY);
 
   for (var i = xmin; i < xmax; i++) {
@@ -60,7 +60,7 @@ function draw () {
   // Draw grass!
   for (var i = xmin; i < xmax; i++) {
     for (var j = ymin; j < ymax; j++) {
-      context.drawImage(tiles[i%8][j%8],(i-viewX)*TILE_SIZE,(j-viewY)*TILE_SIZE);
+      context.drawImage(tiles[i%8][j%8],(i-minX)*TILE_SIZE,(j-minY)*TILE_SIZE);
     }
   }
 
@@ -76,12 +76,12 @@ function draw () {
 // Colors the "not map" bits of the view
 function colorBoundaries () {
   context.fillStyle = "grey";
-  if (viewX < 0) context.fillRect(0,0,-viewX*TILE_SIZE,canvas.height);
+  if (minX < 0) context.fillRect(0,0,-minX*TILE_SIZE,canvas.height);
   if (maxX > mapWidth) {
     var mapDiffX = maxX - mapWidth;
     context.fillRect(canvas.width-(mapDiffX*TILE_SIZE),0,mapDiffX*TILE_SIZE,canvas.height);
   }
-  if (viewY < 0) context.fillRect(0,0,canvas.width,-viewY*TILE_SIZE);
+  if (minY < 0) context.fillRect(0,0,canvas.width,-minY*TILE_SIZE);
   if (maxY > mapHeight) {
     var mapDiffY = maxY - mapHeight;
     context.fillRect(0,canvas.height-(mapDiffY*TILE_SIZE),canvas.width,mapDiffY*TILE_SIZE);
@@ -92,8 +92,8 @@ function colorBoundaries () {
 function setView (obj) {
   maxX = obj.x + halfWidth;
   maxY = obj.y + halfHeight;
-  viewX = obj.x - halfWidth;
-  viewY = obj.y - halfHeight;
+  minX = obj.x - halfWidth;
+  minY = obj.y - halfHeight;
 }
 
 function makeTile (x,y) {
