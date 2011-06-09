@@ -17,9 +17,9 @@ class Player extends DatabaseRecord {
     if($moveType == "north"):
       $this->y = max($this->y - 1, 0);
     elseif($moveType == "south"):
-      $this->y = min($this->y + 1, $currentMap->height);
+      $this->y = min($this->y + 1, $currentMap->height - 1);
     elseif($moveType == "east"):
-      $this->x = min($this->x + 1, $currentMap->width);
+      $this->x = min($this->x + 1, $currentMap->width - 1);
     elseif($moveType == "west"):
       $this->x = max($this->x - 1, 0);
     endif;
