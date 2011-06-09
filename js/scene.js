@@ -30,9 +30,9 @@ function loadMap () {
 // Loads the background grassy tiles
 function loadBackground () {
   tiles = new Array ();
-  for (var i = 0; i < 8; i++) {
+  for (var i = 0; i < NUM_TILES; i++) {
     tiles[i] = new Array();
-    for (var j = 0; j < 8; j++) {
+    for (var j = 0; j < NUM_TILES; j++) {
       makeTile(i,j);
     }
   }
@@ -60,7 +60,7 @@ function draw () {
   // Draw grass!
   for (var i = xmin; i < xmax; i++) {
     for (var j = ymin; j < ymax; j++) {
-      context.drawImage(tiles[i%8][j%8],(i-minX)*TILE_SIZE,(j-minY)*TILE_SIZE);
+      context.drawImage(tiles[i%NUM_TILES][j%NUM_TILES],(i-minX)*TILE_SIZE,(j-minY)*TILE_SIZE);
     }
   }
 

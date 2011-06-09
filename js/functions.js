@@ -2,6 +2,7 @@
 var GRAPHICS_MAX = 2;
 var TILE_SIZE = 16;
 var frameInterval = 200;
+var NUM_TILES = 8; 
 
 // GLOBAL VARIABLES
 
