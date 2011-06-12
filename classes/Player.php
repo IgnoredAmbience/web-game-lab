@@ -4,6 +4,7 @@ class Player extends DatabaseRecord {
   public $x = 0;
   public $y = 0;
   public $name;
+  public $lastActive = 'now';
   public $health = 10;
   public $wealth = 0;
   public $stealth = 0;
@@ -28,12 +29,12 @@ class Player extends DatabaseRecord {
   }
 
   public function login() {
-    $this->playing = true;
+    $this->lastActive = 'now';
     $this->save();
   }
 
   public function logout() {
-    $this->playing = 0;
+    $this->lastActive = '';
     $this->save();
   }
 

@@ -24,3 +24,11 @@ p
 {
   display:none;
 }
+
+#chatmessages
+{
+  overflow: auto;
+  height: 100px;
+  width: 512px;
+  border: 1px black solid;
+}

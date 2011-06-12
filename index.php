@@ -23,6 +23,9 @@ $application = new Application(array(
   array('player/(\d+)', 'PlayerHandler'),
   array('player/move',  'MoveHandler'),
 
+  array('poll',         'PushHandler'),
+  array('chat',         'ChatHandler'),
+
   array('shop/(\d+)',     'ShopHandler')
 ), $config['base_path']);
 

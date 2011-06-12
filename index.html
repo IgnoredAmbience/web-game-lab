@@ -4,6 +4,7 @@
   <script src="js/scene.js"></script>
   <script src="js/actor.js"></script>
   <script src="js/shop.js"></script>
+  <script src="js/notifications.js"></script>
   <link rel="stylesheet" href="style.css" type="text/css"></link>
 </head>
 
@@ -38,6 +39,11 @@
     <input class="setting" type="text" id="leftKeyInput" value="a" maxlength="1">Left</input><br>
     <input class="setting" type="text" id="rightKeyInput" value="d" maxlength="1">Right</input><br>
     <button class="setting" onclick="setKeys()">Update Keybindings</button><br>
+  </div>
+
+  <div id="notifications">
+    <div id="chatmessages"></div>
+    <input id="chat" type="text" /><button id="sendChat" onclick="Notifications.send()">Send</button>
   </div>
 
 </body>

@@ -41,6 +41,8 @@ function init () {
 
   loadBackground();
 
+  Notifications.init();
+
   // Set up the view boundaries
   setView({x:(mapWidth/2),y:(mapHeight/2)});
 
@@ -137,8 +139,11 @@ function requestString (data) {
   return parts.join('&');
 }
 
-function Ajax(method, uri, async) {
+function Ajax(method, uri, async, multipart) {
   var r = new XMLHttpRequest();
+  if(multipart != undefined && multipart) {
+    r.multipart = true;
+  }
   r.open(method, uri, async);
   r.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
   return r;
