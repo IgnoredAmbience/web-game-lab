@@ -39,9 +39,16 @@ function makeCellRow(item) {
 }
 
 function makeShopButton(itemValue, transactType, itemId) {
-    var buttonHTML = '<input type="button" name="' + itemValue + '" value ="' +
-        itemValue + '" onClick="transact(' + itemId + ",'" + transactType + "')\" />";
-    return buttonHTML;
+  var buttonHTML = '<input type="button" name="' + itemValue + 
+      '" value ="' + itemValue + 
+      '" onClick="transact(' + itemId + ",'" + transactType + "')\"";
+
+  if(itemValue > Player.wealth && transactType === "buy") {
+    buttonHTML += ' disabled="disabled" '
+  }
+
+  buttonHTML += "/>";
+  return buttonHTML;
 }
 
 
@@ -52,5 +59,6 @@ function transact(itemId, transactType) {
 
   if(httpRequest.status == 200) { //200 is SUCCESS!
     updatePlayer();
+    displayShop(scenery[Player.x][Player.y].id);
   }
 }
