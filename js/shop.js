@@ -51,9 +51,6 @@ function transact(itemId, transactType) {
   httpRequest.send(requestString({itemId: itemId, action: transactType}));
 
   if(httpRequest.status == 200) { //200 is SUCCESS!
-      if (transactType === "buy") {
-          Player.setShelf(itemId); //superficial demo of success, does nothing to server
-      }
-      return;
+    updatePlayer();
   }
 }
