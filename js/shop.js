@@ -7,6 +7,9 @@ function displayShop(id) {
 }
 
 function outputItems (jsonItems) {
+  if(jsonItems === "")
+      jsonItems = "[]";
+
   document.getElementById("shopDisplay").innerHTML =
       buildItemTable(JSON.parse(jsonItems));
 }
