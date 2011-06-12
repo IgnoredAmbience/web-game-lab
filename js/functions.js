@@ -2,6 +2,7 @@
 var GRAPHICS_MAX = 2;
 var TILE_SIZE = 16;
 var frameInterval = 200;
+var NUM_TILES = 8; 
 
 // GLOBAL VARIABLES
 
@@ -11,22 +12,21 @@ var context;
 
 var Player;
 var scenery; // Array of elements in the background scenery
+var tiles; // 2D array of background tiles
 var mapHeight;
 var mapWidth;
-var viewX; // The (x,y) of the top left corner of the view
-var viewY;
-var halfWidth; // Hacky, not entirely necessary
-var halfHeight;
+var minX; // The (x,y) of the top left corner of the view
+var minY;
 var maxX;
 var maxY;
+var halfWidth; // Hacky, not entirely necessary
+var halfHeight;
 
 // For alternate keymappings
 var upKey;
 var downKey;
 var leftKey;
 var rightKey;
-
-var tiles;
 
 
 function init () {
@@ -88,10 +88,10 @@ function loginPlayer (p) {
   var texture = new Image ();
   texture.src = "sprites/player.png";
   Player = p;
-  actorify(p, "black",texture,1,2);
+  actorify(Player, "black",texture,1,2);
   setView(Player);
-  updateStats(p)
-  document.getElementById("loginName").innerHTML = p.name;
+  updateStats(Player)
+  document.getElementById("loginName").innerHTML = Player.name;
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("logoutBox").style.display = "inline";
 }

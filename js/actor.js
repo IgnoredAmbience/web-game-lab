@@ -47,7 +47,7 @@ function drawActor (actor) {
   }
   context.drawImage(actor.texture,
                     source_x,source_y, TILE_SIZE,TILE_SIZE,
-                    (dest_x-viewX)*TILE_SIZE,(dest_y-viewY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
+                    (dest_x-minX)*TILE_SIZE,(dest_y-minY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
 }
 
 
@@ -105,13 +105,13 @@ function keyPressed (event) {
   if (!Player) {
     switch (move) {
       case "west" :
-        viewX--; maxX--; break;
+        minX--; maxX--; break;
       case "east" :
-        viewX++; maxX++; break;
+        minX++; maxX++; break;
       case "north" :
-        viewY--; maxY--; break;
+        minY--; maxY--; break;
       case "south" :
-        viewY++; maxY++; break;
+        minY++; maxY++; break;
     }
   } else
 
@@ -124,8 +124,8 @@ function keyPressed (event) {
     if(httpRequest.status != 200) move = '';
     moveActor(Player,move);
 
+    // If we're over a shop, show its contents
     if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].type == "shop") {
-      // Show the shop button
       displayShop(scenery[Player.x][Player.y].id);
       document.getElementById("shopDisplay").style.visibility = "visible"; 
     }
@@ -135,6 +135,5 @@ function keyPressed (event) {
 
     // To prevent movement flooding
     setTimeout(function() {canMove = 1;}, 500);
-    // Update the view boundaries
   }
 }
