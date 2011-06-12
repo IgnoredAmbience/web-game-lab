@@ -88,7 +88,7 @@ function loginPlayer (p) {
   var texture = new Image ();
   texture.src = "sprites/player.png";
   Player = p;
-  actorify(Player, "black",texture,1,2);
+  actorify(Player, "black", texture, 1, 2);
   setView(Player);
   updateStats(Player)
   document.getElementById("loginName").innerHTML = Player.name;
@@ -103,6 +103,18 @@ function logout () {
   updateStats();
   document.getElementById("logoutBox").style.display = "none";
   document.getElementById("loginBox").style.display = "inline";
+}
+
+function updatePlayer() {
+  var httpRequest = Ajax('GET', 'player', false);
+  httpRequest.send(null);
+  fromServer = JSON.parse(httpRequest.responseText);
+  Player.wealth = fromServer.wealth;
+  Player.stealth = fromServer.stealth;
+  Player.health = fromServer.health;
+  Player.shelf = fromServer.shelf;
+
+  updateStats(Player);
 }
 
 function updateStats (p) {
