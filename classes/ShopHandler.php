@@ -46,7 +46,6 @@ class ShopHandler extends Handler {
       }
 
       if($user->wealth < $item->value) { //player can't afford it
-	throw new Exception("Player cannot afford item");
         return;
       }
 
@@ -62,36 +61,40 @@ class ShopHandler extends Handler {
         $loot[0]->playerId = $user->id;
         $loot[0]->itemId   = $item->id;
       }
-      $loot[0]->count--;
+      $loot[0]->count++;
       $loot[0]->save();
     }
     elseif($action == "sell") {
-      if(!$loot[0] = PlayerLoot::getByFields(array("playerId"=>$user->id,
-                                                   "itemId"=>$item->id), "PlayerLoot")) {
-        return; //player doesn't have what they're trying to sell
+      if(!$loot = PlayerLoot::getByFields(array("playerId"=>$user->id,
+                                                "itemId"=>$item->id),
+                                          "PlayerLoot")) {
+        throw new Exception("Player doesn't have the loot they're selling");
+        
+        return;
       }
-
+      
       if(!$loot[0]->count) {
         return; //player doesn't have any of what they're trying to sell
       }
-
+      
       if(!$shopStock) {
         $shopStock[0] = new ShopStock();
         $shopStock[0]->shopId = $shop->id;
         $shopStock[0]->itemId = $item->id;
         $shopStock[0]->count  = 0;
       }
-        $user->wealth += $item->value;
-        $shopStock[0]->count++;
-        $user->save();
-        $shopStock[0]->save();
-
-        //Loot save should handle the case where count is 0
-        $loot[0]->count--;
-        $loot[0]->save();
+      $user->wealth += $item->value;
+      $shopStock[0]->count++;
+      $user->save();
+      $shopStock[0]->save();
+      
+      //Loot save should handle the case where count is 0
+      $loot[0]->count--;
+      $loot[0]->save();
     }
   }
-
+  
+  
   function get($shopId) {
     if($shop = Shop::getById($shopId, 'Shop')) {
       if($shopStock = ShopStock::getByField("shopId",$shop->id,"ShopStock")) {
@@ -102,6 +105,5 @@ class ShopHandler extends Handler {
       }
     } //deliberately = and not == or ===
   }
-
-
+  
 }
