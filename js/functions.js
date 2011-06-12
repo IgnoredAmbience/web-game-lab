@@ -56,26 +56,30 @@ function init () {
 }
 
 function checkLogin () {
-  var httpRequest = Ajax('GET', 'player', false);
+  var httpRequest = Ajax('GET', 'player', true);
   httpRequest.send(null);
-  if(httpRequest.status != 200) {
-    return;
-  } else {
-    var p = JSON.parse(httpRequest.responseText);
-    loginPlayer(p);
+  httpRequest.onload = function(evt) {
+    if(httpRequest.status != 200) {
+      return;
+    } else {
+      var p = JSON.parse(httpRequest.responseText);
+      loginPlayer(p);
+    }
   }
 }
 
 function login () {
   var username = document.getElementById("userBox").value;
 
-  var httpRequest = Ajax('POST', 'login', false);
+  var httpRequest = Ajax('POST', 'login', true);
   httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   httpRequest.send(requestString({name: username}));
-  if(httpRequest.status != 200) return;
+  httpRequest.onload = function(evt) {
+    if(httpRequest.status != 200) return;
 
-  var p = JSON.parse(httpRequest.responseText);
-  loginPlayer(p);
+    var p = JSON.parse(httpRequest.responseText);
+    loginPlayer(p);
+  }
 }
 
 function loginPlayer (p) {
