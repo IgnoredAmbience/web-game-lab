@@ -27,6 +27,8 @@ class ShopHandler extends Handler {
       throw new Exception("Shop does not exist");
       return;
     }
+    else
+      $shop = $shop[0]; //array returned by getByFields
 
     if(!$item = Item::getById($itemId, "Item")) {
       throw new Exception("Item not in database");
@@ -39,19 +41,18 @@ class ShopHandler extends Handler {
     if ($action == "buy") {
 
       if(!$shopStock) { //item not stocked by shop
-	print_r($shopStock);
 	throw new Exception("Not in stock here");
         return;
       }
 
-      if($player->wealth < $item->value) { //player can't afford it
+      if($user->wealth < $item->value) { //player can't afford it
 	throw new Exception("Player cannot afford item");
         return;
       }
 
-      $player->wealth -= $item->value;
+      $user->wealth -= $item->value;
       $shopStock[0]->count--;
-      $player->save();
+      $user->save();
       $shopStock[0]->save();
 
       if(!$loot = PlayerLoot::getByFields(array("playerId"=>$user->id,
@@ -80,9 +81,9 @@ class ShopHandler extends Handler {
         $shopStock[0]->itemId = $item->id;
         $shopStock[0]->count  = 0;
       }
-        $player->wealth += $item->value;
+        $user->wealth += $item->value;
         $shopStock[0]->count++;
-        $player->save();
+        $user->save();
         $shopStock[0]->save();
 
         //Loot save should handle the case where count is 0
