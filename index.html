@@ -4,6 +4,7 @@
   <script src="js/scene.js"></script>
   <script src="js/actor.js"></script>
   <script src="js/shop.js"></script>
+  <script src="js/notifications.js"></script>
   <link rel="stylesheet" href="style.css" type="text/css"></link>
 </head>
 
@@ -21,9 +22,6 @@
     <canvas id="canvas" width="512" height="512"></canvas>
   </div>
 
-
-  <button onclick="drawMenu()">Menu</button>
-
   <div id="playerStats">
     <div id="wealthDisplay"></div>
     <div id="healthDisplay"></div>
@@ -32,17 +30,20 @@
   </div>
 
   <div id="shopDisplay"></div>
-  <button id="shopButton" onclick="displayShop()">SHOP</button>
 
   <button onclick="toggleSettings()">Settings</button>
 
   <div id="settings">
-    <button class="setting" onclick="changeGraphics()">Graphics</button><br>
     <input class="setting" type="text" id="upKeyInput" value="w" maxlength="1">Up</input><br>
     <input class="setting" type="text" id="downKeyInput" value="s" maxlength="1">Down</input><br>
     <input class="setting" type="text" id="leftKeyInput" value="a" maxlength="1">Left</input><br>
     <input class="setting" type="text" id="rightKeyInput" value="d" maxlength="1">Right</input><br>
     <button class="setting" onclick="setKeys()">Update Keybindings</button><br>
+  </div>
+
+  <div id="notifications">
+    <div id="chatmessages"></div>
+    <input id="chat" type="text" /><button id="sendChat" onclick="Notifications.send()">Send</button>
   </div>
 
 </body>

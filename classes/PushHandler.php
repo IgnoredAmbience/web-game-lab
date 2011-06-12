@@ -3,29 +3,40 @@ class PushHandler extends Handler {
   /* Also, be aware of the 30 second script execution timeout! */
   private $separator = 'multipart-separator-';
 
-  function get() {
-  // Demo script
-?>
-<div id="count">Unloaded</div>
-<script>
-  var r = new XMLHttpRequest();
-  r.multipart = true;
-  r.open('PUT', 'poll', false);
-  r.onload = function(evt) {
-    document.getElementById('count').innerHTML += '('+r.responseText+')';
-  }
-  r.send(null);
-</script>
-<?php
-  }
-
   function put() {
+    global $db;
+    //$this->requireLogin();
+    //$p = $this->getUser();
     $this->initiate();
 
-    for($i = 0; $i < 10; $i++) {
-      $this->send_packet($i);
-      sleep(1);
+    // Close resources
+    session_write_close();
+    $db = null;
+
+    ignore_user_abort(true);
+
+    $n = new Notification();
+    $n->register_listener();
+
+    // We abort the script, on session death, we will be blocked on death,
+    // so have potentially lost one message for a user
+    // TODO: Look into recovering this message
+    while(!connection_aborted()) {
+      $msg = $n->receive();
+      if($msg) {
+        if(is_array($msg) && isset($msg['type']) && $msg['type'] == 'disconnect') {
+          break;
+        } else {
+          $this->send_packet(json_encode($msg), 'application/json');
+        }
+      }
     }
+  }
+
+  public function get() {
+    $n = new Notification();
+    print_r($n->get_listeners());
+    print_r($n->stat_q());
   }
 
   private function initiate() {
@@ -33,13 +44,14 @@ class PushHandler extends Handler {
     header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
     header("Expires: Thu, 01 Jan 1970 00:00:00 GMT"); // Date in the past
     header("Content-type: multipart/x-mixed-replace; boundary={$this->separator}");
+    ob_implicit_flush(true);
   }
 
   private function send_packet($string, $content_type='text/plain') {
+    echo "--{$this->separator}\n";
     echo "Content-type: $content_type\n\n";
     echo "$string\n";
     echo "--{$this->separator}\n";
-    flush();
   }
 }
 

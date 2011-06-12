@@ -34,7 +34,7 @@ CREATE TABLE Player (
   y integer DEFAULT 0,
   "mapId" integer REFERENCES Map(id),
   name varchar(20),
-  playing boolean,
+  "lastActive" timestamp,
   health integer  DEFAULT 10,
   wealth integer  DEFAULT 0,
   stealth integer DEFAULT 0, -- like threat?
@@ -84,12 +84,12 @@ INSERT INTO Map (width, height, name) VALUES(64, 64, 'New Swedenheim');
 
 
 -- 3 players (alpha beta & gamma), different locations, same stats
-INSERT INTO Player (x, y, "mapId", name, playing, health, wealth, stealth, shelf)
-       VALUES(5, 5, 1, 'Alpha', false, 10, 9000, 0, 1);
-INSERT INTO Player (x, y, "mapId", name, playing, health, wealth, stealth, shelf)
-       VALUES(6, 6, 1, 'Beta',  false, 10, 9000, 0, 2);
-INSERT INTO Player (x, y, "mapId", name, playing, health, wealth, stealth, shelf)
-       VALUES(7, 7, 1, 'Gamma', false, 10, 9000, 0, 3);
+INSERT INTO Player (x, y, "mapId", name, health, wealth, stealth, shelf)
+             VALUES(5, 5, 1, 'Alpha', 10, 9000, 0, 1);
+INSERT INTO Player (x, y, "mapId", name, health, wealth, stealth, shelf)
+             VALUES(6, 6, 1, 'Beta', 10, 9000, 0, 2);
+INSERT INTO Player (x, y, "mapId", name, health, wealth, stealth, shelf)
+             VALUES(7, 7, 1, 'Gamma', 10, 9000, 0, 3);
 
 -- Alpha has a spoon, beta a fork, gamma a knife. One each
 INSERT INTO PlayerLoot ("playerId", "itemId", count) VALUES (1,1,1);

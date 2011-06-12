@@ -2,9 +2,9 @@
 var GRAPHICS_MAX = 2;
 var TILE_SIZE = 16;
 var frameInterval = 200;
+var NUM_TILES = 8; 
 
 // GLOBAL VARIABLES
-var graphicsLevel = 1;
 
 // For rendering
 var canvas;
@@ -12,22 +12,21 @@ var context;
 
 var Player;
 var scenery; // Array of elements in the background scenery
+var tiles; // 2D array of background tiles
 var mapHeight;
 var mapWidth;
-var viewX; // The (x,y) of the top left corner of the view
-var viewY;
-var halfWidth; // Hacky, not entirely necessary
-var halfHeight;
+var minX; // The (x,y) of the top left corner of the view
+var minY;
 var maxX;
 var maxY;
+var halfWidth; // Hacky, not entirely necessary
+var halfHeight;
 
 // For alternate keymappings
 var upKey;
 var downKey;
 var leftKey;
 var rightKey;
-
-var tiles;
 
 
 function init () {
@@ -41,6 +40,8 @@ function init () {
   loadMap();
 
   loadBackground();
+
+  Notifications.init();
 
   // Set up the view boundaries
   setView({x:(mapWidth/2),y:(mapHeight/2)});
@@ -57,36 +58,40 @@ function init () {
 }
 
 function checkLogin () {
-  var httpRequest = Ajax('GET', 'player', false);
+  var httpRequest = Ajax('GET', 'player', true);
   httpRequest.send(null);
-  if(httpRequest.status != 200) {
-    return;
-  } else {
-    var p = JSON.parse(httpRequest.responseText);
-    loginPlayer(p);
+  httpRequest.onload = function(evt) {
+    if(httpRequest.status != 200) {
+      return;
+    } else {
+      var p = JSON.parse(httpRequest.responseText);
+      loginPlayer(p);
+    }
   }
 }
 
 function login () {
   var username = document.getElementById("userBox").value;
 
-  var httpRequest = Ajax('POST', 'login', false);
+  var httpRequest = Ajax('POST', 'login', true);
   httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   httpRequest.send(requestString({name: username}));
-  if(httpRequest.status != 200) return;
+  httpRequest.onload = function(evt) {
+    if(httpRequest.status != 200) return;
 
-  var p = JSON.parse(httpRequest.responseText);
-  loginPlayer(p);
+    var p = JSON.parse(httpRequest.responseText);
+    loginPlayer(p);
+  }
 }
 
 function loginPlayer (p) {
   var texture = new Image ();
   texture.src = "sprites/player.png";
   Player = p;
-  actorify(p, "black",texture,1,2);
+  actorify(Player, "black",texture,1,2);
   setView(Player);
-  updateStats(p)
-  document.getElementById("loginName").innerHTML = p.name;
+  updateStats(Player)
+  document.getElementById("loginName").innerHTML = Player.name;
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("logoutBox").style.display = "inline";
 }
@@ -126,11 +131,6 @@ function setKeys () {
   rightKey = document.getElementById("rightKeyInput").value.charCodeAt(0);
 }
 
-// Changes the detail level
-function changeGraphics () {
-  graphicsLevel = (graphicsLevel + 1) % GRAPHICS_MAX;
-}
-
 function requestString (data) {
   var parts = [];
   for (field in data) {
@@ -139,8 +139,11 @@ function requestString (data) {
   return parts.join('&');
 }
 
-function Ajax(method, uri, async) {
+function Ajax(method, uri, async, multipart) {
   var r = new XMLHttpRequest();
+  if(multipart != undefined && multipart) {
+    r.multipart = true;
+  }
   r.open(method, uri, async);
   r.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
   return r;

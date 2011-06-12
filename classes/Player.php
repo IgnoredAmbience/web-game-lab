@@ -4,6 +4,7 @@ class Player extends DatabaseRecord {
   public $x = 0;
   public $y = 0;
   public $name;
+  public $lastActive = 'now';
   public $health = 10;
   public $wealth = 0;
   public $stealth = 0;
@@ -17,9 +18,9 @@ class Player extends DatabaseRecord {
     if($moveType == "north"):
       $this->y = max($this->y - 1, 0);
     elseif($moveType == "south"):
-      $this->y = min($this->y + 1, $currentMap->height);
+      $this->y = min($this->y + 1, $currentMap->height - 1);
     elseif($moveType == "east"):
-      $this->x = min($this->x + 1, $currentMap->width);
+      $this->x = min($this->x + 1, $currentMap->width - 1);
     elseif($moveType == "west"):
       $this->x = max($this->x - 1, 0);
     endif;
@@ -28,12 +29,12 @@ class Player extends DatabaseRecord {
   }
 
   public function login() {
-    $this->playing = true;
+    $this->lastActive = 'now';
     $this->save();
   }
 
   public function logout() {
-    $this->playing = 0;
+    $this->lastActive = '';
     $this->save();
   }
 
