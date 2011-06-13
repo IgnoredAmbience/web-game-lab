@@ -74,6 +74,7 @@ function moveActor (actor,direction) {
   if (actor.y > mapHeight-1) actor.y = mapHeight-1;
 
   actor.action = "walk";
+  View.recheckPlayers = 1;
 }
 
 
@@ -128,6 +129,7 @@ function keyPressed (event) {
     httpRequest.send(requestString({moveType: move}));
     if (httpRequest.status != 200) move = '';
     else {
+      View.recheckScenery = 1;
       // If we're over a shop, show its contents
       var p = players[Player];
       if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
