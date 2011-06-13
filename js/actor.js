@@ -126,16 +126,17 @@ function keyPressed (event) {
     var httpRequest = Ajax('POST', "player/move", false);
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.send(requestString({moveType: move}));
-    if(httpRequest.status != 200) move = '';
-
-    // If we're over a shop, show its contents
-    var p = players[Player];
-    if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
-      displayShop(scenery[p.x][p.y].id);
-      document.getElementById("shopDisplay").style.visibility = "visible"; 
-    }
+    if (httpRequest.status != 200) move = '';
     else {
-      document.getElementById("shopDisplay").style.visibility = "hidden"; 
+      // If we're over a shop, show its contents
+      var p = players[Player];
+      if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
+        displayShop(scenery[p.x][p.y].id);
+        document.getElementById("shopDisplay").style.visibility = "visible"; 
+      }
+      else {
+        document.getElementById("shopDisplay").style.visibility = "hidden"; 
+      }
     }
 
     // To prevent movement flooding

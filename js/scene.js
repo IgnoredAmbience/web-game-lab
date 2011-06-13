@@ -72,7 +72,7 @@ function draw () {
     }
   }
 
-  // draw the scenery
+  // draw the view
   sceneryToDraw.forEach(drawActor);
   playersToDraw.forEach(drawActor);
 }
