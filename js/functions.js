@@ -1,6 +1,7 @@
 // CONSTANTS
 var GRAPHICS_MAX = 2;
-var TILE_SIZE = 16;
+var TILE_SIZE = 24;
+var SPRITE_SIZE = 16;
 var frameInterval = 200;
 var NUM_TILES = 8; 
 
@@ -34,6 +35,8 @@ function init () {
   canvas = document.getElementById("canvas");
   context = this.canvas.getContext("2d");
   context.font = "bold 12px sans-serif";
+  canvas.width = 32*TILE_SIZE;
+  canvas.height = 32*TILE_SIZE;
   halfWidth = (canvas.width/TILE_SIZE)/2;
   halfHeight = (canvas.height/TILE_SIZE)/2;
 
@@ -86,7 +89,7 @@ function login () {
 
 function loginPlayer (p) {
   var texture = new Image ();
-  texture.src = "sprites/player.png";
+  texture.src = "sprites/player" + SPRITE_SIZE + ".png";
   Player = p;
   actorify(Player, "black",texture,1,2);
   setView(Player);
