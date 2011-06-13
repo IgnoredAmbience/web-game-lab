@@ -20,7 +20,7 @@ function loadMap () {
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":
-        actorify(tile, "red",texture,1,0);
+        actorify(tile, "red",texture,2,0);
         break;
     }
     scenery[tile.x][tile.y] = tile;
@@ -40,19 +40,27 @@ function loadBackground () {
 
 // There are separate lists for scenery, other players and the user player, rendered in that order
 function draw () {
-  toDraw = new Array();
+  sceneryToDraw = new Array();
+  playersToDraw = new Array();
   // For all items, if they're in view, add to toDraw
   var xmin = Math.floor((minX < 0) ? 0 : minX);
   var xmax = Math.ceil((maxX > mapWidth) ? mapWidth : maxX);
   var ymin = Math.floor((minY < 0) ? 0 : minY);
   var ymax = Math.ceil((maxY > mapHeight) ? mapHeight : maxY);
 
+  // Check for scenery in view
   for (var i = xmin; i < xmax; i++) {
     for (var j = ymin; j < ymax; j++) {
       if (scenery[i][j])
-        toDraw.push(scenery[i][j]);
+        sceneryToDraw.push(scenery[i][j]);
     }
   }
+  // Now check for players in view
+  for (var i in players) {
+    if (inView(players[i],xmin,xmax,ymin,ymax))
+      playersToDraw.push(players[i]);
+  }
+
   // Clear the canvas
   canvas.width = canvas.width;
   // Color the edge of the map
@@ -64,13 +72,14 @@ function draw () {
     }
   }
 
-  // draw the scenery
-  toDraw.forEach(drawActor);
+  // draw the view
+  sceneryToDraw.forEach(drawActor);
+  playersToDraw.forEach(drawActor);
+}
 
-  // Render the player on top
-  if (Player) {
-    drawActor(Player);
-  }
+function inView (p, xmin,xmax,ymin,ymax) {
+  return (p.x > xmin && p.x < xmax &&
+          p.y > ymin && p.y < ymax);
 }
 
 // Colors the "not map" bits of the view

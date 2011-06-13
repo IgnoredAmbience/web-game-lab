@@ -23,6 +23,12 @@ Notifications = {
 
   handler: function(evt) {
     document.getElementById('chatmessages').innerHTML = this.r.responseText + '<br/>' + document.getElementById('chatmessages').innerHTML;
+    var obj = JSON.parse(this.r.responseText);
+    switch (obj.type) {
+      case "move" :
+        moveActor(players[obj.player.id], obj.move); break;
+      default :
+    }
   },
   
   send: function() {
