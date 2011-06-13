@@ -43,19 +43,22 @@ class Player extends DatabaseRecord {
   }
 
   public function login() {
-    $this->lastActive = 'now';
-    $this->save();
-
+    $this->ping();
     $n = new Notification();
     $n->broadcast(array('type'=>'login', 'player'=> (array) $this));
   }
 
   public function logout() {
-    $this->lastActive = '';
+    $this->lastActive = '-infinity';
     $this->save();
 
     $n = new Notification();
     $n->broadcast(array('type'=>'logout', 'player'=> (array) $this));
+  }
+
+  public function ping() {
+    $this->lastActive = 'now';
+    $this->save();
   }
 
   public function buyItem() {
@@ -69,5 +72,4 @@ class Player extends DatabaseRecord {
   public function playerAsJSON() {
     return json_encode(get_object_vars());
   }
-
 }

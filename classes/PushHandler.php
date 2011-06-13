@@ -5,8 +5,8 @@ class PushHandler extends Handler {
 
   function put() {
     global $db;
-    //$this->requireLogin();
-    //$p = $this->getUser();
+    $p = $this->getUser();
+    if($p) $p->ping();
     $this->initiate();
 
     // Close resources

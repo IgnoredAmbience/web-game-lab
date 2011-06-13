@@ -1,16 +1,17 @@
 <?php
 /* Inter-process communication class for instantaneous notifications with minimal overhead */
 class Notification {
-  const key = 924385941;
+  private $key;
   private $queue;
   private $sema;
   private $idMap;
   private $listenerId = 0;
 
   public function __construct() {
-    $this->queue = msg_get_queue(self::key);
-    $this->sema = sem_get(self::key+1);
-    $this->idMap = shm_attach(self::key+2);
+    $this->key = ftok(__FILE__, 'g');
+    $this->queue = msg_get_queue($this->key);
+    $this->sema = sem_get($this->key+1);
+    $this->idMap = shm_attach($this->key+2);
   }
 
   public function __destruct() {
@@ -59,6 +60,13 @@ class Notification {
 
   public function stat_q() {
     return msg_stat_queue($this->queue);
+  }
+
+  public function cleanup_all() {
+    $this->listenerId = 0;
+    msg_remove_queue($this->queue);
+    shm_remove($this->idMap);
+    sem_remove($this->sema);
   }
 
   public function broadcast($msg) {
