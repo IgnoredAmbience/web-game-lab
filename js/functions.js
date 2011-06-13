@@ -12,6 +12,7 @@ var canvas;
 var context;
 
 var Player;
+var players;
 var scenery; // Array of elements in the background scenery
 var tiles; // 2D array of background tiles
 var mapHeight;
@@ -39,6 +40,8 @@ function init () {
   canvas.height = 32*TILE_SIZE;
   halfWidth = (canvas.width/TILE_SIZE)/2;
   halfHeight = (canvas.height/TILE_SIZE)/2;
+
+  players = new Array();
 
   loadMap();
 
@@ -90,11 +93,12 @@ function login () {
 function loginPlayer (p) {
   var texture = new Image ();
   texture.src = "sprites/player" + SPRITE_SIZE + ".png";
-  Player = p;
-  actorify(Player, "black",texture,1,2);
-  setView(Player);
-  updateStats(Player)
-  document.getElementById("loginName").innerHTML = Player.name;
+  Player = p.id;
+  players[Player] = p;
+  actorify(players[Player], "black",texture,1,2);
+  setView(players[Player]);
+  updateStats(players[Player])
+  document.getElementById("loginName").innerHTML = players[Player].name;
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("logoutBox").style.display = "inline";
 }

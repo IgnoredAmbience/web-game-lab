@@ -38,7 +38,7 @@ function drawActor (actor) {
       dest_x = actor.x + (actor.walkingX - actor.x)/walkStep;
       dest_y = actor.y + (actor.walkingY - actor.y)/walkStep;
 
-      if (actor == Player) {
+      if (actor == players[Player]) {
         setView({x: dest_x, y: dest_y});
       } 
 
@@ -127,11 +127,11 @@ function keyPressed (event) {
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.send(requestString({moveType: move}));
     if(httpRequest.status != 200) move = '';
-    moveActor(Player,move);
 
     // If we're over a shop, show its contents
-    if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].type == "shop") {
-      displayShop(scenery[Player.x][Player.y].id);
+    var p = players[Player];
+    if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
+      displayShop(scenery[p.x][p.y].id);
       document.getElementById("shopDisplay").style.visibility = "visible"; 
     }
     else {
