@@ -1,3 +1,8 @@
+var View = {
+  recheckScenery: 1,
+  recheckPlayers: 1
+}
+
 // Will pull from server and load
 function loadMap () {
   var r = Ajax('GET', 'map', false);
@@ -20,7 +25,7 @@ function loadMap () {
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":
-        actorify(tile, "red",texture,2,0);
+        actorify(tile,texture,2,0);
         break;
     }
     scenery[tile.x][tile.y] = tile;
@@ -40,25 +45,32 @@ function loadBackground () {
 
 // There are separate lists for scenery, other players and the user player, rendered in that order
 function draw () {
-  sceneryToDraw = new Array();
-  playersToDraw = new Array();
   // For all items, if they're in view, add to toDraw
   var xmin = Math.floor((minX < 0) ? 0 : minX);
   var xmax = Math.ceil((maxX > mapWidth) ? mapWidth : maxX);
   var ymin = Math.floor((minY < 0) ? 0 : minY);
   var ymax = Math.ceil((maxY > mapHeight) ? mapHeight : maxY);
 
-  // Check for scenery in view
-  for (var i = xmin; i < xmax; i++) {
-    for (var j = ymin; j < ymax; j++) {
-      if (scenery[i][j])
-        sceneryToDraw.push(scenery[i][j]);
+  if (View.recheckScenery) {
+    View.recheckScenery = 0;
+    View.sceneryToDraw = new Array();
+    // Check for scenery in view
+    for (var i = xmin; i < xmax; i++) {
+      for (var j = ymin; j < ymax; j++) {
+        if (scenery[i][j])
+          View.sceneryToDraw.push(scenery[i][j]);
+      }
     }
   }
-  // Now check for players in view
-  for (var i in players) {
-    if (inView(players[i],xmin,xmax,ymin,ymax))
-      playersToDraw.push(players[i]);
+
+  if (View.recheckPlayers) {
+    View.recheckPlayers = 0;
+    View.playersToDraw = new Array();
+    // Check for players in view
+    for (var i in players) {
+      if (inView(players[i],xmin,xmax,ymin,ymax))
+        View.playersToDraw.push(players[i]);
+    }
   }
 
   // Clear the canvas
@@ -73,13 +85,13 @@ function draw () {
   }
 
   // draw the view
-  sceneryToDraw.forEach(drawActor);
-  playersToDraw.forEach(drawActor);
+  View.sceneryToDraw.forEach(drawActor);
+  View.playersToDraw.forEach(drawActor);
 }
 
 function inView (p, xmin,xmax,ymin,ymax) {
-  return (p.x > xmin && p.x < xmax &&
-          p.y > ymin && p.y < ymax);
+  return (p.x >= xmin && p.x < xmax &&
+          p.y >= ymin && p.y < ymax);
 }
 
 // Colors the "not map" bits of the view
@@ -103,6 +115,7 @@ function setView (obj) {
   maxY = obj.y + halfHeight;
   minX = obj.x - halfWidth;
   minY = obj.y - halfHeight;
+  View.recheckScenery = 1;
 }
 
 function makeTile (x,y) {

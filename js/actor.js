@@ -1,6 +1,5 @@
 // stands = #sprites for standing, likewise for walks
-function actorify (obj, color, texture, stands, walks) {
-  obj.color = color;
+function actorify (obj, texture, stands, walks) {
   obj.texture = texture;
 
   obj.action = "stand"; // Also "walk" and "fight", maybe "shop"
@@ -67,13 +66,9 @@ function moveActor (actor,direction) {
     default :
       return;
   }
-  // Check for map boundaries
-  if (actor.x < 0) actor.x = 0;
-  if (actor.x > mapWidth-1) actor.x = mapWidth-1;
-  if (actor.y < 0) actor.y = 0;
-  if (actor.y > mapHeight-1) actor.y = mapHeight-1;
 
   actor.action = "walk";
+  View.recheckPlayers = 1;
 }
 
 
@@ -117,7 +112,9 @@ function keyPressed (event) {
         minY--; maxY--; break;
       case "south" :
         minY++; maxY++; break;
+      default:
     }
+    View.recheckScenery = 1;
   } else
 
   if (canMove) {
