@@ -67,11 +67,6 @@ function moveActor (actor,direction) {
     default :
       return;
   }
-  // Check for map boundaries
-  if (actor.x < 0) actor.x = 0;
-  if (actor.x > mapWidth-1) actor.x = mapWidth-1;
-  if (actor.y < 0) actor.y = 0;
-  if (actor.y > mapHeight-1) actor.y = mapHeight-1;
 
   actor.action = "walk";
   View.recheckPlayers = 1;

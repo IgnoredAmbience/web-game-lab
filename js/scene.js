@@ -90,8 +90,8 @@ function draw () {
 }
 
 function inView (p, xmin,xmax,ymin,ymax) {
-  return (p.x > xmin && p.x < xmax &&
-          p.y > ymin && p.y < ymax);
+  return (p.x >= xmin && p.x < xmax &&
+          p.y >= ymin && p.y < ymax);
 }
 
 // Colors the "not map" bits of the view
