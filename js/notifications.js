@@ -26,7 +26,17 @@ Notifications = {
     var obj = JSON.parse(this.r.responseText);
     switch (obj.type) {
       case "move" :
-        moveActor(players[obj.player.id], obj.move); break;
+        moveActor(players[obj.player.id], obj.move);
+        break;
+      case "login" :
+        actorify(obj.player,players[Player].texture,1,2);
+        players[obj.player.id] = obj.player;
+        View.recheckPlayers = 1;
+        break;
+      case "logout" :
+        delete players[obj.player.id];
+        View.recheckPlayers = 1;
+        break;
       default :
     }
   },

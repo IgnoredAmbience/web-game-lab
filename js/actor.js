@@ -1,6 +1,5 @@
 // stands = #sprites for standing, likewise for walks
-function actorify (obj, color, texture, stands, walks) {
-  obj.color = color;
+function actorify (obj, texture, stands, walks) {
   obj.texture = texture;
 
   obj.action = "stand"; // Also "walk" and "fight", maybe "shop"
@@ -113,7 +112,9 @@ function keyPressed (event) {
         minY--; maxY--; break;
       case "south" :
         minY++; maxY++; break;
+      default:
     }
+    View.recheckScenery = 1;
   } else
 
   if (canMove) {
@@ -124,7 +125,6 @@ function keyPressed (event) {
     httpRequest.send(requestString({moveType: move}));
     if (httpRequest.status != 200) move = '';
     else {
-      View.recheckScenery = 1;
       // If we're over a shop, show its contents
       var p = players[Player];
       if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {

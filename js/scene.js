@@ -25,7 +25,7 @@ function loadMap () {
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":
-        actorify(tile, "red",texture,2,0);
+        actorify(tile,texture,2,0);
         break;
     }
     scenery[tile.x][tile.y] = tile;
@@ -115,6 +115,7 @@ function setView (obj) {
   maxY = obj.y + halfHeight;
   minX = obj.x - halfWidth;
   minY = obj.y - halfHeight;
+  View.recheckScenery = 1;
 }
 
 function makeTile (x,y) {
