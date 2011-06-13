@@ -17,6 +17,7 @@ class PushHandler extends Handler {
 
     $n = new Notification();
     $n->register_listener();
+    $n->broadcast(array('type'=>'ping'));
 
     // We abort the script, on session death, we will be blocked on death,
     // so have potentially lost one message for a user

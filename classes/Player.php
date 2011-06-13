@@ -47,7 +47,7 @@ class Player extends DatabaseRecord {
     $this->save();
 
     $n = new Notification();
-    $n->broadcast(array('type'=>'login', 'player'=>$this));
+    $n->broadcast(array('type'=>'login', 'player'=> (array) $this));
   }
 
   public function logout() {
@@ -55,7 +55,7 @@ class Player extends DatabaseRecord {
     $this->save();
 
     $n = new Notification();
-    $n->broadcast(array('type'=>'logout', 'player'=>$this));
+    $n->broadcast(array('type'=>'logout', 'player'=> (array) $this));
   }
 
   public function buyItem() {
