@@ -26,16 +26,25 @@ class Player extends DatabaseRecord {
     endif;
 
     $this->save();
+
+    $n = new Notification();
+    $n->broadcast(array('type'=>'move', 'player'=>$this, 'move'=>$moveType));
   }
 
   public function login() {
     $this->lastActive = 'now';
     $this->save();
+
+    $n = new Notification();
+    $n->broadcast(array('type'=>'login', 'player'=>$this));
   }
 
   public function logout() {
     $this->lastActive = '';
     $this->save();
+
+    $n = new Notification();
+    $n->broadcast(array('type'=>'logout', 'player'=>$this));
   }
 
   public function buyItem() {

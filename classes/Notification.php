@@ -15,7 +15,6 @@ class Notification {
 
   public function __destruct() {
     $this->deregister_listener();
-    if($this->listenerId) $this->broadcast("Destroying listener #{$this->listenerId}");
   }
 
   public function register_listener($uid = 0) {
@@ -38,7 +37,6 @@ class Notification {
       $this->listenerId = $i;
       shm_put_var($this->idMap, 0, $v);
     sem_release($this->sema);
-    $this->broadcast("Registered listener #$i");
     return $i;
   }
 
@@ -78,7 +76,7 @@ class Notification {
   }
 
   public function receive() {
-    msg_receive($this->queue, $this->listenerId, $type, 100, $msg);
+    msg_receive($this->queue, $this->listenerId, $type, 1000, $msg);
     return $msg;
   }
 }

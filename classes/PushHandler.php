@@ -21,7 +21,9 @@ class PushHandler extends Handler {
     // We abort the script, on session death, we will be blocked on death,
     // so have potentially lost one message for a user
     // TODO: Look into recovering this message
-    while(!connection_aborted()) {
+    //
+    // connection_status() returns 0 whilst still connected
+    while(!connection_status()) {
       $msg = $n->receive();
       if($msg) {
         if(is_array($msg) && isset($msg['type']) && $msg['type'] == 'disconnect') {
