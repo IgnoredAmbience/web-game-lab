@@ -81,6 +81,11 @@ var canMove = 1;
 // Player movement event handler
 function keyPressed (event) {
   var move;
+
+  // Prevent any AJAX requests from being aborted using the ESC key
+  if((event.keyCode || event.charCode) == 27) event.preventDefault();
+
+  // Don't capture key events in input fields
   if(event.target.tagName == 'INPUT') return;
 
   switch (event.keyCode || event.charCode) {
