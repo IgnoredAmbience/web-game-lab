@@ -15,12 +15,12 @@ function loadMap () {
   var a;
 
   var texture = new Image ();
-  texture.src = "sprites/shop.png";
+  texture.src = "sprites/shop" + SPRITE_SIZE + ".png";
 
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":
-        actorify(tile, "red",texture,2,0);
+        actorify(tile, "red",texture,1,0);
         break;
     }
     scenery[tile.x][tile.y] = tile;
@@ -101,8 +101,8 @@ function makeTile (x,y) {
   tiles[x][y].width = TILE_SIZE;
   tiles[x][y].height = TILE_SIZE;
   var c = tiles[x][y].getContext("2d");
-  for (var i = 0; i < 16; i++) {
-    for (var j = 0; j < 16; j++) {
+  for (var i = 0; i < TILE_SIZE; i++) {
+    for (var j = 0; j < TILE_SIZE; j++) {
       var s = 50 + Math.floor(Math.random() * 50);
       var l = 60 + Math.floor(Math.random() * 20);;
       drawPixel(c,i,j,120,s,l);

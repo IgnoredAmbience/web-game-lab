@@ -21,7 +21,7 @@ function drawActor (actor) {
   var dest_y;
   switch (actor.action) {
     case "stand" :
-      source_x = actor.standingStage*TILE_SIZE;
+      source_x = actor.standingStage*SPRITE_SIZE;
       source_y = 0;
       dest_x = actor.x;
       dest_y = actor.y;
@@ -30,7 +30,7 @@ function drawActor (actor) {
     case "walk" :
       actor.walkingStage = (actor.walkingStage + 1) % actor.walkingMax;
 
-      source_x = actor.walkingStage*TILE_SIZE;
+      source_x = actor.walkingStage*SPRITE_SIZE;
       source_y = 0;
 
       // Calculate how far between the start and destination we should draw
@@ -46,7 +46,7 @@ function drawActor (actor) {
       break;
   }
   context.drawImage(actor.texture,
-                    source_x,source_y, TILE_SIZE,TILE_SIZE,
+                    source_x,source_y, SPRITE_SIZE,SPRITE_SIZE,
                     (dest_x-minX)*TILE_SIZE,(dest_y-minY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
 }
 
