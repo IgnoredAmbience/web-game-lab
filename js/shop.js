@@ -47,7 +47,7 @@ function makeShopButton(itemValue, transactType, itemId) {
       '" value ="' + itemValue + 
       '" onClick="transact(' + itemId + ",'" + transactType + "')\"";
 
-  if(itemValue > Player.wealth && transactType === "buy") {
+  if(itemValue > players[Player].wealth && transactType === "buy") {
     buttonHTML += ' disabled="disabled" '
   }
 
@@ -63,6 +63,6 @@ function transact(itemId, transactType) {
 
   if(httpRequest.status == 200) { //200 is SUCCESS!
     updatePlayer();
-    displayShop(scenery[Player.x][Player.y].id);
+    displayShop(scenery[players[Player].x][players[Player].y].id);
   }
 }
