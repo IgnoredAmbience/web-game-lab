@@ -43,11 +43,22 @@ function loadMap () {
 
 // Loads the background grassy tiles
 function loadBackground () {
-  tiles = new Array ();
+  background = document.createElement("canvas");
+  background.width = mapWidth * TILE_SIZE;
+  background.height = mapHeight * TILE_SIZE;
+  bContext = background.getContext("2d");
+  var tiles = new Array ();
+  // Generate the tiles
   for (var i = 0; i < NUM_TILES; i++) {
     tiles[i] = new Array();
     for (var j = 0; j < NUM_TILES; j++) {
-      makeTile(i,j);
+      tiles[i][j] = makeTile(i,j);
+    }
+  }
+  // Draw them to the background
+  for (var i = 0; i < mapWidth; i++) {
+    for (var j = 0; j < mapHeight; j++) {
+      bContext.drawImage(tiles[i%NUM_TILES][j%NUM_TILES],i*TILE_SIZE,j*TILE_SIZE);
     }
   }
 }
@@ -87,11 +98,7 @@ function draw () {
   // Color the edge of the map
   colorBoundaries();
   // Draw grass!
-  for (var i = xmin; i < xmax; i++) {
-    for (var j = ymin; j < ymax; j++) {
-      context.drawImage(tiles[i%NUM_TILES][j%NUM_TILES],(i-minX)*TILE_SIZE,(j-minY)*TILE_SIZE);
-    }
-  }
+  context.drawImage(background,-minX*TILE_SIZE,-minY*TILE_SIZE);
   
   var setTheView = (Player && players[Player].action == "walk");
 
@@ -134,10 +141,10 @@ function setView (obj) {
 }
 
 function makeTile (x,y) {
-  tiles[x][y] = document.createElement("canvas");
-  tiles[x][y].width = TILE_SIZE;
-  tiles[x][y].height = TILE_SIZE;
-  var c = tiles[x][y].getContext("2d");
+  var tile = document.createElement("canvas");
+  tile.width = TILE_SIZE;
+  tile.height = TILE_SIZE;
+  var c = tile.getContext("2d");
   for (var i = 0; i < TILE_SIZE; i++) {
     for (var j = 0; j < TILE_SIZE; j++) {
       var s = 50 + Math.floor(Math.random() * 50);
@@ -145,6 +152,7 @@ function makeTile (x,y) {
       drawPixel(c,i,j,120,s,l);
     }
   }
+  return tile;
 }
 
 function drawPixel(c,x,y,h,s,l) {

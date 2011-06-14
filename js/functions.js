@@ -13,7 +13,7 @@ var context;
 var Player;
 var players;
 var scenery; // Array of elements in the background scenery
-var tiles; // 2D array of background tiles
+var background;
 var mapHeight;
 var mapWidth;
 var minX; // The (x,y) of the top left corner of the view
