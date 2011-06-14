@@ -1,13 +1,3 @@
-p
-{
-  color:red;
-}
-
-#canvas-wrap
-{
-  position:relative;
-}
-
 #shopDisplay  /* slightly crude, forces shop items to be right of canvas */
 {
   position:absolute;
