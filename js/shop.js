@@ -6,20 +6,21 @@ function displayShop(id) {
   document.getElementById("shopDisplay").style.left = 
       document.getElementById("canvas").width + 25;
 
-  outputItems(httpRequest.responseText);
+  outputItems(httpRequest.responseText, "shopDisplay",
+	      ["itemID", "Name", "itemClass", "Stat", "Buy", "Sell"]);
 }
 
-function outputItems (jsonItems) {
+function outputItems (jsonItems, displayLocation, tableHeadings) {
   if(jsonItems === "")
       jsonItems = "[]";
 
-  document.getElementById("shopDisplay").innerHTML =
-      buildItemTable(JSON.parse(jsonItems));
+  document.getElementById(displayLocation).innerHTML =
+      buildItemTable(JSON.parse(jsonItems), tableHeadings);
 }
 
-function buildItemTable(itemList) {
+function buildItemTable(itemList, tableHeadings) {
   var tableOutput = '<table border="1">';
-  tableOutput += ["itemID", "Name", "itemClass", "Stat", "Buy", "Sell"].map(makeTableCell).join(' ');
+  tableOutput += tableHeadings.map(makeTableCell).join(' ');
   tableOutput += itemList.map(makeCellRow);
   tableOutput += "</table>";
   return tableOutput;
