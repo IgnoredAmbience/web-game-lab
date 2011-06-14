@@ -1,22 +1,21 @@
 <?php
 
 class AttackHandler extends Handler {
-  public function post() {
+  public function get() {
+    global $database;
     $this->requireLogin();
 
     $user = $this->getUser();
 
     // Get all players in range
-    $attackees = Player::getByMultipleFields(array( array("x" => $user->x-1,"y" => $user->y-1),
-                                                    array("x" => $user->x-1, "y" => $user->y),
-                                                    array("x" => $user->x-1, "y" => $user->y+1),
-                                                    array("x" => $user->x, "y" => $user->y-1),
-                                                    array("x" => $user->x, "y" => $user->y),
-                                                    array("x" => $user->x, "y" => $user->y+1),
-                                                    array("x" => $user->x+1, "y" => $user->y-1),
-                                                    array("x" => $user->x+1, "y" => $user->y),
-                                                    array("x" => $user->x+1, "y" => $user->y+1)
-                                                  ),"Player");
+    $stmt = $database->prepare('
+      SELECT * FROM Player
+      WHERE ("x" > ?) AND ("x" < ?)
+        AND ("y" > ?) AND ("y" < ?)
+        AND ("lastActive" > CURRENT_TIMESTAMP - interval \'2 minutes\')
+    ');
+    $stmt->execute(array($user->x-2,$user->x+2,$user->y-2,$user->y+2));
+    $attackees = $stmt->fetchAll(PDO::FETCH_CLASS,"Player");
 
     // Broadcast attack happened
     $n = new Notification();
