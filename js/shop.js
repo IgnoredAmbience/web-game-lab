@@ -3,6 +3,9 @@ function displayShop(id) {
   httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   httpRequest.send(null);
 
+  document.getElementById("shopDisplay").style.left = 
+      document.getElementById("canvas").width + 25;
+
   outputItems(httpRequest.responseText);
 }
 
