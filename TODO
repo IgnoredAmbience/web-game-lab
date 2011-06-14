@@ -1,5 +1,4 @@
 * Multiplayer
   * Fix polling on login/load etc...
-  * Fix session abort resource freeing
 * Finish buy/sell UI
 * Make it pretty
