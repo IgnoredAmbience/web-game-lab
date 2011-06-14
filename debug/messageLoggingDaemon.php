@@ -3,13 +3,13 @@
 /* This script is designed to loop infinitely,
  * logging all messages into a logfile */
 ignore_user_abort(true);
-require('classes/Notification.php');
+require('../classes/Notification.php');
 
 $n = new Notification();
 $id = $n->register_listener();
 echo "Listener #$id";
 
-$q = msg_get_queue(Notification::key);
+$q = msg_get_queue(ftok('../classes/Notification.php', 'g'));
 
 $fp = fopen('data.txt', 'w');
 

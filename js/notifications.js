@@ -22,7 +22,7 @@ Notifications = {
   },
 
   handler: function(evt) {
-    document.getElementById('chatmessages').innerHTML = this.r.responseText + '<br/>' + document.getElementById('chatmessages').innerHTML;
+    console.log(this.r.responseText);
     var obj = JSON.parse(this.r.responseText);
     switch (obj.type) {
       case "move" :
@@ -47,6 +47,15 @@ Notifications = {
         players[Player].shelf = obj.player.shelf;
         updateStats(players[Player]);
         if (players[Player].health <= 0) logout();
+        break;
+      case "chat" :
+        document.getElementById('chatmessages').innerHTML = obj.msg + '<br/>' + document.getElementById('chatmessages').innerHTML;
+        break;
+      case "disconnect" :
+        window.clearTimeout(this.timeoutId);
+        var h = document.createElement('h1');
+        h.innerText = "Server disconnected";
+        document.replaceChild(h, document.firstChild);
         break;
       default :
     }

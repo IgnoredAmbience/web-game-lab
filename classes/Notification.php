@@ -18,19 +18,19 @@ class Notification {
     $this->deregister_listener();
   }
 
-  public function register_listener($uid = 0) {
+  public function register_listener($uid = TRUE) {
     // Registers this thread as a listener
     if($this->listenerId) return $this->listenerId;
     sem_acquire($this->sema);
       $v = @shm_get_var($this->idMap, 0);
       if($v === FALSE) {
-        $v = array(1 => TRUE);
+        $v = array(1 => $uid);
         $i = 1;
       } else {
         $c = count($v);
         for($i = 1; $i <= $c+1; $i++) {
           if(!isset($v[$i]) || !$v[$i]) {
-            $v[$i] = $uid ? $uid : TRUE;
+            $v[$i] = $uid;
             break;
           }
         }
@@ -39,6 +39,16 @@ class Notification {
       shm_put_var($this->idMap, 0, $v);
     sem_release($this->sema);
     return $i;
+  }
+
+  public function disconnect_listener($listenerId, $uid, $disconnect_msg) {
+    /* Disconnects the $listenerId iff it is for $uid */
+    sem_acquire($this->sema);
+      $v = @shm_get_var($this->idMap, 0);
+      if(isset($v[$listenerId]) && $v[$listenerId] === $uid) {
+        $this->send($listenerId, $disconnect_msg);
+      }
+    sem_release($this->sema);
   }
 
   public function deregister_listener() {
@@ -51,11 +61,8 @@ class Notification {
     }
   }
 
-  public function get_listeners() {
-    sem_acquire($this->sema);
-      $v = @shm_get_var($this->idMap, 0);
-    sem_release($this->sema);
-    return $v;
+  private function get_listeners() {
+    return @shm_get_var($this->idMap, 0);
   }
 
   public function stat_q() {
@@ -70,13 +77,15 @@ class Notification {
   }
 
   public function broadcast($msg) {
-    $v = $this->get_listeners();
-    if(!is_array($v)) return;
-    foreach($v as $id => $val) {
-      if($val) {
-        $this->send($id, $msg);
+    sem_acquire($this->sema);
+      $v = $this->get_listeners();
+      if(!is_array($v)) return;
+      foreach($v as $id => $val) {
+        if($val) {
+          $this->send($id, $msg);
+        }
       }
-    }
+    sem_release($this->sema);
   }
 
   public function send($id, $msg) {

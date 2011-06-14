@@ -9,15 +9,20 @@ class PushHandler extends Handler {
     if($p) $p->ping();
     $this->initiate();
 
+    ignore_user_abort(true);
+    $sid = session_id();
+
+    $n = new Notification();
+    if(isset($_SESSION['pollId']) && $_SESSION['pollId']) {
+      $n->disconnect_listener($_SESSION['pollId'], $sid, array('type'=>'disconnect'));
+    }
+
+    $_SESSION['pollId'] = $id = $n->register_listener($sid);
+    $n->broadcast(array('type'=>'ping', 'listener'=>$id, 'sid'=>$sid, 'pid'=>getmypid()));
+
     // Close resources
     session_write_close();
     $db = null;
-
-    ignore_user_abort(true);
-
-    $n = new Notification();
-    $n->register_listener();
-    $n->broadcast(array('type'=>'ping'));
 
     // We abort the script, on session death, we will be blocked on death,
     // so have potentially lost one message for a user
@@ -27,19 +32,14 @@ class PushHandler extends Handler {
     while(!connection_status()) {
       $msg = $n->receive();
       if($msg) {
+        $this->send_packet(json_encode($msg), 'application/json');
         if(is_array($msg) && isset($msg['type']) && $msg['type'] == 'disconnect') {
           break;
-        } else {
-          $this->send_packet(json_encode($msg), 'application/json');
         }
       }
     }
-  }
-
-  public function get() {
-    $n = new Notification();
-    print_r($n->get_listeners());
-    print_r($n->stat_q());
+    $n->deregister_listener();
+    $n->broadcast(array('type'=>'pong', 'listener'=>$id, 'sid'=>$sid, 'pid'=>getmypid()));
   }
 
   private function initiate() {
@@ -47,7 +47,6 @@ class PushHandler extends Handler {
     header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
     header("Expires: Thu, 01 Jan 1970 00:00:00 GMT"); // Date in the past
     header("Content-type: multipart/x-mixed-replace; boundary={$this->separator}");
-    ob_implicit_flush(true);
   }
 
   private function send_packet($string, $content_type='text/plain') {
@@ -55,6 +54,7 @@ class PushHandler extends Handler {
     echo "Content-type: $content_type\n\n";
     echo "$string\n";
     echo "--{$this->separator}\n";
+    flush();
   }
 }
 
