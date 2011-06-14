@@ -72,4 +72,15 @@ class Player extends DatabaseRecord {
   public function playerAsJSON() {
     return json_encode(get_object_vars());
   }
+
+  public function attackedBy($attacker) {
+    // Change our own stats
+    $this->health -= $attacker->shelf;
+    $this->save();;
+    // Notify client of stat change
+    $this->notify(array('type' => 'statChange', 'player' => (array) $this));
+  }
+
+  public function notify($array) {
+  }
 }

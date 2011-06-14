@@ -37,6 +37,10 @@ Notifications = {
         delete players[obj.player.id];
         View.recheckPlayers = 1;
         break;
+      case "attack" :
+        // Display that the given player has attacked
+      case "statChange" :
+        // Update our own stats
       default :
     }
   },

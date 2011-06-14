@@ -96,6 +96,10 @@ function keyPressed (event) {
     case 40 : // Down
     case downKey :
       move = "south"; break;
+    /*
+    case 32 : // Spacebar
+      move = "attack"; break;
+    */
     default :
       return;
   }
