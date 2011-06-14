@@ -29,6 +29,12 @@ abstract class DatabaseRecord {
   }
 
   public static function getByFields($array, $table = '') {
+    return self::getByMultipleFields(array($array), $table);
+  }
+
+  public static function getByMultipleFields($arrays, $table = '') {
+    // Takes an array containing arrays of field=>value pairs to AND
+    // These are then ORed together
     global $database;
 
     if(function_exists('get_called_class')) {
@@ -37,17 +43,19 @@ abstract class DatabaseRecord {
       throw new Exception('Table name required: '.$table);
     }
 
-    foreach(array_keys($array) as $field) {
-      if(!property_exists($table, $field)) {
-        throw new Exception('Invalid field name: '.$field);
+    foreach($arrays as $idx => $array) {
+      foreach(array_keys($array) as $field) {
+        if(!property_exists($table, $field)) {
+          throw new Exception('Invalid field name: '.$field);
+        }
+        $params[$idx][] = "\"$field\" = ?";
       }
-      $params[] = "\"$field\" = ?";
+      $params[$idx] = implode(' AND ', $params[$idx]);
     }
-    $params = implode(' AND ', $params);
-
+    $params = '(' . implode(') OR (', $params) . ')';
 
     $stmt = $database->prepare("SELECT * FROM $table WHERE $params");
-    $stmt->execute(array_values($array));
+    $stmt->execute(self::array_flatten($arrays));
 
     return $stmt->fetchAll(PDO::FETCH_CLASS, $table);
   }
@@ -113,5 +121,11 @@ abstract class DatabaseRecord {
     // Assumes that PK is unique identifier
     // that contains no information about the record
     return constant(get_class($this) . '::pk');
+  }
+
+  public static function array_flatten($array) {
+    $values = array();
+    array_walk_recursive($array, create_function('$v, $k, &$vs', '$vs[] = $v;'), &$values);
+    return $values;
   }
 }
