@@ -26,7 +26,9 @@ $application = new Application(array(
   array('poll',         'PushHandler'),
   array('chat',         'ChatHandler'),
 
-  array('shop/(\d+)',     'ShopHandler')
+  array('shop/(\d+)',     'ShopHandler'),
+
+  array('attack',     'AttackHandler')
 ), $config['base_path']);
 
 $database = new PDO($config['db'], $config['db_u'], $config['db_p'],  array(PDO::ATTR_PERSISTENT => true));
