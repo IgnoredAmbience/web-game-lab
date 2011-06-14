@@ -77,7 +77,7 @@ function draw () {
     View.playersToDraw = new Array();
     // Check for players in view
     for (var i in players) {
-      if (inView(players[i],xmin,xmax,ymin,ymax))
+      if (inView(players[i].id != Player && players[i],xmin,xmax,ymin,ymax))
         View.playersToDraw.push(players[i]);
     }
   }
@@ -92,10 +92,16 @@ function draw () {
       context.drawImage(tiles[i%NUM_TILES][j%NUM_TILES],(i-minX)*TILE_SIZE,(j-minY)*TILE_SIZE);
     }
   }
+  
+  var setTheView = (Player && players[Player].action == "walk");
 
   // draw the view
   View.sceneryToDraw.forEach(drawActor);
   View.playersToDraw.forEach(drawActor);
+
+  if (Player)
+    drawActor(players[Player]);
+
 }
 
 function inView (p, xmin,xmax,ymin,ymax) {
