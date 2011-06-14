@@ -22,7 +22,7 @@ Notifications = {
   },
 
   handler: function(evt) {
-    document.getElementById('chatmessages').innerHTML = this.r.responseText + '<br/>' + document.getElementById('chatmessages').innerHTML;
+    console.log(this.r.responseText);
     var obj = JSON.parse(this.r.responseText);
     switch (obj.type) {
       case "move" :
@@ -36,6 +36,26 @@ Notifications = {
       case "logout" :
         delete players[obj.player.id];
         View.recheckPlayers = 1;
+        break;
+      case "attack" :
+        // Display that the given player has attacked
+      case "statChange" :
+        // Update our own stats
+        players[Player].wealth = obj.player.wealth;
+        players[Player].health = obj.player.health;
+        players[Player].stealth = obj.player.stealth;
+        players[Player].shelf = obj.player.shelf;
+        updateStats(players[Player]);
+        if (players[Player].health <= 0) logout();
+        break;
+      case "chat" :
+        document.getElementById('chatmessages').innerHTML = obj.msg + '<br/>' + document.getElementById('chatmessages').innerHTML;
+        break;
+      case "disconnect" :
+        window.clearTimeout(this.timeoutId);
+        var h = document.createElement('h1');
+        h.innerText = "Server disconnected";
+        document.replaceChild(h, document.firstChild);
         break;
       default :
     }

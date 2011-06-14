@@ -27,7 +27,10 @@ $application = new Application(array(
   array('chat',         'ChatHandler'),
 
   array('shop/(-?\d+)', 'ShopHandler'),
+
   array('inventory',    'InventoryHandler')
+
+  array('attack',       'AttackHandler')
 
 ), $config['base_path']);
 
