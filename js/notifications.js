@@ -46,6 +46,7 @@ Notifications = {
         players[Player].stealth = obj.player.stealth;
         players[Player].shelf = obj.player.shelf;
         updateStats(players[Player]);
+        if (players[Player].health <= 0) logout();
         break;
       default :
     }
