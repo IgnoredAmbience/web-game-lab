@@ -1,3 +1,8 @@
+var View = {
+  recheckScenery: 1,
+  recheckPlayers: 1
+}
+
 // Will pull from server and load
 function loadMap () {
   var r = Ajax('GET', 'map', false);
@@ -15,16 +20,25 @@ function loadMap () {
   var a;
 
   var texture = new Image ();
-  texture.src = "sprites/shop.png";
+  texture.src = "sprites/shop" + SPRITE_SIZE + ".png";
 
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":
-        actorify(tile, "red",texture,2,0);
+        actorify(tile,texture,2,0);
         break;
     }
     scenery[tile.x][tile.y] = tile;
   });
+
+  var texture = new Image ();
+  texture.src = "sprites/player" + SPRITE_SIZE + ".png";
+
+  for (var i in map.players) {
+    var p = map.players[i];
+    actorify(p, texture, 1, 2);
+    players[p.id] = p;
+  }
 }
 
 // Loads the background grassy tiles
@@ -40,19 +54,34 @@ function loadBackground () {
 
 // There are separate lists for scenery, other players and the user player, rendered in that order
 function draw () {
-  toDraw = new Array();
   // For all items, if they're in view, add to toDraw
   var xmin = Math.floor((minX < 0) ? 0 : minX);
   var xmax = Math.ceil((maxX > mapWidth) ? mapWidth : maxX);
   var ymin = Math.floor((minY < 0) ? 0 : minY);
   var ymax = Math.ceil((maxY > mapHeight) ? mapHeight : maxY);
 
-  for (var i = xmin; i < xmax; i++) {
-    for (var j = ymin; j < ymax; j++) {
-      if (scenery[i][j])
-        toDraw.push(scenery[i][j]);
+  if (View.recheckScenery) {
+    View.recheckScenery = 0;
+    View.sceneryToDraw = new Array();
+    // Check for scenery in view
+    for (var i = xmin; i < xmax; i++) {
+      for (var j = ymin; j < ymax; j++) {
+        if (scenery[i][j])
+          View.sceneryToDraw.push(scenery[i][j]);
+      }
     }
   }
+
+  if (View.recheckPlayers) {
+    View.recheckPlayers = 0;
+    View.playersToDraw = new Array();
+    // Check for players in view
+    for (var i in players) {
+      if (inView(players[i],xmin,xmax,ymin,ymax))
+        View.playersToDraw.push(players[i]);
+    }
+  }
+
   // Clear the canvas
   canvas.width = canvas.width;
   // Color the edge of the map
@@ -64,13 +93,14 @@ function draw () {
     }
   }
 
-  // draw the scenery
-  toDraw.forEach(drawActor);
+  // draw the view
+  View.sceneryToDraw.forEach(drawActor);
+  View.playersToDraw.forEach(drawActor);
+}
 
-  // Render the player on top
-  if (Player) {
-    drawActor(Player);
-  }
+function inView (p, xmin,xmax,ymin,ymax) {
+  return (p.x >= xmin && p.x < xmax &&
+          p.y >= ymin && p.y < ymax);
 }
 
 // Colors the "not map" bits of the view
@@ -94,6 +124,7 @@ function setView (obj) {
   maxY = obj.y + halfHeight;
   minX = obj.x - halfWidth;
   minY = obj.y - halfHeight;
+  View.recheckScenery = 1;
 }
 
 function makeTile (x,y) {
@@ -101,8 +132,8 @@ function makeTile (x,y) {
   tiles[x][y].width = TILE_SIZE;
   tiles[x][y].height = TILE_SIZE;
   var c = tiles[x][y].getContext("2d");
-  for (var i = 0; i < 16; i++) {
-    for (var j = 0; j < 16; j++) {
+  for (var i = 0; i < TILE_SIZE; i++) {
+    for (var j = 0; j < TILE_SIZE; j++) {
       var s = 50 + Math.floor(Math.random() * 50);
       var l = 60 + Math.floor(Math.random() * 20);;
       drawPixel(c,i,j,120,s,l);

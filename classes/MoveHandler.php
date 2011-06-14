@@ -22,12 +22,14 @@ class MoveHandler extends Handler {
        ($moveType == "south") ||
        ($moveType == "east" ) ||
        ($moveType == "west" )) {
-      $user->move($moveType);
+      if($user->move($moveType)) {
+        echo json_encode(array('moveType'=>$moveType, 'x'=>$user->x, 'y'=>$user->y));
+      } else {
+        header('HTTP/1.1 403 Forbidden');
+      }
     }
     else {
       throw new Exception("unknown move type: ".$moveType);
     }
-
-    echo json_encode(array('moveType'=>$moveType, 'x'=>$user->x, 'y'=>$user->y));
   }
 }

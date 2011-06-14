@@ -1,6 +1,7 @@
 // CONSTANTS
 var GRAPHICS_MAX = 2;
-var TILE_SIZE = 16;
+var TILE_SIZE = 24;
+var SPRITE_SIZE = 16;
 var frameInterval = 200;
 var NUM_TILES = 8; 
 
@@ -11,6 +12,7 @@ var canvas;
 var context;
 
 var Player;
+var players;
 var scenery; // Array of elements in the background scenery
 var tiles; // 2D array of background tiles
 var mapHeight;
@@ -34,8 +36,12 @@ function init () {
   canvas = document.getElementById("canvas");
   context = this.canvas.getContext("2d");
   context.font = "bold 12px sans-serif";
+  canvas.width = 32*TILE_SIZE;
+  canvas.height = 32*TILE_SIZE;
   halfWidth = (canvas.width/TILE_SIZE)/2;
   halfHeight = (canvas.height/TILE_SIZE)/2;
+
+  players = new Array();
 
   loadMap();
 
@@ -86,14 +92,16 @@ function login () {
 
 function loginPlayer (p) {
   var texture = new Image ();
-  texture.src = "sprites/player.png";
-  Player = p;
-  actorify(Player, "black", texture, 1, 2);
-  setView(Player);
-  updateStats(Player)
-  document.getElementById("loginName").innerHTML = Player.name;
+  texture.src = "sprites/player" + SPRITE_SIZE + ".png";
+  Player = p.id;
+  players[Player] = p;
+  actorify(players[Player], texture,1,2);
+  setView(players[Player]);
+  updateStats(players[Player])
+  document.getElementById("loginName").innerHTML = players[Player].name;
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("logoutBox").style.display = "inline";
+  View.recheckPlayers = 1;
 }
 
 function logout () {
@@ -159,4 +167,24 @@ function Ajax(method, uri, async, multipart) {
   r.open(method, uri, async);
   r.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
   return r;
+}
+
+// Taken from the Mozilla ECMAScript reference
+if ( !Function.prototype.bind ) {
+  Function.prototype.bind = function( obj ) {
+    if(typeof this !== 'function') // closest thing possible to the ECMAScript 5 internal IsCallable function
+      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+
+    var slice = [].slice,
+        args = slice.call(arguments, 1),
+        self = this,
+        nop = function () {},
+        bound = function () {
+          return self.apply( this instanceof nop ? this : ( obj || {} ),
+            args.concat( slice.call(arguments) ) );
+        };
+
+    bound.prototype = this.prototype;
+    return bound;
+  };
 }

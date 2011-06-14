@@ -15,26 +15,49 @@ class Player extends DatabaseRecord {
     //TODO add validation for tile edges; wrap or clip?
     $currentMap = Map::getById($this->mapId, "Map");
 
+    $x = $this->x;
+    $y = $this->y;
+
     if($moveType == "north"):
-      $this->y = max($this->y - 1, 0);
+      $this->y--;
     elseif($moveType == "south"):
-      $this->y = min($this->y + 1, $currentMap->height - 1);
+      $this->y++;
     elseif($moveType == "east"):
-      $this->x = min($this->x + 1, $currentMap->width - 1);
+      $this->x++;
     elseif($moveType == "west"):
-      $this->x = max($this->x - 1, 0);
+      $this->x--;
     endif;
 
-    $this->save();
+    if($this->x < 0 || $this->x >= $currentMap->width ||
+       $this->y < 0 || $this->y >= $currentMap->height) {
+      $this->x = $x;
+      $this->y = $y;
+      return false;
+    } else {
+      $this->save();
+
+      $n = new Notification();
+      $n->broadcast(array('type'=>'move', 'player'=>(array) $this, 'move'=>$moveType));
+      return true;
+    }
   }
 
   public function login() {
-    $this->lastActive = 'now';
-    $this->save();
+    $this->ping();
+    $n = new Notification();
+    $n->broadcast(array('type'=>'login', 'player'=> (array) $this));
   }
 
   public function logout() {
-    $this->lastActive = '';
+    $this->lastActive = '-infinity';
+    $this->save();
+
+    $n = new Notification();
+    $n->broadcast(array('type'=>'logout', 'player'=> (array) $this));
+  }
+
+  public function ping() {
+    $this->lastActive = 'now';
     $this->save();
   }
 
@@ -49,5 +72,4 @@ class Player extends DatabaseRecord {
   public function playerAsJSON() {
     return json_encode(get_object_vars());
   }
-
 }

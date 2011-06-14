@@ -1,6 +1,5 @@
 // stands = #sprites for standing, likewise for walks
-function actorify (obj, color, texture, stands, walks) {
-  obj.color = color;
+function actorify (obj, texture, stands, walks) {
   obj.texture = texture;
 
   obj.action = "stand"; // Also "walk" and "fight", maybe "shop"
@@ -21,7 +20,7 @@ function drawActor (actor) {
   var dest_y;
   switch (actor.action) {
     case "stand" :
-      source_x = actor.standingStage*TILE_SIZE;
+      source_x = actor.standingStage*SPRITE_SIZE;
       source_y = 0;
       dest_x = actor.x;
       dest_y = actor.y;
@@ -30,7 +29,7 @@ function drawActor (actor) {
     case "walk" :
       actor.walkingStage = (actor.walkingStage + 1) % actor.walkingMax;
 
-      source_x = actor.walkingStage*TILE_SIZE;
+      source_x = actor.walkingStage*SPRITE_SIZE;
       source_y = 0;
 
       // Calculate how far between the start and destination we should draw
@@ -38,7 +37,7 @@ function drawActor (actor) {
       dest_x = actor.x + (actor.walkingX - actor.x)/walkStep;
       dest_y = actor.y + (actor.walkingY - actor.y)/walkStep;
 
-      if (actor == Player) {
+      if (actor == players[Player]) {
         setView({x: dest_x, y: dest_y});
       } 
 
@@ -46,7 +45,7 @@ function drawActor (actor) {
       break;
   }
   context.drawImage(actor.texture,
-                    source_x,source_y, TILE_SIZE,TILE_SIZE,
+                    source_x,source_y, SPRITE_SIZE,SPRITE_SIZE,
                     (dest_x-minX)*TILE_SIZE,(dest_y-minY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
 }
 
@@ -67,13 +66,9 @@ function moveActor (actor,direction) {
     default :
       return;
   }
-  // Check for map boundaries
-  if (actor.x < 0) actor.x = 0;
-  if (actor.x > mapWidth-1) actor.x = mapWidth-1;
-  if (actor.y < 0) actor.y = 0;
-  if (actor.y > mapHeight-1) actor.y = mapHeight-1;
 
   actor.action = "walk";
+  View.recheckPlayers = 1;
 }
 
 
@@ -81,6 +76,11 @@ var canMove = 1;
 // Player movement event handler
 function keyPressed (event) {
   var move;
+
+  // Prevent any AJAX requests from being aborted using the ESC key
+  if((event.keyCode || event.charCode) == 27) event.preventDefault();
+
+  // Don't capture key events in input fields
   if(event.target.tagName == 'INPUT') return;
 
   switch (event.keyCode || event.charCode) {
@@ -112,7 +112,9 @@ function keyPressed (event) {
         minY--; maxY--; break;
       case "south" :
         minY++; maxY++; break;
+      default:
     }
+    View.recheckScenery = 1;
   } else
 
   if (canMove) {
@@ -121,16 +123,17 @@ function keyPressed (event) {
     var httpRequest = Ajax('POST', "player/move", false);
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.send(requestString({moveType: move}));
-    if(httpRequest.status != 200) move = '';
-    moveActor(Player,move);
-
-    // If we're over a shop, show its contents
-    if ((scenery[Player.x][Player.y]) && scenery[Player.x][Player.y].type == "shop") {
-      displayShop(scenery[Player.x][Player.y].id);
-      document.getElementById("shopDisplay").style.visibility = "visible"; 
-    }
+    if (httpRequest.status != 200) move = '';
     else {
-      document.getElementById("shopDisplay").style.visibility = "hidden"; 
+      // If we're over a shop, show its contents
+      var p = players[Player];
+      if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
+        displayShop(scenery[p.x][p.y].id);
+        document.getElementById("shopDisplay").style.visibility = "visible"; 
+      }
+      else {
+        document.getElementById("shopDisplay").style.visibility = "hidden"; 
+      }
     }
 
     // To prevent movement flooding
