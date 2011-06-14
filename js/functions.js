@@ -107,7 +107,7 @@ function loginPlayer (p) {
 function logout () {
   var httpRequest = Ajax('POST', "logout", false);
   httpRequest.send(null);
-  Player = null;
+  players[Player] = null;
   updateStats();
   document.getElementById("logoutBox").style.display = "none";
   document.getElementById("loginBox").style.display = "inline";
@@ -117,12 +117,12 @@ function updatePlayer() {
   var httpRequest = Ajax('GET', 'player', false);
   httpRequest.send(null);
   fromServer = JSON.parse(httpRequest.responseText);
-  Player.wealth = fromServer.wealth;
-  Player.stealth = fromServer.stealth;
-  Player.health = fromServer.health;
-  Player.shelf = fromServer.shelf;
+  players[Player].wealth = fromServer.wealth;
+  players[Player].stealth = fromServer.stealth;
+  players[Player].health = fromServer.health;
+  players[Player].shelf = fromServer.shelf;
 
-  updateStats(Player);
+  updateStats(players[Player]);
 }
 
 function updateStats (p) {
