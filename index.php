@@ -26,7 +26,8 @@ $application = new Application(array(
   array('poll',         'PushHandler'),
   array('chat',         'ChatHandler'),
 
-  array('shop/(-?\d+)', 'ShopHandler')
+  array('shop/(-?\d+)', 'ShopHandler'),
+  array('inventory',    'InventoryHandler')
 
 ), $config['base_path']);
 
