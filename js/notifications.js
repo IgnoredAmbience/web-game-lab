@@ -41,6 +41,12 @@ Notifications = {
         // Display that the given player has attacked
       case "statChange" :
         // Update our own stats
+        players[Player].wealth = obj.player.wealth;
+        players[Player].health = obj.player.health;
+        players[Player].stealth = obj.player.stealth;
+        players[Player].shelf = obj.player.shelf;
+        updateStats(players[Player]);
+        break;
       default :
     }
   },

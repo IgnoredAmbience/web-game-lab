@@ -1,5 +1,4 @@
 // CONSTANTS
-var GRAPHICS_MAX = 2;
 var TILE_SIZE = 24;
 var SPRITE_SIZE = 16;
 var frameInterval = 200;
