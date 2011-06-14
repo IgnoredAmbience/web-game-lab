@@ -95,7 +95,11 @@ function loginPlayer (p) {
   texture.src = "sprites/player" + SPRITE_SIZE + ".png";
   Player = p.id;
   players[Player] = p;
+
   actorify(players[Player], texture,1,2);
+
+  loadInventory();
+
   setView(players[Player]);
   updateStats(players[Player])
   document.getElementById("loginName").innerHTML = players[Player].name;
