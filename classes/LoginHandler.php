@@ -13,6 +13,11 @@ class LoginHandler extends Handler {
       $p = new Player();
       $p->name = $name;
     }
+    
+    if (!($p->health > 0)) {
+      echo "fail";
+      return;
+    }
 
     $current_player = $this->getUser();
     if($current_player && $p != $current_player) {
