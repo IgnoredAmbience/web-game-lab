@@ -28,7 +28,7 @@ $application = new Application(array(
 
   array('shop/(-?\d+)', 'ShopHandler'),
 
-  array('inventory',    'InventoryHandler')
+  array('inventory',    'InventoryHandler'),
 
   array('attack',       'AttackHandler')
 
