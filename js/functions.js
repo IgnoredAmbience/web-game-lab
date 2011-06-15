@@ -1,7 +1,7 @@
 // CONSTANTS
 var TILE_SIZE = 24;
 var SPRITE_SIZE = 16;
-var frameInterval = 200;
+var frameInterval = 100;
 var NUM_TILES = 8; 
 
 // GLOBAL VARIABLES

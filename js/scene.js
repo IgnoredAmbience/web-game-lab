@@ -52,7 +52,7 @@ function loadBackground () {
   for (var i = 0; i < NUM_TILES; i++) {
     tiles[i] = new Array();
     for (var j = 0; j < NUM_TILES; j++) {
-      tiles[i][j] = makeTile(i,j);
+      tiles[i][j] = makeTile();
     }
   }
   // Draw them to the background
@@ -142,7 +142,7 @@ function setView (obj) {
   View.recheckScenery = 1;
 }
 
-function makeTile (x,y) {
+function makeTile () {
   var tile = document.createElement("canvas");
   tile.width = TILE_SIZE;
   tile.height = TILE_SIZE;
