@@ -3,11 +3,6 @@ class PushHandler extends Handler {
   /* Also, be aware of the 30 second script execution timeout! */
   private $separator = 'multipart-separator-';
 
-  function get() {
-    $p = $this->getUser();
-    $p->notify(array('type'=>'chat', 'msg'=>"A personal message for just {$p->name}!"));
-  }
-
   function put() {
     global $db;
     $p = $this->getUser();
