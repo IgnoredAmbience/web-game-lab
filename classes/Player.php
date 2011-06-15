@@ -37,8 +37,7 @@ class Player extends DatabaseRecord {
     } else {
       $this->save();
 
-      $n = new Notification();
-      $n->broadcast(array('type'=>'move', 'player'=>(array) $this, 'move'=>$moveType));
+      $this->notifyOthers(array('type'=>'move', 'player'=>(array) $this, 'move'=>$moveType));
       return true;
     }
   }
@@ -84,8 +83,12 @@ class Player extends DatabaseRecord {
     $this->notify(array('type' => 'statChange', 'player' => (array) $this));
   }
 
-  public function notify($array) {
+  public function notify($array, $except=false) {
     $n = new Notification();
-    $n->broadcast($array, $this->sessionId);
+    $n->broadcast($array, $this->sessionId, $except);
+  }
+
+  public function notifyOthers($array) {
+    $this->notify($array, true);
   }
 }

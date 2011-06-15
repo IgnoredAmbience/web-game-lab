@@ -23,7 +23,7 @@ class MoveHandler extends Handler {
        ($moveType == "east" ) ||
        ($moveType == "west" )) {
       if($user->move($moveType)) {
-        echo json_encode(array('moveType'=>$moveType, 'x'=>$user->x, 'y'=>$user->y));
+        echo json_encode(array('move'=>$moveType, 'x'=>$user->x, 'y'=>$user->y));
       } else {
         header('HTTP/1.1 403 Forbidden');
       }

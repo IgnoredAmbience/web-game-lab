@@ -142,10 +142,12 @@ function keyPressed (event) {
     var httpRequest = Ajax('POST', "player/move", false);
     httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     httpRequest.send(requestString({moveType: move}));
-    if (httpRequest.status != 200) move = '';
-    else {
+    if (httpRequest.status == 200) {
+      var obj = JSON.parse(httpRequest.responseText);
+
       // If we're over a shop, show its contents
       var p = players[Player];
+      moveActor(p, obj.move);
       if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
         displayShop(scenery[p.x][p.y].id);
         document.getElementById("shopDisplay").style.visibility = "visible"; 
