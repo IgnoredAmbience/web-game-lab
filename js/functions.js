@@ -23,6 +23,11 @@ var maxY;
 var halfWidth; // Hacky, not entirely necessary
 var halfHeight;
 
+var shelfSprite; // 1 shared image for all attacks
+var shelfLocs = [[1,-1],[1,0],[1,1],[0,1]
+                ,[-1,1],[-1,0],[-1,-1],[0,-1]
+                ];
+
 // For alternate keymappings
 var upKey;
 var downKey;
@@ -41,6 +46,9 @@ function init () {
   halfHeight = (canvas.height/TILE_SIZE)/2;
 
   players = new Array();
+
+  shelfSprite = new Image();
+  shelfSprite.src = "sprites/shelf" + SPRITE_SIZE + ".png";
 
   loadMap();
 
