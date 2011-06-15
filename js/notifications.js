@@ -22,7 +22,10 @@ Notifications = {
   },
 
   handler: function(evt) {
-    console.log(this.r.responseText);
+    if(console) {
+      console.log(this.r.responseText);
+    }
+
     var obj = JSON.parse(this.r.responseText);
     switch (obj.type) {
       case "move" :
