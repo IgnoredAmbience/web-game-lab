@@ -17,7 +17,6 @@ function loadMap () {
   for (var i = 0; i < mapWidth; i++) {
     scenery[i] = new Array();
   }
-  var a;
 
   var texture = new Image ();
   texture.src = "sprites/shop" + SPRITE_SIZE + ".png";
