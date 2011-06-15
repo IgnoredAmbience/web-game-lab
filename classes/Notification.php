@@ -76,13 +76,13 @@ class Notification {
     sem_remove($this->sema);
   }
 
-  public function broadcast($msg) {
+  public function broadcast($msg, $checkVal='', $except=false) {
     sem_acquire($this->sema);
       $v = $this->get_listeners();
       if(!is_array($v)) return;
-      foreach($v as $id => $val) {
-        if($val) {
-          $this->send($id, $msg);
+      foreach($v as $qid => $val) {
+        if($val && (!$checkVal || ($except xor ($checkVal == $val)))) {
+          $this->send($qid, $msg);
         }
       }
     sem_release($this->sema);
