@@ -39,6 +39,8 @@ Notifications = {
         break;
       case "attack" :
         // Display that the given player has attacked
+        View.attackers.push(players[obj.player.id]);
+        break;
       case "statChange" :
         // Update our own stats
         players[Player].wealth = obj.player.wealth;
@@ -63,7 +65,6 @@ Notifications = {
   
   send: function() {
     var r = Ajax('POST', 'chat', true);
-    r.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     r.send(requestString({message: document.getElementById('chat').value}));
   }
 };
