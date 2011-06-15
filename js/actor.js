@@ -154,7 +154,7 @@ function keyPressed (event) {
       }
 
       // To prevent movement flooding
-      setTimeout(function() {canMove = 1;}, 500);
+      setTimeout(function() {canMove = 1;}, TIMEOUT);
     }
   }
 }
