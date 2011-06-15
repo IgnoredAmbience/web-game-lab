@@ -9,6 +9,8 @@ function actorify (obj, texture, stands, walks) {
 
   obj.walkingMax = walks;
   obj.walkingStage = 0;
+
+  obj.attackStage = 0;
 }
 
 function drawActor (actor) {
@@ -45,6 +47,20 @@ function drawActor (actor) {
       break;
   }
   context.drawImage(actor.texture,
+                    source_x,source_y, SPRITE_SIZE,SPRITE_SIZE,
+                    (dest_x-minX)*TILE_SIZE,(dest_y-minY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
+}
+
+function drawAttack(actor) {
+  var source_x = 0;
+  var source_y = 0;
+ 
+  var dest_x = actor.x + shelfLocs[actor.attackStage][0];
+  var dest_y = actor.y + shelfLocs[actor.attackStage][1];
+
+  actor.attackStage = (actor.attackStage + 1) % 8;
+  if (actor.attackStage == 0) delete View.attackers[View.attackers.indexOf(actor)];
+  context.drawImage(shelfSprite,
                     source_x,source_y, SPRITE_SIZE,SPRITE_SIZE,
                     (dest_x-minX)*TILE_SIZE,(dest_y-minY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
 }
@@ -96,10 +112,9 @@ function keyPressed (event) {
     case 40 : // Down
     case downKey :
       move = "south"; break;
-    /*
     case 32 : // Spacebar
-      move = "attack"; break;
-    */
+      View.attackers.push(players[Player]);
+      return;
     default :
       return;
   }

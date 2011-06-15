@@ -1,6 +1,7 @@
 var View = {
   recheckScenery: 1,
-  recheckPlayers: 1
+  recheckPlayers: 1,
+  attackers: []
 }
 
 // Will pull from server and load
@@ -107,6 +108,8 @@ function draw () {
 
   if (Player)
     drawActor(players[Player]);
+
+  View.attackers.forEach(drawAttack);
 
 }
 
