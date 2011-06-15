@@ -113,8 +113,7 @@ function keyPressed (event) {
     case downKey :
       move = "south"; break;
     case 32 : // Spacebar
-      View.attackers.push(players[Player]);
-      return;
+      move = "attack"; break;
     default :
       return;
   }
@@ -134,28 +133,31 @@ function keyPressed (event) {
       default:
     }
     View.recheckScenery = 1;
-  } else
+  } else {
 
-  if (canMove) {
-    canMove = 0;
+    if (canMove) {
+      canMove = 0;
 
-    var httpRequest = Ajax('POST', "player/move", false);
-    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    httpRequest.send(requestString({moveType: move}));
-    if (httpRequest.status != 200) move = '';
-    else {
-      // If we're over a shop, show its contents
-      var p = players[Player];
-      if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
-        displayShop(scenery[p.x][p.y].id);
-        document.getElementById("shopDisplay").style.visibility = "visible"; 
-      }
+      var httpRequest = Ajax('POST', (move == "attack") ? "attack" : "player/move", false);
+
+      if (move == "attack") httpRequest.send(null);
+      else httpRequest.send(requestString({moveType: move}));
+
+      if (httpRequest.status != 200) move = '';
       else {
-        document.getElementById("shopDisplay").style.visibility = "hidden"; 
+        // If we're over a shop, show its contents
+        var p = players[Player];
+        if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
+          displayShop(scenery[p.x][p.y].id);
+          document.getElementById("shopDisplay").style.visibility = "visible"; 
+        }
+        else {
+          document.getElementById("shopDisplay").style.visibility = "hidden"; 
+        }
       }
-    }
 
-    // To prevent movement flooding
-    setTimeout(function() {canMove = 1;}, 500);
+      // To prevent movement flooding
+      setTimeout(function() {canMove = 1;}, 500);
+    }
   }
 }

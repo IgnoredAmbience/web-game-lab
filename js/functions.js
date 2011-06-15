@@ -87,7 +87,6 @@ function login () {
   var username = document.getElementById("userBox").value;
 
   var httpRequest = Ajax('POST', 'login', true);
-  httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   httpRequest.send(requestString({name: username}));
   httpRequest.onload = function(evt) {
     if(httpRequest.status != 200) return;
@@ -161,6 +160,7 @@ function Ajax(method, uri, async, multipart) {
   }
   r.open(method, uri, async);
   r.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  r.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   return r;
 }
 
