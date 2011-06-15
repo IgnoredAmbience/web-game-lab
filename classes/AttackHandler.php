@@ -24,7 +24,7 @@ class AttackHandler extends Handler {
     // Tell attackees that they were attacked
     foreach ($attackees as &$attackee) {
       if ($attackee != $user)
-        $attackee->attackedBy($this);
+        $attackee->attackedBy($user);
     }
   }
 }
