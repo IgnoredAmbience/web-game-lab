@@ -150,13 +150,7 @@ function keyPressed (event) {
         // If we're over a shop, show its contents
         var p = players[Player];
         moveActor(p, obj.move);
-        if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
-          displayShop(scenery[p.x][p.y].id);
-          document.getElementById("shopDisplay").style.visibility = "visible"; 
-        }
-        else {
-          document.getElementById("shopDisplay").style.visibility = "hidden"; 
-        }
+        displayShop();
       }
 
       // To prevent movement flooding

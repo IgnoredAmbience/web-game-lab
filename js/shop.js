@@ -1,9 +1,18 @@
-function displayShop(id) {
-  var httpRequest = Ajax('GET', "shop/"+id, false);
-  httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  httpRequest.send(null);
 
-  outputItems(httpRequest.responseText);
+
+function displayShop() {
+  var p = players[Player];
+  if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
+    var id = scenery[p.x][p.y].id;
+    var httpRequest = Ajax('GET', "shop/"+id, false);
+    httpRequest.send(null);
+
+    outputItems(httpRequest.responseText);
+    document.getElementById("shopDisplay").style.visibility = "visible"; 
+  }
+  else {
+    document.getElementById("shopDisplay").style.visibility = "hidden"; 
+  }
 }
 
 function outputItems (jsonItems) {
