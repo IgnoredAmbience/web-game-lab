@@ -1,11 +1,98 @@
-p
-{
-  color:red;
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: sans-serif;
 }
 
-#canvas-wrap
-{
-  position:relative;
+body {
+  background-color: aliceblue;
+}
+
+h1 {
+  text-align: center;
+  border-bottom: 2px solid navy;
+  background-color: lightblue;
+  margin-bottom: 50px;
+}
+
+#content {
+  width: 1080px;
+  margin: auto;
+  padding: auto;
+}
+
+#left, #middle, #right {
+  padding: 10px;
+  float: left;
+
+  background-color: lightblue;
+
+  border-style: solid;
+  border-width: 0px;
+  border-color: navy;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+}
+
+#left, #right {
+  margin-top: 50px;
+  height: 486px;
+}
+
+#left {
+  width: 250px;
+
+  border-left-width: 2px;
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+  -moz-border-radius-topleft: 15px;
+  -moz-border-radius-bottomleft: 15px;
+}
+
+#middle {
+  width: 512px;
+  left: 270px;
+
+  text-align: center;
+
+  border-width: 2px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+}
+
+#right {
+  width: 250px;
+  left: 812px;
+
+  border-right-width: 2px;
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
+  -moz-border-radius-topright: 15px;
+  -moz-border-radius-bottomright: 15px;
+}
+
+#footer {
+  width: 100%;
+  clear: both;
+
+  position: fixed;
+  bottom: 0px;
+
+  background-color: lightblue;
+  padding-left: 2px;
+  border-top: 1px dotted navy;
+
+  font-size: 10px;
+}
+
+#footer span {
+  padding-bottom: 0px;
+  border-bottom: 1px dotted;
+}
+
+#canvas {
+  width: 512px;
+  height: 512px;
 }
 
 #shopDisplay  /* slightly crude, forces shop items to be right of canvas */
@@ -27,8 +114,25 @@ p
 
 #chatmessages
 {
+  height: 50px;
+  width: 506px;
+  padding: 3px;
+  margin-left: auto;
+  margin-right: auto;
+
+  background-color: black;
+  color: white;
   overflow: auto;
-  height: 100px;
+  font-size: 10pt;
+  font-family: monospace;
+}
+
+#chatinput {
   width: 512px;
-  border: 1px black solid;
+
+  border-width: 1px 0px 0px 0px;
+  border-style: solid;
+  border-color: gray;
+  background-color: black;
+  color: gray;
 }

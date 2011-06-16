@@ -4,6 +4,19 @@ Notifications = {
     window.setInterval(this.poll.bind(this), 60000);
     this.poll();
     window.addEventListener('unload', this.destroy.bind(this), true);
+
+    var chat = document.getElementById('chatinput');
+    chat.addEventListener('focus', function() {
+      if(this.value == "Enter a message and hit enter to send") {
+        this.value = '';
+      }
+    }, false);
+    chat.addEventListener('blur', function() {
+      if(this.value == '') {
+        this.value = "Enter a message and hit enter to send";
+      }
+    }, false);
+    chat.addEventListener('keypress', this.send.bind(this), true);
   },
 
   destroy: function(event) {
@@ -65,8 +78,12 @@ Notifications = {
     }
   },
   
-  send: function() {
+  send: function(e) {
+    if((e.keyCode || e.charCode) != 13) return; 
+    var field = document.getElementById('chatinput');
+
     var r = Ajax('POST', 'chat', true);
-    r.send(requestString({message: document.getElementById('chat').value}));
+    r.send(requestString({message: field.value}));
+    field.value = '';
   }
 };

@@ -12,43 +12,46 @@
 </head>
 
 <body onload="init()">
-  <div id="loginBox">
-    <input type="text" id="userBox" autofocus="autofocus" >Username</input>
-    <button id="loginButton" onclick="login()">Login</button>
+  <h1>Our Gamey Thing</h1>
+  <div id="content">
+    <div id="left">
+      <div id="loginBox">
+        <input type="text" id="userBox" autofocus="autofocus" >Username</input>
+        <button id="loginButton" onclick="login()">Login</button>
+      </div>
+      <div id="logoutBox">
+        Logged in as <span id="loginName"></span>
+        <button id="logoutButton" onclick="logout()">Logout</button>
+      </div>
+      <div id="playerStats">
+        <div id="wealthDisplay"></div>
+        <div id="healthDisplay"></div>
+        <div id="stealthDisplay"></div>
+        <div id="shelfDisplay"></div>
+      </div>
+    </div>
+    <div id="middle">
+      <canvas id="canvas" width="512" height="512"></canvas>
+      <div id="notifications">
+        <div id="chatmessages"></div>
+        <input id="chatinput" type="text" value="Enter a message and hit enter to send" />
+      </div>
+    </div>
+    <div id="right">
+      <div id="shopDisplay"></div>
+
+      <button onclick="toggleSettings()">Settings</button>
+
+      <div id="settings">
+        <input class="setting" type="text" id="upKeyInput" value="w" maxlength="1">Up</input><br>
+        <input class="setting" type="text" id="downKeyInput" value="s" maxlength="1">Down</input><br>
+        <input class="setting" type="text" id="leftKeyInput" value="a" maxlength="1">Left</input><br>
+        <input class="setting" type="text" id="rightKeyInput" value="d" maxlength="1">Right</input><br>
+        <button class="setting" onclick="setKeys()">Update Keybindings</button><br>
+      </div>
+    </div>
   </div>
-  <div id="logoutBox">
-    Logged in as <span id="loginName"></span>
-    <button id="logoutButton" onclick="logout()">Logout</button>
-  </div>
-
-  <div id="canvas-wrap">
-    <canvas id="canvas" width="512" height="512"></canvas>
-  </div>
-
-  <div id="playerStats">
-    <div id="wealthDisplay"></div>
-    <div id="healthDisplay"></div>
-    <div id="stealthDisplay"></div>
-    <div id="shelfDisplay"></div>
-  </div>
-
-  <div id="shopDisplay"></div>
-
-  <button onclick="toggleSettings()">Settings</button>
-
-  <div id="settings">
-    <input class="setting" type="text" id="upKeyInput" value="w" maxlength="1">Up</input><br>
-    <input class="setting" type="text" id="downKeyInput" value="s" maxlength="1">Down</input><br>
-    <input class="setting" type="text" id="leftKeyInput" value="a" maxlength="1">Left</input><br>
-    <input class="setting" type="text" id="rightKeyInput" value="d" maxlength="1">Right</input><br>
-    <button class="setting" onclick="setKeys()">Update Keybindings</button><br>
-  </div>
-
-  <div id="notifications">
-    <div id="chatmessages"></div>
-    <input id="chat" type="text" /><button id="sendChat" onclick="Notifications.send()">Send</button>
-  </div>
-
+  <div id="footer">Group #27: <span title="emb2009">Ethel Bardsley</span>, <span title="js5409">Joseph Slade</span>, <span title="tw1509">Thomas Wood</span></div>
 </body>
 
 </html>
