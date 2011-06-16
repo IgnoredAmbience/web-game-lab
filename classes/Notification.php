@@ -38,6 +38,8 @@ class Notification {
       $this->listenerId = $i;
       shm_put_var($this->idMap, 0, $v);
     sem_release($this->sema);
+
+    $this->clear();
     return $i;
   }
 
@@ -95,5 +97,10 @@ class Notification {
   public function receive() {
     msg_receive($this->queue, $this->listenerId, $type, 1000, $msg);
     return $msg;
+  }
+
+  public function clear() {
+    // Empties the specified queue of messages
+    while(msg_receive($this->queue, $this->listenerId, $type, 1000, $msg, true, MSG_IPC_NOWAIT)) {}
   }
 }

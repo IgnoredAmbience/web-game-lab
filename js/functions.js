@@ -108,6 +108,8 @@ function loginPlayer (p) {
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("logoutBox").style.display = "inline";
   View.recheckPlayers = 1;
+
+  Notifications.poll();
 }
 
 function logout () {
@@ -117,6 +119,8 @@ function logout () {
   updateStats();
   document.getElementById("logoutBox").style.display = "none";
   document.getElementById("loginBox").style.display = "inline";
+
+  Notifications.poll();
 }
 
 function updateStats (p) {

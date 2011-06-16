@@ -1,6 +1,7 @@
 Notifications = {
   timeoutId: 0,
   init: function() {
+    window.setInterval(this.poll.bind(this), 60000);
     this.poll();
     window.addEventListener('unload', this.destroy.bind(this), true);
   },
@@ -10,14 +11,12 @@ Notifications = {
   },
 
   poll: function() {
-    window.clearTimeout(this.timeoutId);
-    this.timeoutId = window.setTimeout(this.poll.bind(this), 60000);
     if(this.r) {
       this.r.abort();
     }
+
     this.r = Ajax('PUT', 'poll', true, true);
     this.r.addEventListener('load', this.handler.bind(this), false);
-    this.r.addEventListener('error', this.poll.bind(this), false);
     this.r.send(null);
   },
 
