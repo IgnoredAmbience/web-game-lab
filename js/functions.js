@@ -1,8 +1,9 @@
 // CONSTANTS
-var TILE_SIZE = 24;
-var SPRITE_SIZE = 16;
-var frameInterval = 100;
-var NUM_TILES = 8; 
+var TILE_SIZE = 16; // Rendered size of each tile
+var SPRITE_SIZE = 16; // Size of each texture
+var frameInterval = 100; // 1/framerate in ms
+var NUM_TILES = 8; // Number of base background tiles
+var TIMEOUT = 500; // Number of miliseconds for move timeouts
 
 // GLOBAL VARIABLES
 

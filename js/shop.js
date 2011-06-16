@@ -1,5 +1,3 @@
-
-
 function displayShop() {
   var p = players[Player];
   if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
@@ -53,7 +51,6 @@ function makeShopButton(itemValue, transactType, itemId) {
 
 function transact(itemId, transactType) {
   var httpRequest = Ajax('POST', 'login', false);
-  httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   httpRequest.send(requestString({itemId: itemId, action: transactType}));
 
   if(httpRequest.status != 200) { //200 is SUCCESS!

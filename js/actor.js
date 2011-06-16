@@ -36,8 +36,8 @@ function drawActor (actor) {
 
       // Calculate how far between the start and destination we should draw
       var walkStep = actor.walkingMax / actor.walkingStage;
-      dest_x = actor.x + (actor.walkingX - actor.x)/walkStep;
-      dest_y = actor.y + (actor.walkingY - actor.y)/walkStep;
+      dest_x = actor.x + actor.walkingX/walkStep;
+      dest_y = actor.y + actor.walkingY/walkStep;
 
       if (actor.id == Player) {
         setView({x: dest_x, y: dest_y});
@@ -67,18 +67,26 @@ function drawAttack(actor) {
 
 
 function moveActor (actor,direction) {
-  actor.walkingX = actor.x;
-  actor.walkingY = actor.y;
+  actor.walkingX = 0;
+  actor.walkingY = 0;
 
   switch (direction) {
     case "west" :
-      actor.x--; break;
+      actor.x--;
+      actor.walkingX = 1;
+      break;
     case "east" :
-      actor.x++; break;
+      actor.x++;
+      actor.walkingX = -1;
+      break;
     case "north" :
-      actor.y--; break;
+      actor.y--;
+      actor.walkingY = 1;
+      break;
     case "south" :
-      actor.y++; break;
+      actor.y++;
+      actor.walkingY = -1;
+      break;
     default :
       return;
   }
@@ -154,7 +162,7 @@ function keyPressed (event) {
       }
 
       // To prevent movement flooding
-      setTimeout(function() {canMove = 1;}, 500);
+      setTimeout(function() {canMove = 1;}, TIMEOUT);
     }
   }
 }
