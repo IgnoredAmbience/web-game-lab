@@ -39,9 +39,6 @@
 \section{Frontend}
   % How this work
   \subsection{Renderer}
-    % Why HTML5 canvas and not something else (more cross platform)
-    % Why no libraries (none mature)
-    % Difficulties canvas provides
     \subsubsection{Choice of Technology}
       \begin{flushleft}
         There are a variety of technologies for browser-based rendering. The most obvious is Adobe Flash, as well Microsoft's Silverlight. However, while these are powerful tools with a wide selection of libraries and well-trodden paths for development, neither are universally cross platform, and Silverlight is not supported by the version of Firefox on the test machines.
@@ -50,6 +47,11 @@
 
         Canvas is a relatively new technology, introduced with HTML5. It allows for procedurally drawing directly to an image with Javascript, and is supported by Gecko, WebKit (including mobile versions) and, from version 9, Internet Explorer. There aren't many libraries available for it, and those that are aren't mature or well documented. However, canvas itself has sufficient framework for 2D sprite drawing, and I took this as a chance to learn through my own experience how a 2D renderer can be made.
       \end{flushleft}
+
+    % Combined actor/data, progression from separate to needing them combined
+    % Render loop
+    % Various efficiency hacks
+    % Alternate ideas
     \subsubsection{Implementation}
       \begin{flushleft}
       \end{flushleft}
