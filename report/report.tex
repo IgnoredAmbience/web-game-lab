@@ -54,6 +54,7 @@
     % Alternate ideas
     \subsubsection{Implementation}
       \begin{flushleft}
+        The field in the background is procedurally generated, being a different image each time the page is loaded. Pixels are a random color, weighted toward being a light green. Originally, I tried to have each pixel in the map generated uniquely, but this was very CPU intensive, causing the page to hang, or even crash. To remedy this, instead it generates a set of temporary smaller canvas tiles and uses those to build the larger background, which is considerably more performant.
       \end{flushleft}
   \subsection{Netcode}
     \begin{flushleft}
