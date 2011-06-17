@@ -59,7 +59,19 @@
     \begin{flushleft}
     \end{flushleft}
 \section{Backend}
-  % How that work
+  \subsection{Choice of Technology}
+    \begin{flushleft}
+      Our choice of server-side technology was decided by a combination of the skills the members of the group already had and for the ease of use with the department's Apache server. We chose PHP as the backend programming language for several reasons, firstly there was a minimal setup time required to get code to work with the provided server, secondly the language transparently handles many of the complexities of handling requests, thirdly PHP is very similar in syntax to C and in OO-style to Java, both languages that the group are familiar with, and finally PHP is bundled with a large number of interfaces to external libraries.
+In particular we use the PDO\footnote{PHP Data Objects} class to interface with the PostgresSQL database and the SystemV Semaphore library for low-overhead message passing between processes.
+
+We opted to use one third party PHP library, the ToroPHP Framework\footnote{http://www.toroweb.org/, the code is assumed to be freely licenced as all documentation implies so} is a small (150 line) class to route requests to appropriate handler classes.
+    \end{flushleft}
+
+  \subsubsection{Design}
+    \begin{flushleft}
+      All requests to the backend are routed to the \verb|index.php| script by the webserver's configuration in \verb|.htaccess|.
+      This script parses the request path and then dispatches it to the correct Handler class.
+    \end{flushleft}
 \section{Conclusion}
   % Wrap up, reiterate all the above in short
 
