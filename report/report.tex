@@ -88,7 +88,9 @@
         \verb/walk/, although is easily extensible to take more as needed. Each
         action has a number of sprites associated with it, which are simply
         stepped through, 1 per redraw, moving the sprite across the screen if
-        necessary.
+        necessary. Because of it's simplicity, however, attacking motions must
+        happen independently in their own render queue to prevent the main
+        actor sprite from disappearing.
       \end{flushleft}
   \subsection{Network}
     \begin{flushleft}
