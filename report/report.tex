@@ -46,13 +46,13 @@ improve the core game.
 spec. We felt that this was a good model for a game,  but we decided to make 
 some key changes.  
   \begin{itemize}
-    \item Cross-Platform
+    \item Cross-Platform\\
       A cross-platform game has several advantages. It can be played by players
       on any machine, increasing potential audience by a reasonable factor. It
       also allows for testing and development to be done on any platform, which
       certainly makes development easier.  
 
-    \item Multiple maps with a means of teleporting between them
+    \item Multiple maps with a means of teleporting between them\\
       Multiple maps with single points of access allow interesting modifications
       to core gameplay to be made in certain zones.  Because separate maps form
       distinct environments,  they can justifiably (in an in-game sense) have
@@ -62,7 +62,8 @@ some key changes.
       Although we did not have this implemented at the time this report was
       written, we would like to have a working prototype of it for the presentation.
 
-    \item PvE and PvP\footnote{Player versus Environment, Player versus Player} interaction
+    \item PvE and PvP\footnote{Player versus Environment, Player versus Player}
+    interaction\\
       The main selling point of all multiplayer games is the fact that the player can
       interact with others.  Player versus Player (PvP) interaction in any game generally 
       consists of either combat or trade.  We chose to implement both,  and players can
@@ -72,7 +73,8 @@ some key changes.
       directly, but the game economy is a dynamic,  and one player purchasing all
       of a resource will cause a shortage of that resource for a period of time.
 
-    \item A dynamic economy where the value of an item is related to its rarity
+    \item A dynamic economy where the value of an item is related to its
+    rarity\\
       To provide some concept of a goal,  and as an alternative to destroying
       other people's characters,  players can buy and sell resources.  The system 
       is not zero sum\footnote{There is not a fixed amount of gold in the economy}, and
@@ -85,7 +87,7 @@ some key changes.
 
   \end{itemize}
 
-\section{Frontend}
+\section{Program Design}
   % How this work
   \subsection{Renderer}
     \subsubsection{Choice of Technology}
@@ -181,9 +183,10 @@ some key changes.
       connection timeouts, each long-poll request is terminated after 60 seconds 
       and re-initiated.
     \end{flushleft}
-\section{Backend}
-  \subsection{Choice of Technology}
-    \begin{flushleft}
+
+  \subsection{Backend}
+    \subsubsection{Choice of Technology}
+      \begin{flushleft}
       Our choice of server-side technology was decided by a combination of the
       skills the members of the group already had and for the ease of use with
       the department's Apache server. We chose PHP as the backend programming
@@ -195,28 +198,55 @@ some key changes.
       PHP has, built in, a large number of interfaces to external libraries. we made 
       particular use the PDO\footnote{PHP Data Objects} class to interface
       with the PostgresSQL database and the SystemV Semaphore library for
-      low-overhead message passing between processes.
-    \end{flushleft}
+      low-overhead message passing between processes.       
+      \end{flushleft}
 
-  \subsection{Implementation}
-    \begin{flushleft}
-      Our code structure aims to meet the MVC\footnote{Model View Controller} 
-      pattern of object-oriented programming. To achieve this we opted to use a third 
-      party PHP library, the ToroPHP Framework\footnote{http://www.toroweb.org/, 
-      the code is assumed to be freely licenced as all documentation implies so} 
-      ; ToroPHP a small (150 line) class to route requests to appropriate handler 
-      (controller) classes.
+    \subsubsection{Implementation}
+      \begin{flushleft}
+        Our code structure aims to meet the MVC\footnote{Model View Controller} 
+        pattern of object-oriented programming. To achieve this we opted to use a third 
+        party PHP library, the ToroPHP Framework.\footnote{http://www.toroweb.org/, 
+        the code is assumed to be freely licenced as all documentation implies so} 
+        ToroPHP a small (150 line) class to route requests to appropriate handler 
+        (controller) classes.
 
-      We implemented a basic object-relational mapping class to make database 
-      requests as straightforward as possible. This provides a class for each 
-      data model, with appropriate actions for those models.
-    \end{flushleft}
+        We implemented a basic object-relational mapping class to make database 
+        requests as straightforward as possible. There exists an abstract 
+        DatabaseRecord class that handles the each of the standard 
+        CRUD\footnote{Create, Read, Update, Delete} actions for all database 
+        access. Each individual table has its own class subclassed from 
+        DatabaseRecord, set on each of these classes are the fields that are 
+        contained and associated functions, such as the login function on the 
+        Player class.
+
+        One of the model classes does not use the PostgresSQL database as a 
+        backend. For the backend to the long-polling message notifications we
+        are using Unix SystemV Shared Memory and Message Queues. We opted to use 
+        these rather than the database to minimise the overheads that would 
+        result from continually polling the database. Instead, the 
+        implementation of reading from the Message Queue cause the process to
+        become blocked until an appropriate message is placed in the queue.
+      \end{flushleft}
 
 \section{Conclusion}
   % Wrap up, reiterate all the above in short
   \begin{flushleft}
     While we did not acomplish everything we set out to do, we were for the
     most part successful, and with extra time could have accomplished more. 
+
+    For example, the multiple maps with teleporting feature was not implemented
+    by the time the report was written, although the database framework for it
+    exists. 
+
+    The combat provided is highly simplistic, just deducting your `shelf' from
+    their health. However, as with maps, the framework is there and is easily
+    extended to include item/wealth drops, weapons of different ranges, and so
+    on.
+
+    Also, the game is not terribly pretty. This is entirely down to the lack of
+    artistic skills on the team. We tried more detailed 32px sprites. They
+    looked shit. Then again, Minecraft only has 16px textures, and that's hella
+    popular, so the masses clearly love it.
   \end{flushleft}
 
 \end{document}
