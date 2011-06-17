@@ -83,6 +83,12 @@
         instead it generates a set of temporary smaller canvas tiles and uses
         those to build the larger background, which is considerably more
         performant.
+
+        Sprite animation currently supports 2 actions, \verb/stand/ and
+        \verb/walk/, although is easily extensible to take more as needed. Each
+        action has a number of sprites associated with it, which are simply
+        stepped through, 1 per redraw, moving the sprite across the screen if
+        necessary.
       \end{flushleft}
   \subsection{Netcode}
     \begin{flushleft}
