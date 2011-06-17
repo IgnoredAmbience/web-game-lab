@@ -88,7 +88,6 @@ some key changes.
   \end{itemize}
 
 \section{Program Design}
-  % How this work
   \subsection{Renderer}
     \subsubsection{Choice of Technology}
       \begin{flushleft}
@@ -139,6 +138,21 @@ some key changes.
         happen independently in their own render queue to prevent the main
         actor sprite from disappearing.
       \end{flushleft}
+
+  \subsection{User Interface}
+    \begin{flushleft}
+      The UI is set out with the gameboard at the centre of the page, with
+      all information displayed to the user on either side
+      of the board. This balances the display aesthetically and provides a clean intuitive
+interface for the user. Given more time, we would have further improved the design of the
+webpage.
+
+It was a design choice to simplify the registration process of the game to the extent that the only
+information required is the user's name. This simplification reduces the steps needed to start playing,
+which will hopefully draw more users in. The flipside of this is that automated registration is trivial,
+so the game may be open to abuse, particularly as all players can send and view chat.
+\end{flushleft}
+
   \subsection{Network}
     \begin{flushleft}
       The frontend makes extensive use of the XMLHttpRequest interface provided 
