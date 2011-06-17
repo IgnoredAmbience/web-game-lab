@@ -1,8 +1,22 @@
 Notifications = {
   timeoutId: 0,
   init: function() {
+    window.setInterval(this.poll.bind(this), 60000);
     this.poll();
     window.addEventListener('unload', this.destroy.bind(this), true);
+
+    var chat = document.getElementById('chatinput');
+    chat.addEventListener('focus', function() {
+      if(this.value == "Enter a message and hit enter to send") {
+        this.value = '';
+      }
+    }, false);
+    chat.addEventListener('blur', function() {
+      if(this.value == '') {
+        this.value = "Enter a message and hit enter to send";
+      }
+    }, false);
+    chat.addEventListener('keypress', this.send.bind(this), true);
   },
 
   destroy: function(event) {
@@ -10,19 +24,20 @@ Notifications = {
   },
 
   poll: function() {
-    window.clearTimeout(this.timeoutId);
-    this.timeoutId = window.setTimeout(this.poll.bind(this), 60000);
     if(this.r) {
       this.r.abort();
     }
+
     this.r = Ajax('PUT', 'poll', true, true);
     this.r.addEventListener('load', this.handler.bind(this), false);
-    this.r.addEventListener('error', this.poll.bind(this), false);
     this.r.send(null);
   },
 
   handler: function(evt) {
-    console.log(this.r.responseText);
+    if(console) {
+      console.log(this.r.responseText);
+    }
+
     var obj = JSON.parse(this.r.responseText);
     switch (obj.type) {
       case "move" :
@@ -39,6 +54,8 @@ Notifications = {
         break;
       case "attack" :
         // Display that the given player has attacked
+        View.attackers.push(players[obj.player.id]);
+        break;
       case "statChange" :
         // Update our own stats
         players[Player].wealth = obj.player.wealth;
@@ -61,9 +78,12 @@ Notifications = {
     }
   },
   
-  send: function() {
+  send: function(e) {
+    if((e.keyCode || e.charCode) != 13) return; 
+    var field = document.getElementById('chatinput');
+
     var r = Ajax('POST', 'chat', true);
-    r.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    r.send(requestString({message: document.getElementById('chat').value}));
+    r.send(requestString({message: field.value}));
+    field.value = '';
   }
 };

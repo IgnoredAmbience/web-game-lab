@@ -1,8 +1,9 @@
 // CONSTANTS
-var TILE_SIZE = 24;
-var SPRITE_SIZE = 16;
-var frameInterval = 200;
-var NUM_TILES = 8; 
+var TILE_SIZE = 16; // Rendered size of each tile
+var SPRITE_SIZE = 16; // Size of each texture
+var frameInterval = 100; // 1/framerate in ms
+var NUM_TILES = 8; // Number of base background tiles
+var TIMEOUT = 500; // Number of miliseconds for move timeouts
 
 // GLOBAL VARIABLES
 
@@ -13,7 +14,7 @@ var context;
 var Player;
 var players;
 var scenery; // Array of elements in the background scenery
-var tiles; // 2D array of background tiles
+var background;
 var mapHeight;
 var mapWidth;
 var minX; // The (x,y) of the top left corner of the view
@@ -22,6 +23,11 @@ var maxX;
 var maxY;
 var halfWidth; // Hacky, not entirely necessary
 var halfHeight;
+
+var shelfSprite; // 1 shared image for all attacks
+var shelfLocs = [[1,-1],[1,0],[1,1],[0,1]
+                ,[-1,1],[-1,0],[-1,-1],[0,-1]
+                ];
 
 // For alternate keymappings
 var upKey;
@@ -41,6 +47,9 @@ function init () {
   halfHeight = (canvas.height/TILE_SIZE)/2;
 
   players = new Array();
+
+  shelfSprite = new Image();
+  shelfSprite.src = "sprites/shelf" + SPRITE_SIZE + ".png";
 
   loadMap();
 
@@ -79,7 +88,6 @@ function login () {
   var username = document.getElementById("userBox").value;
 
   var httpRequest = Ajax('POST', 'login', true);
-  httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   httpRequest.send(requestString({name: username}));
   httpRequest.onload = function(evt) {
     if(httpRequest.status != 200) return;
@@ -105,6 +113,8 @@ function loginPlayer (p) {
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("logoutBox").style.display = "inline";
   View.recheckPlayers = 1;
+
+  Notifications.poll();
 }
 
 function logout () {
@@ -114,6 +124,8 @@ function logout () {
   updateStats();
   document.getElementById("logoutBox").style.display = "none";
   document.getElementById("loginBox").style.display = "inline";
+
+  Notifications.poll();
 }
 
 function updatePlayer() {
@@ -169,6 +181,7 @@ function Ajax(method, uri, async, multipart) {
   }
   r.open(method, uri, async);
   r.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  r.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   return r;
 }
 

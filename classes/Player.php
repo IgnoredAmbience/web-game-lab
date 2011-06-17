@@ -5,6 +5,7 @@ class Player extends DatabaseRecord {
   public $y = 0;
   public $name;
   public $lastActive = 'now';
+  public $sessionId = '';
   public $health = 10;
   public $wealth = 0;
   public $stealth = 0;
@@ -36,13 +37,13 @@ class Player extends DatabaseRecord {
     } else {
       $this->save();
 
-      $n = new Notification();
-      $n->broadcast(array('type'=>'move', 'player'=>(array) $this, 'move'=>$moveType));
+      $this->notifyOthers(array('type'=>'move', 'player'=>(array) $this, 'move'=>$moveType));
       return true;
     }
   }
 
   public function login() {
+    $this->sessionId = session_id();
     $this->ping();
     $n = new Notification();
     $n->broadcast(array('type'=>'login', 'player'=> (array) $this));
@@ -50,6 +51,7 @@ class Player extends DatabaseRecord {
 
   public function logout() {
     $this->lastActive = '-infinity';
+    $this->sessionId = '';
     $this->save();
 
     $n = new Notification();
@@ -81,6 +83,12 @@ class Player extends DatabaseRecord {
     $this->notify(array('type' => 'statChange', 'player' => (array) $this));
   }
 
-  public function notify($array) {
+  public function notify($array, $except=false) {
+    $n = new Notification();
+    $n->broadcast($array, $this->sessionId, $except);
+  }
+
+  public function notifyOthers($array) {
+    $this->notify($array, true);
   }
 }

@@ -38,6 +38,8 @@ class Notification {
       $this->listenerId = $i;
       shm_put_var($this->idMap, 0, $v);
     sem_release($this->sema);
+
+    $this->clear();
     return $i;
   }
 
@@ -76,13 +78,13 @@ class Notification {
     sem_remove($this->sema);
   }
 
-  public function broadcast($msg) {
+  public function broadcast($msg, $checkVal='', $except=false) {
     sem_acquire($this->sema);
       $v = $this->get_listeners();
       if(!is_array($v)) return;
-      foreach($v as $id => $val) {
-        if($val) {
-          $this->send($id, $msg);
+      foreach($v as $qid => $val) {
+        if($val && (!$checkVal || ($except xor ($checkVal == $val)))) {
+          $this->send($qid, $msg);
         }
       }
     sem_release($this->sema);
@@ -95,5 +97,10 @@ class Notification {
   public function receive() {
     msg_receive($this->queue, $this->listenerId, $type, 1000, $msg);
     return $msg;
+  }
+
+  public function clear() {
+    // Empties the specified queue of messages
+    while(msg_receive($this->queue, $this->listenerId, $type, 1000, $msg, true, MSG_IPC_NOWAIT)) {}
   }
 }

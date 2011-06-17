@@ -1,13 +1,23 @@
-function displayShop(id) {
-  var httpRequest = Ajax('GET', "shop/"+id, false);
-  httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  httpRequest.send(null);
+function displayShop() {
+  var p = players[Player];
+  if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
+    var id = scenery[p.x][p.y].id;
+    var httpRequest = Ajax('GET', "shop/"+id, false);
+    httpRequest.send(null);
 
-  document.getElementById("shopDisplay").style.left = 
-      document.getElementById("canvas").width + 25;
 
-  outputItems(httpRequest.responseText, "shopDisplay",
-	      ["itemID", "Name", "itemClass", "Stat", "Buy", "Sell"]);
+    document.getElementById("shopDisplay").style.left = 
+	document.getElementById("canvas").width + 25;
+
+    outputItems(httpRequest.responseText, "shopDisplay",
+		["itemID", "Name", "itemClass", "Stat", "Buy", "Sell"]);
+
+    document.getElementById("shopDisplay").style.visibility = "visible"; 
+  }
+  else {
+    document.getElementById("shopDisplay").style.visibility = "hidden"; 
+  }
+  
 }
 
 function outputItems (jsonItems, displayLocation, tableHeadings) {
@@ -58,7 +68,7 @@ function makeShopButton(itemValue, transactType, itemId) {
 
 function transact(itemId, transactType) {
   var httpRequest = Ajax('POST', 'shop/-1', false);
-  httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
   httpRequest.send(requestString({itemId: itemId, action: transactType}));
 
   if(httpRequest.status == 200) { //200 is SUCCESS!

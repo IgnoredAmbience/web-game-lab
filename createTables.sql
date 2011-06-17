@@ -35,6 +35,7 @@ CREATE TABLE Player (
   "mapId" integer REFERENCES Map(id),
   name varchar(20),
   "lastActive" timestamp,
+  "sessionId" varchar(32),
   health integer  DEFAULT 10,
   wealth integer  DEFAULT 0,
   stealth integer DEFAULT 0, -- like threat?

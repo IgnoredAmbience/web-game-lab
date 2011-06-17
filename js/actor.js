@@ -9,6 +9,8 @@ function actorify (obj, texture, stands, walks) {
 
   obj.walkingMax = walks;
   obj.walkingStage = 0;
+
+  obj.attackStage = 0;
 }
 
 function drawActor (actor) {
@@ -34,8 +36,8 @@ function drawActor (actor) {
 
       // Calculate how far between the start and destination we should draw
       var walkStep = actor.walkingMax / actor.walkingStage;
-      dest_x = actor.x + (actor.walkingX - actor.x)/walkStep;
-      dest_y = actor.y + (actor.walkingY - actor.y)/walkStep;
+      dest_x = actor.x + actor.walkingX/walkStep;
+      dest_y = actor.y + actor.walkingY/walkStep;
 
       if (actor.id == Player) {
         setView({x: dest_x, y: dest_y});
@@ -49,20 +51,42 @@ function drawActor (actor) {
                     (dest_x-minX)*TILE_SIZE,(dest_y-minY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
 }
 
+function drawAttack(actor) {
+  var source_x = 0;
+  var source_y = 0;
+ 
+  var dest_x = actor.x + shelfLocs[actor.attackStage][0];
+  var dest_y = actor.y + shelfLocs[actor.attackStage][1];
+
+  actor.attackStage = (actor.attackStage + 1) % 8;
+  if (actor.attackStage == 0) delete View.attackers[View.attackers.indexOf(actor)];
+  context.drawImage(shelfSprite,
+                    source_x,source_y, SPRITE_SIZE,SPRITE_SIZE,
+                    (dest_x-minX)*TILE_SIZE,(dest_y-minY)*TILE_SIZE, TILE_SIZE,TILE_SIZE);
+}
+
 
 function moveActor (actor,direction) {
-  actor.walkingX = actor.x;
-  actor.walkingY = actor.y;
+  actor.walkingX = 0;
+  actor.walkingY = 0;
 
   switch (direction) {
     case "west" :
-      actor.x--; break;
+      actor.x--;
+      actor.walkingX = 1;
+      break;
     case "east" :
-      actor.x++; break;
+      actor.x++;
+      actor.walkingX = -1;
+      break;
     case "north" :
-      actor.y--; break;
+      actor.y--;
+      actor.walkingY = 1;
+      break;
     case "south" :
-      actor.y++; break;
+      actor.y++;
+      actor.walkingY = -1;
+      break;
     default :
       return;
   }
@@ -96,10 +120,8 @@ function keyPressed (event) {
     case 40 : // Down
     case downKey :
       move = "south"; break;
-    /*
     case 32 : // Spacebar
       move = "attack"; break;
-    */
     default :
       return;
   }
@@ -119,28 +141,28 @@ function keyPressed (event) {
       default:
     }
     View.recheckScenery = 1;
-  } else
+  } else {
 
-  if (canMove) {
-    canMove = 0;
+    if (canMove) {
+      canMove = 0;
 
-    var httpRequest = Ajax('POST', "player/move", false);
-    httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    httpRequest.send(requestString({moveType: move}));
-    if (httpRequest.status != 200) move = '';
-    else {
-      // If we're over a shop, show its contents
-      var p = players[Player];
-      if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
-        displayShop(scenery[p.x][p.y].id);
-        document.getElementById("shopDisplay").style.visibility = "visible"; 
+      var httpRequest = Ajax('POST', (move == "attack") ? "attack" : "player/move", false);
+
+      if (move == "attack") httpRequest.send(null);
+      else httpRequest.send(requestString({moveType: move}));
+
+      if (httpRequest.status != 200) move = '';
+      else if (move != 'attack') {
+        var obj = JSON.parse(httpRequest.responseText);
+
+        // If we're over a shop, show its contents
+        var p = players[Player];
+        moveActor(p, obj.move);
+        displayShop();
       }
-      else {
-        document.getElementById("shopDisplay").style.visibility = "hidden"; 
-      }
+
+      // To prevent movement flooding
+      setTimeout(function() {canMove = 1;}, TIMEOUT);
     }
-
-    // To prevent movement flooding
-    setTimeout(function() {canMove = 1;}, 500);
   }
 }

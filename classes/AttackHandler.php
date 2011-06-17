@@ -1,7 +1,7 @@
 <?php
 
 class AttackHandler extends Handler {
-  public function get() {
+  public function post() {
     global $database;
     $this->requireLogin();
 
@@ -19,11 +19,12 @@ class AttackHandler extends Handler {
 
     // Broadcast attack happened
     $n = new Notification();
-    $n->broadcast(array('type' => 'attack', 'player' => (array) $this));
+    $n->broadcast(array('type' => 'attack', 'player' => (array) $user));
 
     // Tell attackees that they were attacked
     foreach ($attackees as &$attackee) {
-      $attackee->attackedBy($this);
+      if ($attackee != $user)
+        $attackee->attackedBy($user);
     }
   }
 }
