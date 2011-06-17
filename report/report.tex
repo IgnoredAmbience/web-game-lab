@@ -34,16 +34,58 @@
 
 \section{Introduction}
   % Brief rundown of the spec
+The purpose of this exercise was to gain experience with web programming, 
+with running server and client side testing,  and with use of a database, 
+all for the purpose of making a multi user program. Specifically,  
+this program was a space trading game.  Whilst we stuck with the essence
+of this program,  we made a few changes in areas in which we felt we could
+improve the core game.
 \section{Concept}
   % Brief explanation of the game
+  The primary idea of the game was to be a trading game,  as in the original 
+spec. We felt that this was a good model for a game,  but we decided to make 
+some key changes.  
   \begin{itemize}
     \item Crossplatform
-    \item Multiple maps with teleport between them
-    \item PvE and PvP\footnote{Player vs Environment, Player vs Player} combat
+      A crossplatform game has several advantages. It can be played by players
+      on any machine, increasing potential audience by a reasonable factor. It
+      also allows for testing and development to be done on any platform, which
+      certainly makes development easier.  
+
+    \item Multiple maps with a means of teleporting between them
+      Multiple maps with single points of access allow interesting modifications
+      to core gameplay to be made in cetain zones.  Because seperate maps form
+      distinct environments,  they can justifiably (in an in-game sense) have
+      different enemies,  different items in their shops,  and even allow certain
+      things that could not be implemented on a universal scale,  such as free
+      for all PvP (see next section), or co-operative PvE (see next section).
+      Although we did not have this implemented at the time this report was
+      written, we would like to have a working prototype of it for the presentation.
+
+    \item PvE and PvP\footnote{Player versus Environment, Player versus Player} interaction
+      The main selling point of all multiplayer games is the fact that the player can
+      interact with others.  Player versus Player (PvP) interaction in any game generally 
+      consists of either combat or trade.  We chose to implement both,  and players can
+      attack each other as they wish.  There is currently nothing to gain
+      from combat,  except for preventing other players from logging their character
+      in once dead which has its appeal to certain players.  Players cannot trade
+      directly, but the game economy is a dynamic one,  and one player purchasing all
+      of a resource will cause a shortage of that resource for a period of time.
+
     \item A dynamic economy where the value of an item is related to its rarity
+      To provide some concept of a goal,  and as an alternative to destroying
+      other people's characters,  players can buy and sell resources.  The system 
+      is not zero sum\footnote{There is not a fixed amount of gold in the economy}, and
+      so players have the opportunity to make money. To prevent this aspect of the game
+      being about more than making round trips between two points where there 
+      is a fixed discrepancy between item values,  item stocks and values fluctuate over time,
+      modified by various factors,  such as the map the shop is on,  the amount of stock
+      held at a time,  and any other reasonable thing we can think of.
+
+
   \end{itemize}
 
-\section{Frontend}
+\section{Program Design}
   % How this work
   \subsection{Renderer}
     \subsubsection{Choice of Technology}
@@ -140,36 +182,50 @@
       connection timeouts, each long-poll request is terminated after 60 seconds 
       and re-initiated.
     \end{flushleft}
-\section{Backend}
-  \subsection{Choice of Technology}
-    \begin{flushleft}
-      Our choice of server-side technology was decided by a combination of the
-      skills the members of the group already had and for the ease of use with
-      the department's Apache server. We chose PHP as the backend programming
-      language for several reasons, firstly there was a minimal setup time
-      required to get code to work with the provided server, secondly the
-      language transparently handles many of the complexities of handling
-      requests, thirdly PHP is very similar in syntax to C and in OO-style to
-      Java, both languages that the group are familiar with, and finally PHP is
-      bundled with a large number of interfaces to external libraries.  In
-      particular we use the PDO\footnote{PHP Data Objects} class to interface
-      with the PostgresSQL database and the SystemV Semaphore library for
-      low-overhead message passing between processes.
-    \end{flushleft}
 
-  \subsection{Implementation}
-    \begin{flushleft}
-      Our code structure aims to meet the MVC\footnote{Model View Controller} 
-      pattern of object-oriented programming, for this we opted to use one third 
-      party PHP library, the ToroPHP Framework\footnote{http://www.toroweb.org/, 
-      the code is assumed to be freely licenced as all documentation implies so} 
-      is a small (150 line) class to route requests to appropriate handler 
-      (controller) classes.
+  \subsection{Backend}
+    \subsubsection{Choice of Technology}
+      \begin{flushleft}
+        Our choice of server-side technology was decided by a combination of the
+        skills the members of the group already had and for the ease of use with
+        the department's Apache server. We chose PHP as the backend programming
+        language for several reasons, firstly there was a minimal setup time
+        required to get code to work with the provided server, secondly the
+        language transparently handles many of the complexities of handling
+        requests, thirdly PHP is very similar in syntax to C and in OO-style to
+        Java, both languages that the group are familiar with, and finally PHP is
+        bundled with a large number of interfaces to external libraries.  In
+        particular we use the PDO\footnote{PHP Data Objects} class to interface
+        with the PostgresSQL database and the SystemV Semaphore library for
+        low-overhead message passing between processes.
+      \end{flushleft}
 
-      We implemented a basic object-relational mapping class to make database 
-      requests as straightforward as possible. This provides a class for each 
-      data model, with appropriate actions for those models.
-    \end{flushleft}
+    \subsubsection{Implementation}
+      \begin{flushleft}
+        Our code structure aims to meet the MVC\footnote{Model View Controller} 
+        pattern of object-oriented programming, for this we opted to use one third 
+        party PHP library, the ToroPHP Framework\footnote{http://www.toroweb.org/, 
+        the code is assumed to be freely licenced as all documentation implies so} 
+        is a small (150 line) class to route requests to appropriate handler 
+        (controller) classes.
+
+        We implemented a basic object-relational mapping class to make database 
+        requests as straightforward as possible. There exists an abstract 
+        DatabaseRecord class that handles the each of the standard 
+        CRUD\footnote{Create, Read, Update, Delete} actions for all database 
+        access. Each individual table has its own class subclassed from 
+        DatabaseRecord, set on each of these classes are the fields that are 
+        contained and associated functions, such as the login function on the 
+        Player class.
+
+        One of the model classes does not use the PostgresSQL database as a 
+        backend. For the backend to the long-polling message notifications we
+        are using Unix SystemV Shared Memory and Message Queues. We opted to use 
+        these rather than the database to minimise the overheads that would 
+        result from continually polling the database. Instead, the 
+        implementation of reading from the Message Queue cause the process to
+        become blocked until an appropriate message is placed in the queue.
+      \end{flushleft}
 
 \section{Conclusion}
   % Wrap up, reiterate all the above in short
