@@ -46,15 +46,15 @@ improve the core game.
 spec. We felt that this was a good model for a game,  but we decided to make 
 some key changes.  
   \begin{itemize}
-    \item Crossplatform\\
-      A crossplatform game has several advantages. It can be played by players
+    \item Cross-Platform\\
+      A cross-platform game has several advantages. It can be played by players
       on any machine, increasing potential audience by a reasonable factor. It
       also allows for testing and development to be done on any platform, which
       certainly makes development easier.  
 
     \item Multiple maps with a means of teleporting between them\\
       Multiple maps with single points of access allow interesting modifications
-      to core gameplay to be made in cetain zones.  Because seperate maps form
+      to core gameplay to be made in certain zones.  Because separate maps form
       distinct environments,  they can justifiably (in an in-game sense) have
       different enemies,  different items in their shops,  and even allow certain
       things that could not be implemented on a universal scale,  such as free
@@ -70,7 +70,7 @@ some key changes.
       attack each other as they wish.  There is currently nothing to gain
       from combat,  except for preventing other players from logging their character
       in once dead which has its appeal to certain players.  Players cannot trade
-      directly, but the game economy is a dynamic one,  and one player purchasing all
+      directly, but the game economy is a dynamic,  and one player purchasing all
       of a resource will cause a shortage of that resource for a period of time.
 
     \item A dynamic economy where the value of an item is related to its
@@ -109,32 +109,31 @@ some key changes.
         supported by Gecko, WebKit (including mobile versions) and, from version
         9, Internet Explorer. There aren't many libraries available for it, and
         those that are aren't mature or well documented. However, canvas itself
-        has sufficient framework for 2D sprite drawing, and I took this as a
-        chance to learn through my own experience how a 2D renderer can be made.
+        has sufficient framework for 2D sprite drawing.
       \end{flushleft}
 
     \subsubsection{Implementation}
       \begin{flushleft}
-        The render initializes by setting up the canvas element and render
+        The render initialises by setting up the canvas element and render
         context, loading map data from the server, using that to generate a
-        background image and place any scenery sprites (eg, shops). It then
+        background image and place any scenery sprites (e.g. shops). It then
         centers the view, adds an input handler, before starting the render
         loop.
 
         The field in the background is procedurally generated, being a
         different image each time the page is loaded. Pixels are a random
-        color, weighted toward being a light green. Originally, I tried to have
-        each pixel in the map generated uniquely, but this was very CPU
+        colour, weighted toward being a light green. Originally, we tried to have
+        each pixel in the map generated uniquely, but this was too CPU
         intensive, causing the page to hang, or even crash. To remedy this,
-        instead it generates a set of temporary smaller canvas tiles and uses
+        it instead generates a set of temporary smaller canvas tiles and uses
         those to build the larger background, which is considerably more
         performant.
 
-        Sprite animation currently supports 2 actions, \verb/stand/ and
-        \verb/walk/, although is easily extensible to take more as needed. Each
+        Sprite animation currently supports two actions, \verb/stand/ and
+        \verb/walk/, although it could be easily extended as needed. Each
         action has a number of sprites associated with it, which are simply
-        stepped through, 1 per redraw, moving the sprite across the screen if
-        necessary. Because of it's simplicity, however, attacking motions must
+        stepped through, one per redraw, moving the sprite across the screen if
+        necessary. Because of this simplicity, attacking motions must
         happen independently in their own render queue to prevent the main
         actor sprite from disappearing.
       \end{flushleft}
@@ -173,7 +172,7 @@ so the game may be open to abuse, particularly as all players can send and view 
 
       The server to client data is encoded using JSON\footnote{JavaScript Object 
       Notation}. This format is advantageous as a transfer format as it 
-      concicely encodes complex data-structures into a reasonably human-readable 
+      concisely encodes complex data-structures into a reasonably human-readable 
       string. Both PHP and JavaScript provide built-in functions to encode and 
       parse this format, respectively.
 
@@ -193,7 +192,7 @@ so the game may be open to abuse, particularly as all players can send and view 
       the client for an individual request. In standard practice, the content of 
       any previous responses is replaced by the content a new incoming response.
 
-      The combination of long-polling with multipart reponses permits 
+      The combination of long-polling with multipart responses permits 
       server-pushing to be achieved. As an added precaution against underlying 
       connection timeouts, each long-poll request is terminated after 60 seconds 
       and re-initiated.
@@ -202,27 +201,27 @@ so the game may be open to abuse, particularly as all players can send and view 
   \subsection{Backend}
     \subsubsection{Choice of Technology}
       \begin{flushleft}
-        Our choice of server-side technology was decided by a combination of the
-        skills the members of the group already had and for the ease of use with
-        the department's Apache server. We chose PHP as the backend programming
-        language for several reasons, firstly there was a minimal setup time
-        required to get code to work with the provided server, secondly the
-        language transparently handles many of the complexities of handling
-        requests, thirdly PHP is very similar in syntax to C and in OO-style to
-        Java, both languages that the group are familiar with, and finally PHP is
-        bundled with a large number of interfaces to external libraries.  In
-        particular we use the PDO\footnote{PHP Data Objects} class to interface
-        with the PostgresSQL database and the SystemV Semaphore library for
-        low-overhead message passing between processes.
+      Our choice of server-side technology was decided by a combination of the
+      skills the members of the group already had and for the ease of use with
+      the department's Apache server. We chose PHP as the backend programming
+      language for several reason: there was a minimal setup time
+      required to get code to work with the provided server, the
+      language transparently deals with many of the complexities of handling
+      requests, PHP's syntax is very similar to C's and it promotes a programming style close to
+      that used in Java, both languages that the group are familiar with. Finally
+      PHP has, built in, a large number of interfaces to external libraries. we made 
+      particular use the PDO\footnote{PHP Data Objects} class to interface
+      with the PostgresSQL database and the SystemV Semaphore library for
+      low-overhead message passing between processes.       
       \end{flushleft}
 
     \subsubsection{Implementation}
       \begin{flushleft}
         Our code structure aims to meet the MVC\footnote{Model View Controller} 
-        pattern of object-oriented programming, for this we opted to use one third 
-        party PHP library, the ToroPHP Framework\footnote{http://www.toroweb.org/, 
+        pattern of object-oriented programming. To achieve this we opted to use a third 
+        party PHP library, the ToroPHP Framework.\footnote{http://www.toroweb.org/, 
         the code is assumed to be freely licenced as all documentation implies so} 
-        is a small (150 line) class to route requests to appropriate handler 
+        ToroPHP a small (150 line) class to route requests to appropriate handler 
         (controller) classes.
 
         We implemented a basic object-relational mapping class to make database 
