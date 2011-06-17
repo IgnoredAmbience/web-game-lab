@@ -54,6 +54,8 @@
     % Alternate ideas
     \subsubsection{Implementation}
       \begin{flushleft}
+        The render initializes by setting up the canvas element and render context, loading map data from the server, using that to generate a background image and place any scenery sprites (eg, shops). It then centers the view, adds an input handler, before starting the render loop.
+
         The field in the background is procedurally generated, being a different image each time the page is loaded. Pixels are a random color, weighted toward being a light green. Originally, I tried to have each pixel in the map generated uniquely, but this was very CPU intensive, causing the page to hang, or even crash. To remedy this, instead it generates a set of temporary smaller canvas tiles and uses those to build the larger background, which is considerably more performant.
       \end{flushleft}
   \subsection{Netcode}
