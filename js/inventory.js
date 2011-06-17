@@ -9,5 +9,7 @@ function loadInventory() {
 
   document.getElementById('chatmessages').innerHTML = r.responseText + '<br/>' +
       document.getElementById('chatmessages').innerHTML;
+
+  players[Player].inventory = JSON.parse(r.responseText);
 }
 
