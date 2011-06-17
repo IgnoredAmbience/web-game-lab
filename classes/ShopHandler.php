@@ -96,14 +96,19 @@ class ShopHandler extends Handler {
   
   
   function get($shopId) {
-    if($shop = Shop::getById($shopId, 'Shop')) {
-      if($shopStock = ShopStock::getByField("shopId",$shop->id,"ShopStock")) {
-        foreach($shopStock as $shopItem) {
-          $items[] = Item::getById($shopItem->itemId, "Item");
-        }
-        echo json_encode($items);
-      }
-    } //deliberately = and not == or ===
+    $user = $this->getUser();
+    global $database;
+
+    //name stat vlaue count
+    $stmt = $database->prepare('SELECT i.id, i.name, i.stat, ss.count, i.value, i.class
+                                FROM Item i, ShopStock ss 
+                                WHERE ss."shopId" = ? AND ss."itemId" = i.id;');
+
+    $stmt->execute(array($user->id));
+
+    $playerLoot = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode($playerLoot);
   }
   
 }

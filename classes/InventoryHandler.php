@@ -6,7 +6,7 @@ class InventoryHandler extends Handler {
     global $database;
 
     //name stat vlaue count
-    $stmt = $database->prepare('SELECT i.name, i.stat, l.count, i.value
+    $stmt = $database->prepare('SELECT i.id, i.name, i.stat, l.count, i.value, i.class
                                 FROM Item i, PlayerLoot l 
                                 WHERE l."playerId" = ? AND l."itemId" = i.id;');
 
