@@ -85,7 +85,7 @@ some key changes.
 
   \end{itemize}
 
-\section{Frontend}
+\section{Program Design}
   % How this work
   \subsection{Renderer}
     \subsubsection{Choice of Technology}
@@ -182,36 +182,50 @@ some key changes.
       connection timeouts, each long-poll request is terminated after 60 seconds 
       and re-initiated.
     \end{flushleft}
-\section{Backend}
-  \subsection{Choice of Technology}
-    \begin{flushleft}
-      Our choice of server-side technology was decided by a combination of the
-      skills the members of the group already had and for the ease of use with
-      the department's Apache server. We chose PHP as the backend programming
-      language for several reasons, firstly there was a minimal setup time
-      required to get code to work with the provided server, secondly the
-      language transparently handles many of the complexities of handling
-      requests, thirdly PHP is very similar in syntax to C and in OO-style to
-      Java, both languages that the group are familiar with, and finally PHP is
-      bundled with a large number of interfaces to external libraries.  In
-      particular we use the PDO\footnote{PHP Data Objects} class to interface
-      with the PostgresSQL database and the SystemV Semaphore library for
-      low-overhead message passing between processes.
-    \end{flushleft}
 
-  \subsection{Implementation}
-    \begin{flushleft}
-      Our code structure aims to meet the MVC\footnote{Model View Controller} 
-      pattern of object-oriented programming, for this we opted to use one third 
-      party PHP library, the ToroPHP Framework\footnote{http://www.toroweb.org/, 
-      the code is assumed to be freely licenced as all documentation implies so} 
-      is a small (150 line) class to route requests to appropriate handler 
-      (controller) classes.
+  \subsection{Backend}
+    \subsubsection{Choice of Technology}
+      \begin{flushleft}
+        Our choice of server-side technology was decided by a combination of the
+        skills the members of the group already had and for the ease of use with
+        the department's Apache server. We chose PHP as the backend programming
+        language for several reasons, firstly there was a minimal setup time
+        required to get code to work with the provided server, secondly the
+        language transparently handles many of the complexities of handling
+        requests, thirdly PHP is very similar in syntax to C and in OO-style to
+        Java, both languages that the group are familiar with, and finally PHP is
+        bundled with a large number of interfaces to external libraries.  In
+        particular we use the PDO\footnote{PHP Data Objects} class to interface
+        with the PostgresSQL database and the SystemV Semaphore library for
+        low-overhead message passing between processes.
+      \end{flushleft}
 
-      We implemented a basic object-relational mapping class to make database 
-      requests as straightforward as possible. This provides a class for each 
-      data model, with appropriate actions for those models.
-    \end{flushleft}
+    \subsubsection{Implementation}
+      \begin{flushleft}
+        Our code structure aims to meet the MVC\footnote{Model View Controller} 
+        pattern of object-oriented programming, for this we opted to use one third 
+        party PHP library, the ToroPHP Framework\footnote{http://www.toroweb.org/, 
+        the code is assumed to be freely licenced as all documentation implies so} 
+        is a small (150 line) class to route requests to appropriate handler 
+        (controller) classes.
+
+        We implemented a basic object-relational mapping class to make database 
+        requests as straightforward as possible. There exists an abstract 
+        DatabaseRecord class that handles the each of the standard 
+        CRUD\footnote{Create, Read, Update, Delete} actions for all database 
+        access. Each individual table has its own class subclassed from 
+        DatabaseRecord, set on each of these classes are the fields that are 
+        contained and associated functions, such as the login function on the 
+        Player class.
+
+        One of the model classes does not use the PostgresSQL database as a 
+        backend. For the backend to the long-polling message notifications we
+        are using Unix SystemV Shared Memory and Message Queues. We opted to use 
+        these rather than the database to minimise the overheads that would 
+        result from continually polling the database. Instead, the 
+        implementation of reading from the Message Queue cause the process to
+        become blocked until an appropriate message is placed in the queue.
+      \end{flushleft}
 
 \section{Conclusion}
   % Wrap up, reiterate all the above in short
