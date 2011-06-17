@@ -90,8 +90,50 @@
         stepped through, 1 per redraw, moving the sprite across the screen if
         necessary.
       \end{flushleft}
-  \subsection{Netcode}
+  \subsection{Network}
     \begin{flushleft}
+      The frontend makes extensive use of the XMLHttpRequest interface provided 
+      by the browser. This interface permits additional HTTP requests to be made 
+      to the server by the client-side JavaScript to request that an action be 
+      recorded in the database, or to receive more data.
+
+      The client to server data encoding is the same as a standard HTML form 
+      would be transmitted as, namely the 
+      \verb|application/x-www-form-urlencoded| MIME-type. This is reasonably 
+      simple to construct with JavaScript, with each field name and value
+      string being URL-escaped then concatenated into a string with \verb|=| 
+      separating the fields from the values, and \verb|&| being used to separate 
+      each individual field.\footnote{See also: W3C HTML 4.01 Specification Section 
+      17.13.4} This format is advantageous for receipt on the server-side as PHP 
+      automatically parses requests made in this format and makes them available
+      to the program.
+
+      The server to client data is encoded using JSON\footnote{JavaScript Object 
+      Notation}. This format is advantageous as a transfer format as it 
+      concicely encodes complex data-structures into a reasonably human-readable 
+      string. Both PHP and JavaScript provide built-in functions to encode and 
+      parse this format, respectively.
+
+      We have also implemented a server-push notifications system using the 
+      long-polling of multipart HTTP requests. HTTP is generally limited by the 
+      fact that requests can only be made in one direction - a client can only 
+      request data from a server, the server cannot arbitrarily open a 
+      connection to the client to notify it of an event.
+      
+      Long-polling is one 
+      method to overcome this limitation. Long-polling is when a client makes a 
+      request to the server to send it data but if the server has no data to 
+      send at the time the request is made, the server holds the connection open 
+      until it is ready to send some.
+      
+      Multipart requests permit multiple distinct responses from the server to 
+      the client for an individual request. In standard practice, the content of 
+      any previous responses is replaced by the content a new incoming response.
+
+      The combination of long-polling with multipart reponses permits 
+      server-pushing to be achieved. As an added precaution against underlying 
+      connection timeouts, each long-poll request is terminated after 60 seconds 
+      and re-initiated.
     \end{flushleft}
 \section{Backend}
   \subsection{Choice of Technology}
@@ -108,18 +150,20 @@
       particular we use the PDO\footnote{PHP Data Objects} class to interface
       with the PostgresSQL database and the SystemV Semaphore library for
       low-overhead message passing between processes.
-
-      We opted to use one third party PHP library, the ToroPHP
-      Framework\footnote{http://www.toroweb.org/, the code is assumed to be
-      freely licenced as all documentation implies so} is a small (150 line)
-      class to route requests to appropriate handler classes.
     \end{flushleft}
 
-  \subsubsection{Design}
+  \subsection{Implementation}
     \begin{flushleft}
-      All requests to the backend are routed to the \verb|index.php| script by
-      the webserver's configuration in \verb|.htaccess|.  This script parses the
-      request path and then dispatches it to the correct Handler class.
+      Our code structure aims to meet the MVC\footnote{Model View Controller} 
+      pattern of object-oriented programming, for this we opted to use one third 
+      party PHP library, the ToroPHP Framework\footnote{http://www.toroweb.org/, 
+      the code is assumed to be freely licenced as all documentation implies so} 
+      is a small (150 line) class to route requests to appropriate handler 
+      (controller) classes.
+
+      We implemented a basic object-relational mapping class to make database 
+      requests as straightforward as possible. This provides a class for each 
+      data model, with appropriate actions for those models.
     \end{flushleft}
 
 \section{Conclusion}
