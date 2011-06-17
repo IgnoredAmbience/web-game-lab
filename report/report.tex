@@ -1,0 +1,67 @@
+\documentclass[12pt]{amsart}
+
+\usepackage{a4wide}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{\today}
+\rfoot{\thepage}
+
+\usepackage{algorithm2e}
+\usepackage{graphicx}
+\usepackage[parfill]{parskip}
+\usepackage{appendix}
+\usepackage{amsmath}
+\usepackage{multicol}
+
+\renewcommand{\labelitemi}{-}
+\renewcommand{\labelitemii}{-}
+\renewcommand{\thefootnote}{\roman{footnote}}
+
+\setcounter{secnumdepth}{10}
+\setcounter{tocdepth}{3}
+
+\title{Trader Game}
+\author{Ethel Bardsley, Joseph Slade and Thomas Wood}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+  % Brief rundown of the spec
+\section{Concept}
+  % Brief explanation of the game
+\section{Frontend}
+  % How this work
+  \subsection{Renderer}
+    \subsubsection{Choice of Technology}
+      \begin{flushleft}
+        There are a variety of technologies for browser-based rendering. The most obvious is Adobe Flash, as well Microsoft's Silverlight. However, while these are powerful tools with a wide selection of libraries and well-trodden paths for development, neither are universally cross platform, and Silverlight is not supported by the version of Firefox on the test machines.
+
+        For handling the rendering with just HTML and Javascript, one method is to render by manipulating the DOM\footnote{Document Object Model}, and there are a few libraries for writing renderers using this method. However, DOM manipulation can suffer performance issues, particularly where there are many elements being drawn.
+
+        Canvas is a relatively new technology, introduced with HTML5. It allows for procedurally drawing directly to an image with Javascript, and is supported by Gecko, WebKit (including mobile versions) and, from version 9, Internet Explorer. There aren't many libraries available for it, and those that are aren't mature or well documented. However, canvas itself has sufficient framework for 2D sprite drawing, and I took this as a chance to learn through my own experience how a 2D renderer can be made.
+      \end{flushleft}
+
+    % Combined actor/data, progression from separate to needing them combined
+    % Render loop
+    % Various efficiency hacks
+    % Alternate ideas
+    \subsubsection{Implementation}
+      \begin{flushleft}
+      \end{flushleft}
+  \subsection{Netcode}
+    \begin{flushleft}
+    \end{flushleft}
+\section{Backend}
+  % How that work
+\section{Conclusion}
+  % Wrap up, reiterate all the above in short
+
+\end{document}
+
