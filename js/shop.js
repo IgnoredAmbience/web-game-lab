@@ -5,12 +5,8 @@ function displayShop() {
     var httpRequest = Ajax('GET', "shop/"+id, false);
     httpRequest.send(null);
 
-
-    document.getElementById("shopDisplay").style.left = 
-	document.getElementById("canvas").width + 25;
-
     outputItems(httpRequest.responseText, "shopDisplay",
-		["itemID", "Name", "itemClass", "Stat", "Buy", "Sell"]);
+		["Name", "Class", "Stat", "Buy", "Sell"]);
 
     document.getElementById("shopDisplay").style.visibility = "visible"; 
   }
@@ -29,8 +25,8 @@ function outputItems (jsonItems, displayLocation, tableHeadings) {
 }
 
 function buildItemTable(itemList, tableHeadings) {
-  var tableOutput = '<table border="1">';
-  tableOutput += tableHeadings.map(makeTableCell).join(' ');
+  var tableOutput = '<table>';
+  tableOutput += tableHeadings.map(function(s) {return '<th>'+s+'</th>';}).join(' ');
   tableOutput += itemList.map(makeCellRow);
   tableOutput += "</table>";
   return tableOutput;
@@ -42,7 +38,6 @@ function makeTableCell(string) {
 
 function makeCellRow(item) {
   var newCell = "<tr>";
-  newCell += makeTableCell(item.id);
   newCell += makeTableCell(item.name);
   newCell += makeTableCell(item.class);
   newCell += makeTableCell(item.stat);
