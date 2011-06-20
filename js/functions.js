@@ -98,9 +98,15 @@ function login () {
   httpRequest.send(requestString({name: username}));
   httpRequest.onload = function(evt) {
     if(httpRequest.status != 200) return;
-
-    var p = JSON.parse(httpRequest.responseText);
-    loginPlayer(p);
+    if (httpRequest.responseText == "fail") {
+      alert(username + " is dead");
+      alert("For a small PayPay donation, we can resurrect " + username);
+      alert("Do you really wish for " + username + " to languish in purgatory?");
+    }
+    else {
+      var p = JSON.parse(httpRequest.responseText);
+      loginPlayer(p);
+    }
   }
 }
 
