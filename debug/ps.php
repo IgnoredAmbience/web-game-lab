@@ -1,11 +1,12 @@
 #!/usr/bin/php
 <pre>
 <?php
-$id = intval($_GET['kill']);
-if($id) system("kill $id");
+if(isset($_GET['kill'])) {
+  system('pkill -U `whoami`');
+}
 
 $grep = '';
-if(isset($_GET['grep'])) $grep = '|grep tw1509';
+if(isset($_GET['grep'])) $grep = '|grep `whoami`';
 
 exec("ps auxf$grep", $output);
 foreach($output as $line) {
