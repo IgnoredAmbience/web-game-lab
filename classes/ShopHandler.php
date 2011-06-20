@@ -104,7 +104,7 @@ class ShopHandler extends Handler {
                                 FROM Item i, ShopStock ss 
                                 WHERE ss."shopId" = ? AND ss."itemId" = i.id;');
 
-    $stmt->execute(array($user->id));
+    $stmt->execute(array($shopId));
 
     $playerLoot = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
