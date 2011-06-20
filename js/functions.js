@@ -100,7 +100,7 @@ function login () {
     if(httpRequest.status != 200) return;
     if (httpRequest.responseText == "fail") {
       alert(username + " is dead");
-      alert("For a small PayPay donation, we can ressurect " + username);
+      alert("For a small PayPay donation, we can resurrect " + username);
       alert("Do you really wish for " + username + " to languish in purgatory?");
     }
     else {
