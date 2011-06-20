@@ -9,6 +9,7 @@
   <script src="js/shop.js"></script>
   <script src="js/notifications.js"></script>
 
+  <title>Space Trading</title>
 </head>
 
 <body onload="init()">
@@ -16,7 +17,7 @@
   <div id="content">
     <div id="left">
       <div id="loginBox">
-        <input type="text" id="userBox" autofocus="autofocus" >Username</input>
+        <input type="text" id="userBox" value="Enter a username..." onclick="this.value=''" />
         <button id="loginButton" onclick="login()">Login</button>
       </div>
       <div id="logoutBox">
@@ -40,7 +41,7 @@
     <div id="right">
       <div id="shopDisplay"></div>
 
-      <button onclick="toggleSettings()">Settings</button>
+      <!--<button onclick="toggleSettings()">Settings</button>-->
 
       <div id="settings">
         <input class="setting" type="text" id="upKeyInput" value="w" maxlength="1">Up</input><br>

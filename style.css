@@ -121,10 +121,23 @@ h1 {
   margin-right: auto;
 
   background-color: black;
+
   color: white;
   overflow: auto;
   font-size: 10pt;
   font-family: monospace;
+  text-align: left;
+}
+
+#chatmesages .date {
+  color: gray;
+}
+
+#chatmessages .date:before {
+  content: '(';
+}
+#chatmessages .date:after {
+  content: ') ';
 }
 
 #chatinput {

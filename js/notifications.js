@@ -66,7 +66,7 @@ Notifications = {
         if (players[Player].health <= 0) logout();
         break;
       case "chat" :
-        document.getElementById('chatmessages').innerHTML = obj.msg + '<br/>' + document.getElementById('chatmessages').innerHTML;
+        this.addMessage(obj.msg);
         break;
       case "disconnect" :
         window.clearTimeout(this.timeoutId);
@@ -85,5 +85,11 @@ Notifications = {
     var r = Ajax('POST', 'chat', true);
     r.send(requestString({message: field.value}));
     field.value = '';
+  },
+
+  addMessage: function(msg) {
+    var d = new Date();
+    var panel = document.getElementById('chatmessages');
+    panel.innerHTML = '<span class="msg"><span class="date">' + d.getHours() + ':' + d.getMinutes() + '</span>' + msg + '</span>' + panel.innerHTML;
   }
 };
