@@ -68,6 +68,14 @@ CREATE TABLE Shop (
   UNIQUE (x,y, "mapId") -- key contraint not inherited from tile
 ) INHERITS (Tile);
 
+CREATE TABLE Portal (
+  dest_map integer REFERENCES Map(id),
+  dest_x integer,
+  dest_y integer,
+  PRIMARY KEY (id),
+  UNIQUE (x,y, "mapId") -- key contraint not inherited from tile
+) INHERITS (Tile);
+
 CREATE TABLE ShopStock (
   id serial,
   "shopId" integer REFERENCES Shop(id),
@@ -82,6 +90,7 @@ INSERT INTO Item (name, value, class, stat) VALUES('Fork',  6, 'Weapon', 1);
 INSERT INTO Item (name, value, class, stat) VALUES('Knife', 7, 'Weapon', 2);
 
 INSERT INTO Map (width, height, name) VALUES(64, 64, 'New Swedenheim');
+INSERT INTO Map (width, height, name) VALUES(16, 16, 'Lolville');
 
 
 -- 3 players (alpha beta & gamma), different locations, same stats
@@ -101,6 +110,8 @@ INSERT INTO PlayerLoot ("playerId", "itemId", count) VALUES (3,3,1);
 INSERT INTO Shop (x, y, "mapId", name) VALUES (4,   4, 1, 'Spoon Shop');
 INSERT INTO Shop (x, y, "mapId", name) VALUES (5,  10, 1, 'Fork Shop');
 INSERT INTO Shop (x, y, "mapId", name) VALUES (10, 10, 1, 'Knife Shop');
+
+INSERT INTO Portal (x,y, "mapId", dest_map, dest_x, dest_y) VALUES (12,1,1, 2,1,12);
 
 -- X shops now sell X
 INSERT INTO ShopStock ("shopId", "itemId", count) VALUES (1,1,5);
