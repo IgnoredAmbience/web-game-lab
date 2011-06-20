@@ -57,7 +57,7 @@ class ShopHandler extends Handler {
       if(!$loot = PlayerLoot::getByFields(array("playerId"=>$user->id,
                                                 "itemId"=>$item->id), "PlayerLoot")) {
         $loot[0] = new PlayerLoot();
-        $loot[0]->count    = 1;
+        $loot[0]->count    = 0;
         $loot[0]->playerId = $user->id;
         $loot[0]->itemId   = $item->id;
       }
