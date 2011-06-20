@@ -15,7 +15,14 @@
 <body onload="init()">
   <h1>Space Trading</h1>
   <div id="content">
-    <div id="left">
+    <div id="middle">
+      <canvas id="canvas" width="512" height="512"></canvas>
+      <div id="notifications">
+        <div id="chatmessages"></div>
+        <input id="chatinput" type="text" value="Enter a message and hit enter to send" />
+      </div>
+    </div>
+    <div id="right">
       <div id="loginBox">
         <input type="text" id="userBox" value="Enter a username..." onclick="this.value=''" />
         <button id="loginButton" onclick="login()">Login</button>
@@ -30,15 +37,6 @@
         <div id="stealthDisplay" title="Defence"></div>
         <div id="shelfDisplay" title="Attack"></div>
       </div>
-    </div>
-    <div id="middle">
-      <canvas id="canvas" width="512" height="512"></canvas>
-      <div id="notifications">
-        <div id="chatmessages"></div>
-        <input id="chatinput" type="text" value="Enter a message and hit enter to send" />
-      </div>
-    </div>
-    <div id="right">
       <div id="shopDisplay"></div>
 
       <!--<button onclick="toggleSettings()">Settings</button>-->

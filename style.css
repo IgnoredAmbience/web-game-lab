@@ -12,7 +12,7 @@ h1 {
   text-align: center;
   border-bottom: 2px solid navy;
   background-color: lightblue;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 
 table {
@@ -34,12 +34,12 @@ th {
 }
 
 #content {
-  width: 1080px;
+  width: 1008px;
   margin: auto;
   padding: auto;
 }
 
-#left, #middle, #right {
+#middle, #right {
   padding: 10px;
   float: left;
 
@@ -50,26 +50,19 @@ th {
   border-color: navy;
   border-top-width: 2px;
   border-bottom-width: 2px;
+
+  margin-bottom: 10px;
 }
 
-#left, #right {
-  margin-top: 50px;
-  height: 486px;
-}
-
-#left {
-  width: 250px;
-
-  border-left-width: 2px;
-  border-bottom-left-radius: 15px;
-  border-top-left-radius: 15px;
-  -moz-border-radius-topleft: 15px;
-  -moz-border-radius-bottomleft: 15px;
+#right {
+  width: 450px;
+  margin-top: 15px;
+  height: 556px;
+  overflow: auto;
 }
 
 #middle {
   width: 512px;
-  left: 270px;
 
   text-align: center;
 
@@ -79,7 +72,6 @@ th {
 }
 
 #right {
-  width: 250px;
   left: 812px;
 
   border-right-width: 2px;
@@ -93,13 +85,11 @@ th {
   width: 100%;
   clear: both;
 
-  position: fixed;
-  bottom: 0px;
-
   background-color: lightblue;
   padding-left: 2px;
   border-top: 1px dotted navy;
 
+  text-align: center;
   font-size: 10px;
 }
 
