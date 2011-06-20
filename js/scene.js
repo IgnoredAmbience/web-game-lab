@@ -44,6 +44,8 @@ function loadMap (mapID) {
     actorify(p, texture, 1, 2);
     players[p.id] = p;
   }
+
+  loadBackground();
 }
 
 // Loads the background grassy tiles

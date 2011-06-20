@@ -54,8 +54,6 @@ function init () {
   // Load the starting map
   loadMap(1);
 
-  loadBackground();
-
   Notifications.init();
 
   // Set up the view boundaries
@@ -103,6 +101,7 @@ function loginPlayer (p) {
   texture.src = "sprites/player" + SPRITE_SIZE + ".png";
   Player = p.id;
   players[Player] = p;
+  loadMap(p.mapId);
 
   actorify(players[Player], texture,1,2);
 
