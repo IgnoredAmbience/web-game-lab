@@ -29,6 +29,9 @@ var shelfLocs = [[1,-1],[1,0],[1,1],[0,1]
                 ,[-1,1],[-1,0],[-1,-1],[0,-1]
                 ];
 
+var playerSprite;
+var viewMapId;
+
 // For alternate keymappings
 var upKey;
 var downKey;
@@ -51,8 +54,13 @@ function init () {
   shelfSprite = new Image();
   shelfSprite.src = "sprites/shelf" + SPRITE_SIZE + ".png";
 
+  playerSprite = new Image();
+  playerSprite.src = "sprites/player" + SPRITE_SIZE + ".png";
+
+  viewMapId = 1;
+
   // Load the starting map
-  loadMap(1);
+  loadMap(viewMapId);
 
   Notifications.init();
 
@@ -97,13 +105,12 @@ function login () {
 }
 
 function loginPlayer (p) {
-  var texture = new Image ();
-  texture.src = "sprites/player" + SPRITE_SIZE + ".png";
   Player = p.id;
   players[Player] = p;
-  loadMap(p.mapId);
+  viewMapId = p.mapId;
+  loadMap(viewMapId);
 
-  actorify(players[Player], texture,1,2);
+  actorify(players[Player], playerSprite,1,2);
 
   setView(players[Player]);
   updateStats(players[Player])

@@ -162,6 +162,7 @@ function keyPressed (event) {
         if (scenery[p.x][p.y] && scenery[p.x][p.y].type == "portal") {
           var portalRequest = Ajax('GET','portal/'+scenery[p.x][p.y].id,false);
           portalRequest.send(null);
+          viewMapId = portalRequest.responseText;
           loadMap(portalRequest.responseText);
           View.recheckScenery = View.recheckPlayers = 1;
         }
