@@ -6,9 +6,9 @@ if(isset($_GET['kill'])) {
 }
 
 $grep = '';
-if(isset($_GET['grep'])) $grep = '|grep `whoami`';
+if(isset($_GET['grep'])) $grep = ' -u `whoami`';
 
-exec("ps auxf$grep", $output);
+exec("ps f $grep", $output);
 foreach($output as $line) {
   echo htmlspecialchars($line), "\n";
 }
