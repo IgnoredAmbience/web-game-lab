@@ -42,6 +42,11 @@ class Player extends DatabaseRecord {
     }
   }
 
+  public function changeMap($map) {
+    $this->mapId = $map;
+    $this->save();
+  }
+
   public function login() {
     $this->sessionId = session_id();
     $this->ping();

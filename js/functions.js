@@ -54,8 +54,6 @@ function init () {
   // Load the starting map
   loadMap(1);
 
-  loadBackground();
-
   Notifications.init();
 
   // Set up the view boundaries
