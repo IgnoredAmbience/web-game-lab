@@ -120,7 +120,7 @@ function loginPlayer (p) {
 function logout () {
   var httpRequest = Ajax('POST', "logout", false);
   httpRequest.send(null);
-  players[Player].splice(1,1); //removes from array
+  delete players[Player];
   Player = null;
   updateStats();
   document.getElementById("logoutBox").style.display = "none";
