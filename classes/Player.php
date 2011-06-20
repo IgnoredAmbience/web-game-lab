@@ -7,7 +7,7 @@ class Player extends DatabaseRecord {
   public $lastActive = 'now';
   public $sessionId = '';
   public $health = 10;
-  public $wealth = 0;
+  public $wealth = 10;
   public $stealth = 0;
   public $shelf = 1;
   public $mapId = 1;
