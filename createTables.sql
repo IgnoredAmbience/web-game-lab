@@ -111,6 +111,8 @@ INSERT INTO Shop (x, y, "mapId", name) VALUES (4,   4, 1, 'Spoon Shop');
 INSERT INTO Shop (x, y, "mapId", name) VALUES (5,  10, 1, 'Fork Shop');
 INSERT INTO Shop (x, y, "mapId", name) VALUES (10, 10, 1, 'Knife Shop');
 
+INSERT INTO Shop (x, y, "mapId", name) VALUES (1, 1, 2, 'Knife Shop');
+
 INSERT INTO Portal (x,y, "mapId", dest_map, dest_x, dest_y) VALUES (12,1,1, 2,1,12);
 
 -- X shops now sell X
