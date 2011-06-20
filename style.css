@@ -103,14 +103,9 @@ th {
   height: 512px;
 }
 
-#settings
+#settings, #logoutBox, #playerStats
 {
-  visibility:hidden;
-}
-
-#logoutBox
-{
-  display:none;
+  display: none;
 }
 
 #chatmessages
@@ -130,15 +125,16 @@ th {
   text-align: left;
 }
 
-#chatmesages .date {
+#chatmessages .date {
   color: gray;
+  padding-right: 5px;
 }
 
 #chatmessages .date:before {
   content: '(';
 }
 #chatmessages .date:after {
-  content: ') ';
+  content: ')';
 }
 
 #chatinput {

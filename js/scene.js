@@ -31,7 +31,7 @@ function loadMap (mapID) {
         actorify(tile,shopTexture,2,0);
         break;
       case "portal":
-        actorify(tile,portalTexture,4,0);
+        actorify(tile,portalTexture,8,0);
     }
     scenery[tile.x][tile.y] = tile;
   });

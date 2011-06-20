@@ -103,6 +103,9 @@ Notifications = {
   addMessage: function(msg) {
     var d = new Date();
     var panel = document.getElementById('chatmessages');
-    panel.innerHTML = '<span class="msg"><span class="date">' + d.getHours() + ':' + d.getMinutes() + '</span>' + msg + '</span>' + panel.innerHTML;
+
+   function pad(n){return n<10 ? '0'+n : n}
+    panel.innerHTML += '<div class="msg"><span class="date">' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + '</span>' + msg + '</div>';
+    panel.scrollTop = panel.scrollHeight;
   }
 };
