@@ -69,14 +69,6 @@ class Player extends DatabaseRecord {
     $this->save();
   }
 
-  public function buyItem() {
-    throw new Exception("Not yet implemented");
-  }
-
-  public function sellItem() {
-    throw new Exception("Not yet implemented");
-  }
-
   public function playerAsJSON() {
     return json_encode(get_object_vars());
   }
