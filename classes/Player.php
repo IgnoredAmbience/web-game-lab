@@ -7,7 +7,7 @@ class Player extends DatabaseRecord {
   public $lastActive = 'now';
   public $sessionId = '';
   public $health = 10;
-  public $wealth = 0;
+  public $wealth = 10;
   public $stealth = 0;
   public $shelf = 1;
   public $mapId = 1;
@@ -67,14 +67,6 @@ class Player extends DatabaseRecord {
   public function ping() {
     $this->lastActive = 'now';
     $this->save();
-  }
-
-  public function buyItem() {
-    throw new Exception("Not yet implemented");
-  }
-
-  public function sellItem() {
-    throw new Exception("Not yet implemented");
   }
 
   public function playerAsJSON() {
