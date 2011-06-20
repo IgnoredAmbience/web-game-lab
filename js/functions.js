@@ -51,7 +51,8 @@ function init () {
   shelfSprite = new Image();
   shelfSprite.src = "sprites/shelf" + SPRITE_SIZE + ".png";
 
-  loadMap();
+  // Load the starting map
+  loadMap(1);
 
   loadBackground();
 

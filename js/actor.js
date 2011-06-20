@@ -159,6 +159,9 @@ function keyPressed (event) {
         var p = players[Player];
         moveActor(p, obj.move);
         displayShop();
+        if (scenery[p.x][p.y] && scenery[p.x][p.y].type = "portal") {
+          loadMap(scenery[p.x][p.y].dest_map);
+        }
       }
 
       // To prevent movement flooding
