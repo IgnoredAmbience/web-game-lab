@@ -93,7 +93,7 @@ function mergeStockInventoryJSON(stock, inventory) {
 
   for(var i = 0; i < inventory.length; i++) {
     var inShop = false;
-    for(var j = 0; j < i && !inShop; j++) {
+    for(var j = 0; j < stock.length && !inShop; j++) {
       if(toReturn[j].id == inventory[i].id) {
         toReturn[j].lootCount = inventory[i].count;
         inShop = true
