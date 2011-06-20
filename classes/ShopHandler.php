@@ -18,16 +18,20 @@ class ShopHandler extends Handler {
     $this->requireLogin();
 
     $user = $this->getUser();
-    $itemId = json_decode($_POST['item']);
+    $itemId = json_decode($_POST['itemId']);
     $action = $_POST['action'];
 
     //Look up the item being bought
     if(!$shop = Shop::getByFields(array("x"=>$user->x, "y"=>$user->y,
-                                        "mapId" => $user->mapId),"ShopStock")) {
+                                        'mapId' => $user->mapId),"Shop")) {
+      throw new Exception("Shop does not exist");
       return;
     }
+    else
+      $shop = $shop[0]; //array returned by getByFields
 
-    if(!$item = Item::getById($itemId, 'Item')) {
+    if(!$item = Item::getById($itemId, "Item")) {
+      throw new Exception("Item not in database");
       return;
     }
 
@@ -37,65 +41,74 @@ class ShopHandler extends Handler {
     if ($action == "buy") {
 
       if(!$shopStock) { //item not stocked by shop
+	throw new Exception("Not in stock here");
         return;
       }
 
-      if($player->wealth < $item->value) { //player can't afford it
+      if($user->wealth < $item->value) { //player can't afford it
         return;
       }
 
-      $player->wealth -= $item->value;
+      $user->wealth -= $item->value;
       $shopStock[0]->count--;
-      $player->save();
+      $user->save();
       $shopStock[0]->save();
 
       if(!$loot = PlayerLoot::getByFields(array("playerId"=>$user->id,
                                                 "itemId"=>$item->id), "PlayerLoot")) {
         $loot[0] = new PlayerLoot();
-        $loot[0]->count    = 1;
+        $loot[0]->count    = 0;
         $loot[0]->playerId = $user->id;
         $loot[0]->itemId   = $item->id;
       }
-      $loot[0]->count--;
+      $loot[0]->count++;
       $loot[0]->save();
     }
     elseif($action == "sell") {
-      if(!$loot[0] = PlayerLoot::getByFields(array("playerId"=>$user->id,
-                                                   "itemId"=>$item->id), "PlayerLoot")) {
-        return; //player doesn't have what they're trying to sell
+      if(!$loot = PlayerLoot::getByFields(array("playerId"=>$user->id,
+                                                "itemId"=>$item->id),
+                                          "PlayerLoot")) {
+        throw new Exception("Player doesn't have the loot they're selling");
+        
+        return;
       }
-
+      
       if(!$loot[0]->count) {
         return; //player doesn't have any of what they're trying to sell
       }
-
+      
       if(!$shopStock) {
         $shopStock[0] = new ShopStock();
         $shopStock[0]->shopId = $shop->id;
         $shopStock[0]->itemId = $item->id;
         $shopStock[0]->count  = 0;
       }
-        $player->wealth += $item->value;
-        $shopStock[0]->count++;
-        $player->save();
-        $shopStock[0]->save();
-
-        //Loot save should handle the case where count is 0
-        $loot[0]->count--;
-        $loot[0]->save();
+      $user->wealth += $item->value;
+      $shopStock[0]->count++;
+      $user->save();
+      $shopStock[0]->save();
+      
+      //Loot save should handle the case where count is 0
+      $loot[0]->count--;
+      $loot[0]->save();
     }
   }
-
+  
+  
   function get($shopId) {
-    if($shop = Shop::getById($shopId, 'Shop')) {
-      if($shopStock = ShopStock::getByField("shopId",$shop->id,"ShopStock")) {
-        foreach($shopStock as $shopItem) {
-          $items[] = Item::getById($shopItem->itemId, "Item");
-        }
-        echo json_encode($items);
-      }
-    } //deliberately = and not == or ===
+    $user = $this->getUser();
+    global $database;
+
+    //name stat vlaue count
+    $stmt = $database->prepare('SELECT i.id, i.name, i.stat, ss.count, i.value, i.class
+                                FROM Item i, ShopStock ss 
+                                WHERE ss."shopId" = ? AND ss."itemId" = i.id;');
+
+    $stmt->execute(array($shopId));
+
+    $playerLoot = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode($playerLoot);
   }
-
-
+  
 }

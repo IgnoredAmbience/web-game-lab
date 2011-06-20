@@ -5,8 +5,8 @@ var View = {
 }
 
 // Will pull from server and load
-function loadMap () {
-  var r = Ajax('GET', 'map', false);
+function loadMap (mapID) {
+  var r = Ajax('GET', 'map/'+mapID, false);
   r.send(null);
   if(r.status != 200) return; // FAIL!
 
@@ -19,26 +19,36 @@ function loadMap () {
     scenery[i] = new Array();
   }
 
-  var texture = new Image ();
-  texture.src = "sprites/shop" + SPRITE_SIZE + ".png";
+  var shopTexture = new Image ();
+  shopTexture.src = "sprites/shop" + SPRITE_SIZE + ".png";
+
+  var portalTexture = new Image ();
+  portalTexture.src = "sprites/portal" + SPRITE_SIZE + ".png";
 
   map.tiles.forEach(function(tile) {
     switch (tile.type) {
       case "shop":
-        actorify(tile,texture,2,0);
+        actorify(tile,shopTexture,2,0);
         break;
+      case "portal":
+        actorify(tile,portalTexture,4,0);
     }
     scenery[tile.x][tile.y] = tile;
   });
 
-  var texture = new Image ();
-  texture.src = "sprites/player" + SPRITE_SIZE + ".png";
+  for (var i in players) {
+    if (i != Player) {
+      delete players[i];
+    }
+  }
 
   for (var i in map.players) {
     var p = map.players[i];
-    actorify(p, texture, 1, 2);
+    actorify(p, playerSprite, 1, 2);
     players[p.id] = p;
   }
+
+  loadBackground();
 }
 
 // Loads the background grassy tiles

@@ -29,6 +29,9 @@ var shelfLocs = [[1,-1],[1,0],[1,1],[0,1]
                 ,[-1,1],[-1,0],[-1,-1],[0,-1]
                 ];
 
+var playerSprite;
+var viewMapId;
+
 // For alternate keymappings
 var upKey;
 var downKey;
@@ -51,9 +54,13 @@ function init () {
   shelfSprite = new Image();
   shelfSprite.src = "sprites/shelf" + SPRITE_SIZE + ".png";
 
-  loadMap();
+  playerSprite = new Image();
+  playerSprite.src = "sprites/player" + SPRITE_SIZE + ".png";
 
-  loadBackground();
+  viewMapId = 1;
+
+  // Load the starting map
+  loadMap(viewMapId);
 
   Notifications.init();
 
@@ -98,11 +105,13 @@ function login () {
 }
 
 function loginPlayer (p) {
-  var texture = new Image ();
-  texture.src = "sprites/player" + SPRITE_SIZE + ".png";
   Player = p.id;
   players[Player] = p;
-  actorify(players[Player], texture,1,2);
+  viewMapId = p.mapId;
+  loadMap(viewMapId);
+
+  actorify(players[Player], playerSprite,1,2);
+
   setView(players[Player]);
   updateStats(players[Player])
   document.getElementById("loginName").innerHTML = players[Player].name;
@@ -110,18 +119,35 @@ function loginPlayer (p) {
   document.getElementById("logoutBox").style.display = "inline";
   View.recheckPlayers = 1;
 
+  loadInventory();
+
   Notifications.poll();
 }
 
 function logout () {
   var httpRequest = Ajax('POST', "logout", false);
   httpRequest.send(null);
+  delete players[Player];
   Player = null;
   updateStats();
   document.getElementById("logoutBox").style.display = "none";
   document.getElementById("loginBox").style.display = "inline";
 
   Notifications.poll();
+}
+
+function updatePlayer() {
+  var httpRequest = Ajax('GET', 'player', false);
+  httpRequest.send(null);
+  fromServer = JSON.parse(httpRequest.responseText);
+  players[Player].wealth = fromServer.wealth;
+  players[Player].stealth = fromServer.stealth;
+  players[Player].health = fromServer.health;
+  players[Player].shelf = fromServer.shelf;
+
+  updateStats(players[Player]);
+
+  loadInventory();
 }
 
 function updateStats (p) {

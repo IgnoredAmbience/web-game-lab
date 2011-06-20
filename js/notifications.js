@@ -44,9 +44,11 @@ Notifications = {
         moveActor(players[obj.player.id], obj.move);
         break;
       case "login" :
-        actorify(obj.player,players[Player].texture,1,2);
-        players[obj.player.id] = obj.player;
-        View.recheckPlayers = 1;
+        if (obj.player.mapId == viewMapId) {
+          actorify(obj.player,playerSprite,1,2);
+          players[obj.player.id] = obj.player;
+          View.recheckPlayers = 1;
+        }
         break;
       case "logout" :
         delete players[obj.player.id];
@@ -74,6 +76,17 @@ Notifications = {
         h.innerText = "Server disconnected";
         document.replaceChild(h, document.firstChild);
         break;
+      case "mapChange" :
+        // If it was in our map, kill it
+        if (players[obj.player.id]) {
+          delete players[obj.player.id];
+          View.recheckPlayers = 1;
+        // If it's now in our map, show it
+        } else if (viewMapId == obj.player.mapId) {
+          actorify(obj.player,playerSprite,1,2);
+          players[obj.player.id] = obj.player;
+          View.recheckPlayers = 1;
+        }
       default :
     }
   },

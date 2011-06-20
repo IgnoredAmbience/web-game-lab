@@ -15,6 +15,24 @@ h1 {
   margin-bottom: 50px;
 }
 
+table {
+  border-spacing: 0px;
+  border-color: navy;
+  border-width: 1px 0 1px 1px;
+  border-style: solid;
+}
+
+td, th {
+  padding: 1px;
+  border-width: 0 1px 0 0;
+  border-style: solid;
+  border-color: navy;
+}
+
+th {
+  border-bottom: 1px solid navy;
+}
+
 #content {
   width: 1080px;
   margin: auto;
@@ -93,13 +111,6 @@ h1 {
 #canvas {
   width: 512px;
   height: 512px;
-}
-
-#shopDisplay  /* slightly crude, forces shop items to be right of canvas */
-{
-  position:absolute;
-  top:0px;
-  left:600px;
 }
 
 #settings

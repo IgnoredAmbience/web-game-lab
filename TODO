@@ -1,4 +1,13 @@
 * Multiplayer
   * Fix polling on login/load etc...
+  * Fix session abort resource freeing
+
+* Player inventory doesn't save at all. 
+  It kills that players item in the DB.
+
+* Player has no client side inventory.
+* Need to get stats back after an action.
+
 * Finish buy/sell UI
+
 * Make it pretty
