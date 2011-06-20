@@ -45,6 +45,7 @@ class Player extends DatabaseRecord {
   public function changeMap($map) {
     $this->mapId = $map;
     $this->save();
+    $this->notifyOthers(array('type'=>'mapChange', 'player'=>(array) $this, 'move'=>$moveType));
   }
 
   public function login() {
