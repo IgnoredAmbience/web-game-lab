@@ -31,6 +31,7 @@ $application = new Application(array(
   array('inventory',    'InventoryHandler'),
 
   array('attack',       'AttackHandler')
+  array('portal/(\d+)',     'PortalHandler'),
 
 ), $config['base_path']);
 

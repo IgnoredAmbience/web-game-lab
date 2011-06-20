@@ -1,0 +1,116 @@
+\usetheme{Warsaw}
+
+\usepackage{algorithm2e}
+\usepackage{graphicx}
+\usepackage[parfill]{parskip}
+\usepackage{appendix}
+\usepackage{amsmath}
+\usepackage{multicol}
+
+\title{Trader Game}
+\author{Ethel Bardsley, Joseph Slade and Thomas Wood}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Introduction}
+\begin{frame}{Introduction}
+  Aims:
+    \begin{itemize}
+      \item Make a game
+      \item Learn stuff
+    \end{itemize}
+\end{frame}
+
+\section{Concept}
+\begin{frame}{Concept}
+  \begin{itemize}
+    \item Cross Platform
+    \item Multiple maps
+    \item PvP and PvE combat
+    \item A dynamic economy
+  \end{itemize}
+\end{frame}
+
+\section{Frontend}
+\begin{frame}{Frontend}
+  There are 2 main components to the frontend:
+  \begin{itemize}
+    \item The renderer
+    \item The netcode
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Choice of Technology}
+  \begin{itemize}
+    \item Flash
+      \begin{itemize}
+        \item Powerful
+        \item Many libraries
+        \item Not universal
+      \end{itemize}
+    \item Silverlight
+      \begin{itemize}
+        \item Not supported
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Choice of Technology}
+  \begin{itemize}
+    \item SVG
+      \begin{itemize}
+        \item HTML/Javascript
+        \item Some libraries
+        \item Slow
+      \end{itemize}
+    \item Canvas
+      \begin{itemize}
+        \item HTML5/Javascript
+        \item Few mature libraries
+        \item Who cares
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Procedural Background}
+  \begin{enumerate}
+    \item Make 16 small temporary tiles
+    \item Generate a texture for each
+    \item Distribute them to make larger background
+  \end{enumerate}
+\end{frame}
+\begin{flushleft}
+  Why make the background procedural? Because it was a) a demonstration of some uses of canvas, and b) it was cool.
+  Could easily be repurposed to generate procedural textures for other things.
+\end{flushleft}
+
+\section{Backend}
+\begin{frame}{Backend}
+  \begin{itemize}
+    \item PostgreSQL for permanent storage
+    \item SystemV shared memory for temporary
+  \end{itemize}
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}{Successes}
+  \begin{itemize}
+    \item Framework for expansion
+    \item Learnt a great deal
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Still To Do}
+  \begin{itemize}
+    \item Dynamic economy
+    \item Deeper combat
+    \item Improved art
+  \end{itemize}
+\end{frame}
+
+\end{document}
+
