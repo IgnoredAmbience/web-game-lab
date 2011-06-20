@@ -39,6 +39,12 @@ function loadMap (mapID) {
   var texture = new Image ();
   texture.src = "sprites/player" + SPRITE_SIZE + ".png";
 
+  for (var i in players) {
+    if (i != Player) {
+      delete players[i];
+    }
+  }
+
   for (var i in map.players) {
     var p = map.players[i];
     actorify(p, texture, 1, 2);

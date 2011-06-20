@@ -18,9 +18,12 @@ class MapHandler extends Handler {
 
     $map->tiles = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmt = $database->query('
-      SELECT * FROM player WHERE "lastActive" > CURRENT_TIMESTAMP - interval \'2 minutes\'
+    $stmt = $database->prepare('
+      SELECT * FROM player
+      WHERE ("lastActive" > CURRENT_TIMESTAMP - interval \'2 minutes\')
+        AND ("mapId" = ?)
     ');
+    $stmt->execute(array($mapId));
     $map->players = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     echo json_encode($map);
