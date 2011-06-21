@@ -1,0 +1,266 @@
+GET /~emb2009/web/js/shop.js HTTP/1.1
+Host: www.doc.ic.ac.uk
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) Gecko/20110601 Firefox/4.0.1
+Accept: */*
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+Referer: http://www.doc.ic.ac.uk/~emb2009/web/
+If-Modified-Since: Wed, 15 Jun 2011 14:33:20 GMT
+If-None-Match: "801bcfa2-79c-4a5c108b20c00"
+
+HTTP/1.1 200 OK
+Date: Tue, 21 Jun 2011 13:31:53 GMT
+Server: Apache
+Last-Modified: Mon, 20 Jun 2011 20:04:15 GMT
+ETag: "80190625-ca5-4a62a3d5a2dc0"
+Accept-Ranges: bytes
+Content-Length: 3237
+Content-Type: application/x-javascript
+Via: 1.1 www.doc.ic.ac.uk
+Keep-Alive: timeout=15, max=100
+Connection: Keep-Alive
+
+function displayShop() {
+  var p = players[Player];
+  if ((scenery[p.x][p.y]) && scenery[p.x][p.y].type == "shop") {
+    var id = scenery[p.x][p.y].id;
+    var httpRequest = Ajax('GET', "shop/"+id, false);
+    httpRequest.send(null);
+
+    var shopJSON = JSON.parse(httpRequest.responseText);
+
+    var invJSON = players[Player].inventory;
+
+    outputItems(mergeStockInventoryJSON(shopJSON, invJSON), "shopDisplay",
+                ["Name", "Class", "In Shop", "On Player", "Stat", "Buy", "Sell"]);
+
+    document.getElementById("shopDisplay").style.visibility = "visible"; 
+  }
+  else {
+    document.getElementById("shopDisplay").style.visibility = "hidden"; 
+  }
+  
+}
+
+function outputItems (jsonItems, displayLocation, tableHeadings) {
+  if(jsonItems === "")
+      jsonItems = "[]";
+
+  document.getElementById(displayLocation).innerHTML =
+      buildItemTable(jsonItems, tableHeadings);
+}
+
+function buildItemTable(itemList, tableHeadings) {
+  var tableOutput = '<table>';
+  tableOutput += tableHeadings.map(function(s) {return '<th>'+s+'</th>';}).join(' ');
+  tableOutput += itemList.map(makeCellRow).join('');
+  tableOutput += "</table>";
+  return tableOutput;
+}
+
+function makeTableCell(string) {
+  return "<td>" + string + "</td>";
+}
+
+function makeCellRow(item) {
+  var newCell = "<tr>";
+  newCell += makeTableCell(item.name);
+  newCell += makeTableCell(item.class);
+  newCell += makeTableCell(item.shopCount);
+  newCell += makeTableCell(item.lootCount);
+  newCell += makeTableCell(item.stat);
+  newCell += makeTableCell(makeShopButton(item, "buy"));
+  newCell += makeTableCell(makeShopButton(item, "sell"));
+  newCell += "</tr>";
+  return newCell;
+}
+
+function makeShopButton(item, transactType) {
+  var buttonHTML = '<input type="button" name="' + item.value +
+      '" value ="' + item.value +
+      '" onClick="transact(' + item.id + ",'" + transactType + "')\"";
+
+  var tooExpensive = item.value > players[Player].wealth && transactType === "buy";
+  var outOfStock   = item.shopCount == 0 && transactType === "buy";
+  var notInLoot    = item.lootCount == 0 && transactType === "sell";
+
+  if (tooExpensive || outOfStock || notInLoot) {
+      buttonHTML += ' disabled="disabled" ';
+  }
+
+  buttonHTML += "/>";
+  return buttonHTML;
+}
+
+
+function transact(itemId, transactType) {
+  var httpRequest = Ajax('POST', 'shop/-1', false);
+
+  httpRequest.send(requestString({itemId: itemId, action: transactType}));
+
+  if(httpRequest.status == 200) { //200 is SUCCESS!
+    updatePlayer();
+    displayShop(scenery[players[Player].x][players[Player].y].id);
+  }
+}
+
+function mergeStockInventoryJSON(stock, inventory) {
+  var toReturn = stock;
+
+  for(var i = 0; i < stock.length; i++) {
+    toReturn[i].shopCount = toReturn[i].count;
+    toReturn[i].lootCount = 0;
+    delete toReturn[i].count;
+  }
+
+  for(var i = 0; i < inventory.length; i++) {
+    var inShop = false;
+    for(var j = 0; j < stock.length && !inShop; j++) {
+      if(toReturn[j].id == inventory[i].id) {
+        toReturn[j].lootCount = inventory[i].count;
+        inShop = true
+      }
+    }
+
+    if(!inShop) {
+      var newItem = inventory[i];
+      newItem.lootCount = inventory[i].count;
+      newItem.shopCount = 0;
+      toReturn.push(newItem);
+    }
+
+  }
+
+  return toReturn;
+}
+PUT /~emb2009/web/poll HTTP/1.1
+Host: www.doc.ic.ac.uk
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:2.0.1) Gecko/20110601 Firefox/4.0.1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip, deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 115
+Connection: keep-alive
+X-Requested-With: XMLHttpRequest
+Content-Type: application/x-www-form-urlencoded
+Referer: http://www.doc.ic.ac.uk/~emb2009/web/
+Cookie: g8615=657b41b9d2e50b78db410f7f28f720e9
+Pragma: no-cache
+Cache-Control: no-cache
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Date: Tue, 21 Jun 2011 13:31:55 GMT
+Server: Apache
+X-Powered-By: PHP/5.2.4-2ubuntu5.6
+Pragma: no-cache
+Cache-Control: no-cache, must-revalidate
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Content-Type: multipart/x-mixed-replace; boundary=multipart-separator-583773412
+Via: 1.1 www.doc.ic.ac.uk
+Keep-Alive: timeout=15, max=99
+Connection: Keep-Alive
+Transfer-Encoding: chunked
+
+b2
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"ping","listener":1,"sid":"657b41b9d2e50b78db410f7f28f720e9","pid":10946}
+--multipart-separator-583773412
+
+8c
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"chat","msg":"Guest says \"test\""}
+--multipart-separator-583773412
+
+b2
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"ping","listener":2,"sid":"19ca1ef95c2c41b7b7aafe648d2f4724","pid":11097}
+--multipart-separator-583773412
+
+131
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"login","player":{"id":10,"x":0,"y":0,"name":"yellow","lastActive":"2011-06-21 14:32:29.599513","sessionId":"19ca1ef95c2c41b7b7aafe648d2f4724","health":10,"wealth":10,"stealth":0,"shelf":1,"mapId":1}}
+--multipart-separator-583773412
+
+b2
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"pong","listener":2,"sid":"19ca1ef95c2c41b7b7aafe648d2f4724","pid":11097}
+--multipart-separator-583773412
+
+b2
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"ping","listener":2,"sid":"19ca1ef95c2c41b7b7aafe648d2f4724","pid":11166}
+--multipart-separator-583773412
+
+13e
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"move","player":{"id":10,"x":1,"y":0,"name":"yellow","lastActive":"2011-06-21 14:32:30.268889","sessionId":"19ca1ef95c2c41b7b7aafe648d2f4724","health":10,"wealth":10,"stealth":0,"shelf":1,"mapId":1},"move":"east"}
+--multipart-separator-583773412
+
+13e
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"move","player":{"id":10,"x":2,"y":0,"name":"yellow","lastActive":"2011-06-21 14:32:30.268889","sessionId":"19ca1ef95c2c41b7b7aafe648d2f4724","health":10,"wealth":10,"stealth":0,"shelf":1,"mapId":1},"move":"east"}
+--multipart-separator-583773412
+
+13f
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"move","player":{"id":10,"x":2,"y":1,"name":"yellow","lastActive":"2011-06-21 14:32:30.268889","sessionId":"19ca1ef95c2c41b7b7aafe648d2f4724","health":10,"wealth":10,"stealth":0,"shelf":1,"mapId":1},"move":"south"}
+--multipart-separator-583773412
+
+13f
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"move","player":{"id":10,"x":2,"y":2,"name":"yellow","lastActive":"2011-06-21 14:32:30.268889","sessionId":"19ca1ef95c2c41b7b7aafe648d2f4724","health":10,"wealth":10,"stealth":0,"shelf":1,"mapId":1},"move":"south"}
+--multipart-separator-583773412
+
+13f
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"move","player":{"id":10,"x":2,"y":3,"name":"yellow","lastActive":"2011-06-21 14:32:30.268889","sessionId":"19ca1ef95c2c41b7b7aafe648d2f4724","health":10,"wealth":10,"stealth":0,"shelf":1,"mapId":1},"move":"south"}
+--multipart-separator-583773412
+
+13e
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"move","player":{"id":10,"x":3,"y":3,"name":"yellow","lastActive":"2011-06-21 14:32:30.268889","sessionId":"19ca1ef95c2c41b7b7aafe648d2f4724","health":10,"wealth":10,"stealth":0,"shelf":1,"mapId":1},"move":"east"}
+--multipart-separator-583773412
+
+13e
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"move","player":{"id":10,"x":4,"y":3,"name":"yellow","lastActive":"2011-06-21 14:32:30.268889","sessionId":"19ca1ef95c2c41b7b7aafe648d2f4724","health":10,"wealth":10,"stealth":0,"shelf":1,"mapId":1},"move":"east"}
+--multipart-separator-583773412
+
+13f
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"move","player":{"id":10,"x":4,"y":4,"name":"yellow","lastActive":"2011-06-21 14:32:30.268889","sessionId":"19ca1ef95c2c41b7b7aafe648d2f4724","health":10,"wealth":10,"stealth":0,"shelf":1,"mapId":1},"move":"south"}
+--multipart-separator-583773412
+
