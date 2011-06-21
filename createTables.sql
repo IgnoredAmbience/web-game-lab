@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS ShopStock  CASCADE;
 
 DROP TYPE  IF EXISTS ItemClass  CASCADE;
 
-CREATE TYPE ItemClass AS ENUM ('Weapon');
+CREATE TYPE ItemClass AS ENUM ('Weapon','Shield');
 
 CREATE TABLE Item (
   id serial         ,
@@ -88,6 +88,7 @@ CREATE TABLE ShopStock (
 INSERT INTO Item (name, value, class, stat) VALUES('Spoon', 5, 'Weapon', 0);
 INSERT INTO Item (name, value, class, stat) VALUES('Fork',  6, 'Weapon', 1);
 INSERT INTO Item (name, value, class, stat) VALUES('Knife', 7, 'Weapon', 2);
+INSERT INTO Item (name, value, class, stat) VALUES('Frying Pan', 2, 'Shield', 1);
 
 INSERT INTO Map (width, height, name) VALUES(64, 64, 'New Swedenheim');
 INSERT INTO Map (width, height, name) VALUES(16, 16, 'Lolville');

@@ -48,8 +48,9 @@ class ShopHandler extends Handler {
       if($user->wealth < $item->value) { //player can't afford it
         return;
       }
-
+      
       if($item->class == "Weapon") $user->shelf = max($user->shelf,$item->stat);
+      else if($item->class == "Shield") $user->stealth = max($user->stealth,$item->stat);
 
       $user->wealth -= $item->value;
       $shopStock[0]->count--;
@@ -67,6 +68,7 @@ class ShopHandler extends Handler {
       $loot[0]->save();
     }
     elseif($action == "sell") {
+      /*
       if(!$loot = PlayerLoot::getByFields(array("playerId"=>$user->id,
                                                 "itemId"=>$item->id),
                                           "PlayerLoot")) {
@@ -74,8 +76,26 @@ class ShopHandler extends Handler {
         
         return;
       }
+      */
+
+      $loot = PlayerLoot::getByFields(array("playerId"=>$user->id),
+                                          "PlayerLoot")) 
+
+      $loot_0 = null;
+
+      foreach ($loot as $i) {
+        if ($i->id == $item->id) {
+          $loot_0 = $i;
+          break;
+        }
+      }
       
-      if(!$loot[0]->count) {
+      if (!$loot_0) {
+        throw new Exception("Player doesn't have the loot they're selling");
+      }
+
+
+      if(!$loot_0->count) {
         return; //player doesn't have any of what they're trying to sell
       }
       
@@ -91,8 +111,25 @@ class ShopHandler extends Handler {
       $shopStock[0]->save();
       
       //Loot save should handle the case where count is 0
-      $loot[0]->count--;
-      $loot[0]->save();
+      $loot_0->count--;
+      $loot_0->save();
+
+      if($item->class == "Weapon") {
+        $user->shelf = 0;
+        foreach ($loot as $i)
+        {
+          if ($i->class == "Weapon" && $i->stat > $user->shelf)
+            $user->shelf = $i->stat;
+        }
+      }
+      else if($item->class == "Shield") {
+        $user->stealth = 0;
+        foreach ($loot as $i)
+        {
+          if ($i->class == "Shield" && $i->stat > $user->stealth)
+            $user->stealth = $i->stat;
+        }
+      }
     }
   }
   

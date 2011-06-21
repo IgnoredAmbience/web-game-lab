@@ -75,7 +75,8 @@ class Player extends DatabaseRecord {
 
   public function attackedBy($attacker) {
     // Change our own stats
-    $this->health -= $attacker->shelf;
+    $damage = ($attacker->shelf - $this->stealth);
+    $this->health -= ($damage < 0) ? 0 : $damage;
     $this->save();
     // Notify client of stat change
     $this->notify(array('type' => 'statChange', 'player' => (array) $this));
