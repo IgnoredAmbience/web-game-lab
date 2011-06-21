@@ -49,6 +49,8 @@ class ShopHandler extends Handler {
         return;
       }
 
+      if($item->class == "Weapon") $user->shelf = max($user->shelf,$item->stat);
+
       $user->wealth -= $item->value;
       $shopStock[0]->count--;
       $user->save();
