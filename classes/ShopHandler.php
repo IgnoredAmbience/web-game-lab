@@ -79,7 +79,7 @@ class ShopHandler extends Handler {
       */
 
       $loot = PlayerLoot::getByFields(array("playerId"=>$user->id),
-                                          "PlayerLoot")) 
+                                          "PlayerLoot");
 
       $loot_0 = null;
 
