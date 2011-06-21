@@ -6,6 +6,8 @@
 \usepackage{appendix}
 \usepackage{amsmath}
 \usepackage{multicol}
+\usepackage{relsize}
+\usepackage{verbatim}
 
 \title{Trader Game}
 \author{Ethel Bardsley, Joseph Slade and Thomas Wood}
@@ -37,10 +39,11 @@
 
 \section{Frontend}
 \begin{frame}{Frontend}
-  There are 2 main components to the frontend:
+  There are 3 main components to the frontend:
   \begin{itemize}
+    \item The user interface
     \item The renderer
-    \item The netcode
+    \item The client-server communication
   \end{itemize}
 \end{frame}
 
@@ -56,10 +59,16 @@
       \begin{itemize}
         \item Not supported
       \end{itemize}
+    \item HTML/Javascript
+      \begin{itemize}
+        \item Widest cross-platform support
+        \item Cross-browser support often tricky
+      \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Choice of Technology}
+  \framesubtitle{Renderer}
   \begin{itemize}
     \item SVG
       \begin{itemize}
@@ -93,8 +102,89 @@
   \begin{itemize}
     \item PHP for server logic
     \item PostgreSQL for permanent storage
-    \item SystemV shared memory for temporary
+    \item SystemV shared memory for temporary messages
   \end{itemize}
+\end{frame}
+
+\begin{frame}{Choice of technology}
+  \framesubtitle{Programming language}
+  \begin{itemize}
+    \item Python/Django
+      \begin{itemize}
+        \item Fairly steep learning curve
+        \item Heavyweight
+      \end{itemize}
+    \pause
+    \item Server-side Javascript
+      \begin{itemize}
+        \item Library incompatibilities on wwwhomes
+      \end{itemize}
+    \pause
+    \item PHP
+      \begin{itemize}
+        \item Easy to learn
+        \item Pre-existing experience
+        \item Flexible
+        \item Large standard library
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Choice of technology}
+  \framesubtitle{Storage}
+  \begin{itemize}
+    \item PostgreSQL
+      \begin{itemize}
+        \item Powerful relational database provided by department
+        \item Table inheritance 
+      \end{itemize}
+    \pause
+    \item SystemV Shared Memory
+      \begin{itemize}
+        \item Lightweight, short-term memory
+        \item Intended for message-passing
+        \item Direct communication between processes
+        \item Blocking on empty queue supported
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Choice of technology}
+  \framesubtitle{Network communication}
+  \begin{itemize}
+    \item URL-encoded forms \\
+      \quad \verb|field1=value1&field2=value2|
+      \begin{itemize}
+        \item Default encoding used by HTML forms
+        \item Simple to encode
+        \item Automatically decoded by PHP
+      \end{itemize}
+    \item \textbf{J}ava\textbf{S}cript \textbf{O}bject \textbf{N}otation \\
+      \quad \verb|{"field1": "value1", "field2": "value2"}|
+      \begin{itemize}
+        \item Simple to encode in PHP \verb|json_encode()|
+        \item Simple to decode in JS \verb|JSON.parse()|
+        \item Complex data structures can be transmitted easily
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Multipart Long-polling}
+  \framesubtitle{Faking HTTP server-push}
+  \begin{itemize}
+    \item Problem: HTTP does not support servers pushing data to clients without a request
+
+    \item Solution: Hold a client's request open until data is ready to push
+
+    \item Enhancement: Use a multipart MIME header and send multiple pushes from one request
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Multipart Long-polling}
+  \framesubtitle{Example request}
+{\tiny
+  \verbatiminput{trace.txt}
+}
 \end{frame}
 
 \section{Conclusion}

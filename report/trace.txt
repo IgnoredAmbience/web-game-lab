@@ -1,0 +1,25 @@
+PUT /~emb2009/web/poll HTTP/1.1
+Host: www.doc.ic.ac.uk
+Keep-Alive: 115
+Connection: keep-alive
+X-Requested-With: XMLHttpRequest
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Date: Tue, 21 Jun 2011 13:31:55 GMT
+Pragma: no-cache
+Cache-Control: no-cache, must-revalidate
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Content-Type: multipart/x-mixed-replace; boundary=multipart-separator-583773412
+Keep-Alive: timeout=15, max=99
+Transfer-Encoding: chunked
+
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"chat","msg":"Guest says \"test\""}
+--multipart-separator-583773412
+Content-type: application/json
+
+{"type":"login","player":{"id":10,"x":0,"y":0,"name":"yellow","lastActive":"2011-06-21 14:32:29.599513",
+"sessionId":"19ca1ef95c2c41b7b7aafe648d2f4724","health":10,"wealth":10,"stealth":0,"shelf":1,"mapId":1}}
