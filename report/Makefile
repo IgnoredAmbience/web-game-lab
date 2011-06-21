@@ -1,7 +1,7 @@
 main: notes slides
 
-notes: presentation.tex
+notes: presentation.notes.tex presentation.tex
 	pdflatex presentation.notes.tex
 
-slides: presentation.tex
+slides: presentation.slides.tex presentation.tex
 	pdflatex presentation.slides.tex
